@@ -25,10 +25,12 @@ public class MainMenuController {
     });
     }
     public void getCrypto(){
+
         try {
-            cryptoRepository.getHistoricoData("BTC", "2023-01-01", "2023-12-31");
-        } catch (IOException e) {
+            cryptoRepository.getCryptoList();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 }

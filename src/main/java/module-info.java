@@ -11,6 +11,8 @@ module com.example.proyectobroker {
     requires jbcrypt;
     requires spring.security.crypto;
     requires org.apache.httpcomponents.httpcore;
+    requires spring.jcl;
+    requires java.net.http;
 
     opens com.example.proyectobroker to javafx.fxml;
     exports com.example.proyectobroker;
