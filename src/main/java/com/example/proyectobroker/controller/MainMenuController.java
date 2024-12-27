@@ -27,7 +27,7 @@ public class MainMenuController {
     public void getCrypto(){
 
         try {
-            cryptoRepository.getCryptoList();
+            cryptoRepository.getCoins();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

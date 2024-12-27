@@ -13,6 +13,8 @@ module com.example.proyectobroker {
     requires org.apache.httpcomponents.httpcore;
     requires spring.jcl;
     requires java.net.http;
+    requires finazon.grpc.java;
+    requires io.grpc;
 
     opens com.example.proyectobroker to javafx.fxml;
     exports com.example.proyectobroker;
