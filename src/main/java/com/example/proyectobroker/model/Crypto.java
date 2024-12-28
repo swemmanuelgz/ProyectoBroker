@@ -1,8 +1,14 @@
 package com.example.proyectobroker.model;
 
+import de.codecentric.centerdevice.javafxsvg.SvgImageLoaderFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.girod.javafx.svgimage.SVGImage;
+import org.girod.javafx.svgimage.SVGLoader;
 
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.Arrays;
 
 public class Crypto {
@@ -11,7 +17,7 @@ public class Crypto {
  private String name;
  private String color;
  private String iconUrl;
- private ImageView icon;
+ private Image icon;
  private String marketcap;
  private String price;
  private String listedAt;
@@ -73,11 +79,11 @@ public class Crypto {
         this.iconUrl = iconUrl;
     }
 
-    public ImageView getIcon() {
+    public Image getIcon() {
         return icon;
     }
 
-    public void setIcon(ImageView icon) {
+    public void setIcon(Image icon) {
         this.icon = icon;
     }
 
@@ -152,7 +158,20 @@ public class Crypto {
     public void setName(String name) {
         this.name = name;
     }
-
+    public void downloadIcon(){
+        //Soporte para imagenes SVG
+        try(InputStream inputStream = new java.net.URL(iconUrl).openStream()) {
+            if (iconUrl.endsWith(".svg")) {
+                SVGImage svgImage = SVGLoader.load(new URL(iconUrl));
+                this.icon = svgImage.toImage();
+            } else {
+                icon = new Image(inputStream);
+            }
+            System.out.println("Icono descargado"+iconUrl);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public String toString() {
         return "Crypto{" +

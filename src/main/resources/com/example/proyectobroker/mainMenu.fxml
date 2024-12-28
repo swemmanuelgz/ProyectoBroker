@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="963.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.MainMenuController">
   <tabs>
@@ -10,21 +12,41 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="748.0">
                <children>
-                 <Button layoutX="862.0" layoutY="541.0" mnemonicParsing="false" fx:id="btnLogout">
+                 <Button fx:id="btnLogout" layoutX="862.0" layoutY="541.0" mnemonicParsing="false">
                    <graphic>
-                     <ImageView >
+                     <ImageView>
                           <image>
                              <Image url="@img/ico/logout.png" />
                           </image>
                      </ImageView>
                    </graphic>
                  </Button>
+
                </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Invertir">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <children>
+            <ListView fx:id="listCryptos" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="200.0" />
+            <LineChart fx:id="stonksChart" layoutX="232.0" layoutY="95.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" fx:id="x" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="y" side="LEFT" />
+              </yAxis>
+            </LineChart>
+                  <Label fx:id="txtCryptoName" layoutX="279.0" layoutY="37.0">
+                     <font>
+                        <Font name="Serif Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="imgCryptoImage" fitHeight="150.0" fitWidth="200.0" layoutX="739.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="txtCryptoPrice" layoutX="772.0" layoutY="252.0" text="Precio de acción:" />
+          </children>
+        </AnchorPane>
       </content>
     </Tab>
     <Tab text="Historial">

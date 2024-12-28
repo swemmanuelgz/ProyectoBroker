@@ -177,7 +177,7 @@ public class CryptoRepository {
                                 sparklineArray[i] = sparkline.get(i).asDouble();
                             }
                             crypto.setSparkline(sparklineArray); //campo sparkline
-                            //System.out.println("Crypto: " + crypto.getName()+ " "+" Rank:" +crypto.getRank());
+                            System.out.println("Crypto: " + crypto.getName()+ " "+" Rank:" +crypto.getRank());
                             cryptoList.add(crypto);
                         }
                         return cryptoList;

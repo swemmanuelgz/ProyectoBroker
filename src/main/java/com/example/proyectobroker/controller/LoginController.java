@@ -86,7 +86,6 @@ public class LoginController {
                //Cerramos el stage actual
                Stage stageActual = (Stage) btnLogin.getScene().getWindow();
                stageActual.close();
-
                stage.setScene(scene);
                stage.show();
 
@@ -102,5 +101,6 @@ public class LoginController {
     public User getUserLogged() {
         return userLogged;
     }
+
 
 }
