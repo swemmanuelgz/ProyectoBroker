@@ -1,10 +1,12 @@
 package com.example.proyectobroker.model;
 
 
+import javafx.scene.image.Image;
 
 public class User {
     private String username;
     private String password;
+    private UserConfig userConfig;
 
     public User(String username, String password) {
         this.username = username;
@@ -28,5 +30,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserConfig getUserConfig() {
+        return userConfig;
+    }
+
+    public void setUserConfig(UserConfig userConfig) {
+        this.userConfig = userConfig;
     }
 }

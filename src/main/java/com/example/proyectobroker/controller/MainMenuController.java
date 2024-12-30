@@ -1,6 +1,7 @@
 package com.example.proyectobroker.controller;
 
 import com.example.proyectobroker.model.Crypto;
+import com.example.proyectobroker.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,16 +9,15 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainMenuController {
+    //Activos
     @FXML
     private Button btnLogout;
     @FXML
@@ -32,11 +32,28 @@ public class MainMenuController {
     private Label txtCryptoName;
     @FXML
     private Label txtCryptoPrice;
+    //Invertir
     @FXML
     private ImageView imgCryptoImage;
+   //Configuracion
+    @FXML
+    private TextField txtUser;
+    @FXML
+    private TextField txtPassword;
+    @FXML
+    private TextField txtPasswordConfirm;
+    @FXML
+    private TextField txtMoney;
+    @FXML
+    private Button btnSaveChanges;
+    @FXML
+    private ImageView imgProfile;
+    @FXML
+    private ComboBox cmbDivisa;
 
     private CryptoController cryptoController = new CryptoController();
     private LoginController loginController = new LoginController();
+    private UserController userController = new UserController();
     @FXML
     public void initialize() {
 
@@ -47,7 +64,7 @@ public class MainMenuController {
             crypto.downloadIcon();
             imgCryptoImage.setImage(crypto.getIcon());
             txtCryptoName.setText(crypto.getName());
-            txtCryptoPrice.setText(crypto.getPrice());
+            txtCryptoPrice.setText("Precio por acción: "+crypto.getPrice());
             initChart(crypto);
         });
     btnLogout.setOnAction(event -> {
@@ -80,7 +97,7 @@ public class MainMenuController {
         }
 
     }
-    public void initChart(Crypto crypto){
+    private void initChart(Crypto crypto){
         XYChart.Series series = new XYChart.Series();
 
         for (int i = 0; i < crypto.getSparkline().length; i++) {
@@ -91,7 +108,7 @@ public class MainMenuController {
         stonksChart.getData().clear();
         stonksChart.getData().add(series);
     }
-    public void initList(){
+    private void initList(){
         ArrayList<Crypto> cryptos = getCrypto();
         listCryptos.setCellFactory(param -> new ListCell<Crypto>() {
             @Override
@@ -105,6 +122,12 @@ public class MainMenuController {
             }
         });
         listCryptos.getItems().addAll(cryptos);
+    }
+    //Configuracion
+    private void initConfig(){
+        cmbDivisa.getItems().addAll("USD","EUR");
+
+
     }
 
 }

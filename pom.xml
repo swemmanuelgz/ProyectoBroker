@@ -15,9 +15,10 @@
     </properties>
     <repositories>
         <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository></repositories>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -96,71 +97,71 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.15.0</version>
         </dependency>
-         <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-config</artifactId>
-        <version>5.7.3</version>
-    </dependency>
-    <!-- Dependencia HTTP -->
-    <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.13</version>
-    </dependency>
-    <!-- Dependencia de finazon-->
         <dependency>
-        <groupId>io.finazon</groupId>
-        <artifactId>finazon-grpc-java</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-     <!-- gRPC Dependencies -->
-    <dependency>
-        <groupId>io.grpc</groupId>
-        <artifactId>grpc-api</artifactId>
-        <version>1.61.1</version>
-    </dependency>
-    <dependency>
-        <groupId>io.grpc</groupId>
-        <artifactId>grpc-protobuf</artifactId>
-        <version>1.61.1</version>
-    </dependency>
-    <dependency>
-        <groupId>io.grpc</groupId>
-        <artifactId>grpc-stub</artifactId>
-        <version>1.61.1</version>
-    </dependency>
-    <dependency>
-        <groupId>io.grpc</groupId>
-        <artifactId>grpc-auth</artifactId>
-        <version>1.61.1</version>
-    </dependency>
-    <dependency>
-        <groupId>com.google.auth</groupId>
-        <artifactId>google-auth-library-oauth2-http</artifactId>
-        <version>1.18.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.google.api.grpc</groupId>
-        <artifactId>proto-google-common-protos</artifactId>
-        <version>2.29.0</version>
-    </dependency>
-    <!-- Protobuf -->
-    <dependency>
-        <groupId>com.google.protobuf</groupId>
-        <artifactId>protobuf-java</artifactId>
-        <version>3.25.1</version>
-    </dependency>
-    <!-- svg loader-->
-   <dependency>
-    <groupId>de.codecentric.centerdevice</groupId>
-    <artifactId>javafxsvg</artifactId>
-    <version>1.3.0</version>
-</dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.7.3</version>
+        </dependency>
+        <!-- Dependencia HTTP -->
         <dependency>
-      <groupId>com.github.hervegirod</groupId>
-      <artifactId>fxsvgimage</artifactId>
-      <version>1.1</version>
-    </dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <!-- Dependencia de finazon-->
+        <dependency>
+            <groupId>io.finazon</groupId>
+            <artifactId>finazon-grpc-java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- gRPC Dependencies -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-api</artifactId>
+            <version>1.61.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.61.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>1.61.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-auth</artifactId>
+            <version>1.61.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api.grpc</groupId>
+            <artifactId>proto-google-common-protos</artifactId>
+            <version>2.29.0</version>
+        </dependency>
+        <!-- Protobuf -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.25.1</version>
+        </dependency>
+        <!-- svg loader-->
+        <dependency>
+            <groupId>de.codecentric.centerdevice</groupId>
+            <artifactId>javafxsvg</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hervegirod</groupId>
+            <artifactId>fxsvgimage</artifactId>
+            <version>1.1</version>
+        </dependency>
 
     </dependencies>
 

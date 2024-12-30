@@ -1,22 +1,21 @@
 package com.example.proyectobroker.repository;
 
-import com.example.proyectobroker.controller.CreateAccountController;
 import com.example.proyectobroker.model.User;
+import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.view.AlertView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.image.Image;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class UserRepository {
-    private ArrayList<User> users = new ArrayList<>();
-
+    private ArrayList<User> usersList = new ArrayList<>();
+    private final String pathProfileImg = "src/main/resources/com/example/proyectobroker/imag/profile/";
 
 
     public UserRepository() {
@@ -107,4 +106,77 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+    public ArrayList<User> getAllUsers(){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            File archivoJson = new File("src/main/java/database/data.json");
+            //Comprobamos que sigue existiendo el archivo
+            if (!archivoJson.exists()) {
+                System.out.printf("El archivo no existe: ", archivoJson.getName());
+                return null;
+            }
+            //Comprobamos que no esté vacio
+            if (archivoJson.length() == 0) {
+                System.out.printf("El archivo está vacío: ", archivoJson.getName());
+                return null;
+            }
+            //Leemos el contenido del archivo
+            JsonNode rootNode = objectMapper.readTree(archivoJson);
+            //Buscamos al usuario en el JSON
+            for (JsonNode node : rootNode) {
+                String usuarioExistente = node.get("username").asText();
+                String password = node.get("password").asText();
+                User user = new User(usuarioExistente, password);
+                usersList.add(user);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return usersList;
+    }
+
+    public ArrayList<User> getUsersList() {
+        getAllUsers();
+        return usersList;
+    }
+    private UserConfig getUserConfig(User user){
+        UserConfig userConfig = new UserConfig();
+        try {
+            //Inicializamos el maper
+            ObjectMapper objectMapper = new ObjectMapper();
+            //Guardar el archivo en la ruta resources
+            File archivoConfig = new File("src/main/java/database/config.json");
+
+            //Comprobar si existe el archivo
+            if (!archivoConfig.exists()) {
+                System.out.printf("El archivo no existe: ", archivoConfig.getName());
+                return null;
+            }
+
+            //Leemos el contenido del archivo
+            JsonNode rootNode = objectMapper.readTree(archivoConfig);
+            //Buscamos al usuario en el JSON
+            for (JsonNode node : rootNode){
+
+               if (rootNode.get("username").asText().equals(user.getUsername())){
+                   String divisa = node.get("divisa").asText();
+                   String saldo = node.get("saldo").asText();
+                   //Commprobamos si tiene foto de perfil
+                   if (node.get("img").equals(false)){
+                       Image image = new Image(pathProfileImg+"default.png");
+                       userConfig.setProfileImage(image);
+                   }else {
+                       Image image = new Image(pathProfileImg+user.getUsername()+".png");
+                       userConfig.setProfileImage(image);
+                   }
+               }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return userConfig;
+    }
+
 }
