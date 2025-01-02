@@ -5,5 +5,19 @@
     "img": false,
     "divisa": "USD",
     "saldo": 100000
-  }
+} ,
+{
+    "username": "admin",
+    "password": "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
+    "img": false,
+    "divisa": "USD",
+    "saldo": 100000
+},
+{
+    "username": "prueba",
+    "password": "$2a$10$in5FSTq7RfJPRT12cKyDKOV5Q5CJqe03NtOfCTT1UNJ3m24WecBpa",
+    "img": false,
+    "divisa": "USD",
+    "saldo": 100000
+}
 ]

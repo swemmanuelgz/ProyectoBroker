@@ -32,6 +32,18 @@ public class LoginController {
             login();
         });
         createAccount();
+
+    }
+    public LoginController() {
+    }
+
+    public LoginController(PasswordField txtPassword, TextField txtUsername, Button btnLogin, Label txtCreateAccount, User userLogged, UserController userController) {
+        this.txtPassword = txtPassword;
+        this.txtUsername = txtUsername;
+        this.btnLogin = btnLogin;
+        this.txtCreateAccount = txtCreateAccount;
+        this.userLogged = userLogged;
+        this.userController = userController;
     }
 
     @FXML
@@ -47,6 +59,8 @@ public class LoginController {
                 Scene scene = new Scene(fxmlLoader.load(), 522, 335);
                 Stage stage = new Stage();
                 stage.setTitle("Create Account");
+
+
                 //Cerramos el stage actual
                 Stage stageActual = (Stage) txtCreateAccount.getScene().getWindow();
                 stageActual.close();
@@ -76,13 +90,23 @@ public class LoginController {
            return;
        }
        if (user != null) {
-           System.out.println("Usuario logeado");
-           userLogged = user;
+
+           this.userLogged = user;
+           setUserLogged(user);
+           System.out.println("Usuario logeado "+userLogged.getUsername());
+
+
            try {
                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/proyectobroker/mainMenu.fxml"));
                Scene scene = new Scene(fxmlLoader.load(), 963, 622);
                Stage stage = new Stage();
                stage.setTitle("Main");
+               //Cogemos el controlador
+               System.out.println("Mandamos el usuario al main "+userLogged.getUsername());
+               MainMenuController mainMenuController = fxmlLoader.getController();
+               mainMenuController.setUserLogged(userLogged);
+
+
                //Cerramos el stage actual
                Stage stageActual = (Stage) btnLogin.getScene().getWindow();
                stageActual.close();
@@ -90,8 +114,8 @@ public class LoginController {
                stage.show();
 
            } catch (IOException ex) {
-               alertView = new AlertView("Error", "Error al cargar la ventana de creación de cuenta", "Error al cargar la ventana de creación de cuenta "+ ex.getMessage());
-               throw new RuntimeException("Error al cargar la ventana de creación de cuenta "+ ex.getMessage());
+               alertView = new AlertView("Error", "Error al cargar la ventana de main", "Error al cargar la ventana de creación de cuenta "+ ex.getMessage());
+               throw new RuntimeException("Error al cargar la ventana de creación de main"+ ex.getMessage());
            }
        }
 
@@ -101,6 +125,11 @@ public class LoginController {
     public User getUserLogged() {
         return userLogged;
     }
+    private void initUserLogged(User userLogged) {
+        this.userLogged = userLogged;
+    }
 
-
+    public void setUserLogged(User userLogged) {
+        this.userLogged = userLogged;
+    }
 }

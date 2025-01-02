@@ -1,6 +1,7 @@
 package com.example.proyectobroker.controller;
 
 import com.example.proyectobroker.model.User;
+import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,9 @@ public class UserController {
             }
         }
         return usuario;
+    }
+    public UserConfig getUserConfig(User user) {
+        return userRepository.getUserConfig(user);
     }
 
 }

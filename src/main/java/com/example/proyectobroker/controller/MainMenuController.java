@@ -50,6 +50,7 @@ public class MainMenuController {
     private ImageView imgProfile;
     @FXML
     private ComboBox cmbDivisa;
+    private User userLogged = new User();
 
     private CryptoController cryptoController = new CryptoController();
     private LoginController loginController = new LoginController();
@@ -125,9 +126,22 @@ public class MainMenuController {
     }
     //Configuracion
     private void initConfig(){
+        //Cargamos la configuración del usuario
+        userLogged.setUserConfig(userController.getUserConfig(userLogged));
+        System.out.println("Usuario logeado "+userLogged.getUsername());
+        System.out.println("Configuración del usuario "+userLogged.getUserConfig().toString());
         cmbDivisa.getItems().addAll("USD","EUR");
+        txtUser.setText(userLogged.getUsername());
+        txtMoney.setText(String.valueOf(userLogged.getUserConfig().getSaldo()));
+        cmbDivisa.setValue(userLogged.getUserConfig().getDivisa());
+        imgProfile.setImage(userLogged.getUserConfig().getProfileImage());
 
 
     }
 
+    public void setUserLogged(User userLogged) {
+        this.userLogged = userLogged;
+        initConfig();
+
+    }
 }

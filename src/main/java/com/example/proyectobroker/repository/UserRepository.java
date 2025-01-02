@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class UserRepository {
     private ArrayList<User> usersList = new ArrayList<>();
-    private final String pathProfileImg = "src/main/resources/com/example/proyectobroker/imag/profile/";
+    private final String pathProfileImg = "/com/example/proyectobroker/img/profile/";
 
 
     public UserRepository() {
@@ -140,8 +140,11 @@ public class UserRepository {
         getAllUsers();
         return usersList;
     }
-    private UserConfig getUserConfig(User user){
+    public UserConfig getUserConfig(User user){
         UserConfig userConfig = new UserConfig();
+        userConfig.setUser(user);
+        String userProfile = pathProfileImg+user.getUsername()+".png";
+        String defaultProfile = pathProfileImg+"defaultProfile.png";
         try {
             //Inicializamos el maper
             ObjectMapper objectMapper = new ObjectMapper();
@@ -159,17 +162,29 @@ public class UserRepository {
             //Buscamos al usuario en el JSON
             for (JsonNode node : rootNode){
 
-               if (rootNode.get("username").asText().equals(user.getUsername())){
+               if (node.has("username") ||rootNode.get("username").asText().equals(user.getUsername())  ) {
                    String divisa = node.get("divisa").asText();
-                   String saldo = node.get("saldo").asText();
+                   Double saldo = node.get("saldo").asDouble();
+                     userConfig.setDivisa(divisa);
+                        userConfig.setSaldo(saldo);
+
                    //Commprobamos si tiene foto de perfil
-                   if (node.get("img").equals(false)){
-                       Image image = new Image(pathProfileImg+"default.png");
+                   if (!node.get("img").asBoolean()){
+                       Image image = loadImageFromResouces(defaultProfile);
                        userConfig.setProfileImage(image);
+                       return userConfig;
                    }else {
-                       Image image = new Image(pathProfileImg+user.getUsername()+".png");
+                          Image image = loadImageFromResouces(userProfile);
                        userConfig.setProfileImage(image);
+                          return userConfig;
                    }
+               }//si no tiewne configuracion le ponemos una default
+               else {
+                   userConfig.setDivisa("USD");
+                   userConfig.setSaldo(1000.0);
+                   Image image = new Image(pathProfileImg+"defaultProfile.png");
+                   userConfig.setProfileImage(image);
+                     return userConfig;
                }
             }
         } catch (Exception e) {
@@ -178,5 +193,15 @@ public class UserRepository {
 
         return userConfig;
     }
+   private Image loadImageFromResouces(String path){
+        try {
+            String fullPath = getClass().getResource(path).toExternalForm();
+            return new Image(fullPath);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Error al cargar imagen"+e);
+        }catch (Exception e){
+            throw new RuntimeException("Error al cargar imagen no existe"+e);
+        }
+   }
 
 }

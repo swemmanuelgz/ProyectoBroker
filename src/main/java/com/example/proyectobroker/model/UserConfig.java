@@ -49,4 +49,14 @@ public class UserConfig {
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
     }
+
+    @Override
+    public String toString() {
+        return "UserConfig{" +
+                "user= " + user.getUsername() +
+                ", divisa='" + divisa + '\'' +
+                ", saldo=" + saldo +
+                ", profileImage=" + profileImage +
+                '}';
+    }
 }
