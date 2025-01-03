@@ -167,7 +167,7 @@ public class UserRepository {
             //Buscamos al usuario en el JSON
             for (JsonNode node : rootNode){
 
-               if (node.has("username") && rootNode.get("username").asText().equals(user.getUsername())  ) {
+               if (node.has("username") && node.get("username").asText().equals(user.getUsername())  ) {
                    String divisa = node.get("divisa").asText();
                    Double saldo = node.get("saldo").asDouble();
                      userConfig.setDivisa(divisa);
