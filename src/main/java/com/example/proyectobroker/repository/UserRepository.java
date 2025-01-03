@@ -188,7 +188,7 @@ public class UserRepository {
                else {
                    userConfig.setDivisa("USD");
                    userConfig.setSaldo(1000.0);
-                   Image image = new Image(pathProfileImg+"defaultProfile.png");
+                   Image image = loadImageFromResouces(defaultProfile);
                    userConfig.setProfileImage(image);
                      return userConfig;
                }
@@ -225,11 +225,11 @@ public class UserRepository {
                 logger.log(System.Logger.Level.INFO, "Usuario encontrado en el archivo de configuraciones");
                 System.out.println("Usuario encontrado en el archivo de configuraciones");
                 String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
-                if (node.get("username").asText().equals(userConfig.getUser().getUsername())){
+                if (node.get("username").asText().equals(userConfig.getLastname())){
                     ((ObjectNode) node).put("divisa", userConfig.getDivisa());
                     ((ObjectNode) node).put("saldo", userConfig.getSaldo());
                     //Validamos que la imagen no sea la default
-                    if (userConfig.getProfileImage().getUrl().equals(pathProfileImg+"defaultProfile.png")){
+                    if (userConfig.getProfileImage().getUrl().contains("defaultProfile.png")){
                         ((ObjectNode) node).put("img", false);
                     }else {
                          extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
@@ -250,7 +250,7 @@ public class UserRepository {
                 newUser.put("password", userConfig.getUser().getPassword());
                 newUser.put("divisa", userConfig.getDivisa());
                 newUser.put("saldo", userConfig.getSaldo());
-                if (userConfig.getProfileImage().getUrl().equals(pathProfileImg+"defaultProfile.png")){
+                if (userConfig.getProfileImage().getUrl().contains("defaultProfile.png")){
                     newUser.put("img", false);
                 }else {
                     String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
@@ -287,7 +287,7 @@ public class UserRepository {
             //Buscamos si existe el usuario en el archivo de configuraciones o si no existe lo creamos
             for (JsonNode node : userArray){
                 logger.log(System.Logger.Level.INFO, "Usuario encontrado en el archivo de usuarios");
-                if (node.get("username").asText().equals(userConfig.getUser().getUsername())){
+                if (node.get("username").asText().equals(userConfig.getLastname())){
                     ((ObjectNode) node).put("username", userConfig.getUser().getUsername());
                     ((ObjectNode) node).put("password", userConfig.getUser().getPassword());
                     break;
@@ -295,7 +295,7 @@ public class UserRepository {
             }
             //Escribimos el nuevo array en el archivo
             objectMapper.writeValue(archivoJson, userArray);
-            logger.log(System.Logger.Level.INFO, "Usuario actualizado "+userConfig.getUser().getUsername()+"en el archivo de usuarios");
+            //logger.log(System.Logger.Level.INFO, "Usuario actualizado "+userConfig.getUser().getUsername()+"en el archivo de usuarios");
             System.out.println("Usuario actualizado "+userConfig.getUser().getUsername()+"en el archivo de usuarios");
             //Guardamos la configuración del usuario
             saveUserConfig(userConfig);

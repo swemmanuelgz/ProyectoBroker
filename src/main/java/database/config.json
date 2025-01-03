@@ -1,7 +1,7 @@
 [ {
   "username" : "emmanuel",
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
-  "img" : "png",
+  "img" : false,
   "divisa" : "EUR",
   "saldo" : 178900.0
 }, {
@@ -9,11 +9,11 @@
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
   "img" : false,
   "divisa" : "USD",
-  "saldo" : 100000
+  "saldo" : 1280.0
 }, {
-  "username" : "prueba",
+  "username" : "prueba2",
   "password" : "$2a$10$in5FSTq7RfJPRT12cKyDKOV5Q5CJqe03NtOfCTT1UNJ3m24WecBpa",
   "img" : false,
-  "divisa" : "USD",
-  "saldo" : 100000
+  "divisa" : "EUR",
+  "saldo" : 1900.0
 } ]

@@ -7,6 +7,7 @@ public class UserConfig {
     private String divisa;
     private Double saldo;
     private Image profileImage;
+    private String lastname;
 
     public UserConfig(User user, String divisa, Double saldo, Image profileImage) {
         this.user = user;
@@ -48,6 +49,14 @@ public class UserConfig {
 
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     @Override

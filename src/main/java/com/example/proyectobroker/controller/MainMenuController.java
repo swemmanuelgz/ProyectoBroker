@@ -192,6 +192,12 @@ public class MainMenuController {
             }*/
             //Crear configuración
             user.setUserConfig(new UserConfig(user,cmbDivisa.getValue().toString(),Double.parseDouble(txtMoney.getText()),userLogged.getUserConfig().getProfileImage()));
+
+                //le ponemos el ultimo nombre de usuario para que pueda encontrarlo en el json
+                //por si el usuario cambia el nombre
+                logger.log(Level.INFO,"Usuario diferente en nombres: "+userLogged.getUsername()+" "+txtUser.getText());
+                user.getUserConfig().setLastname(userLogged.getUsername());
+
             //guardamos la configuracion del usuario
             userController.updateUserConfig(user);
             logger.log(Level.INFO,"Usuario actualizado");

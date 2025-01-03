@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class CryptoRepository {
     private final String API_KEY="d46adc9f3bc442659d0987d576c4a744hw";
     private final String BASE_URL =  "https://api.finazon.io";
-
+    
 
     public void CryptoRepository() {
 
