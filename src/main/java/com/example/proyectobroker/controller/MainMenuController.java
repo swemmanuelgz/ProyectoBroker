@@ -1,7 +1,11 @@
 package com.example.proyectobroker.controller;
 
+import com.example.proyectobroker.exceptions.Exceptions;
 import com.example.proyectobroker.model.Crypto;
 import com.example.proyectobroker.model.User;
+import com.example.proyectobroker.model.UserConfig;
+import com.example.proyectobroker.repository.UserRepository;
+import com.example.proyectobroker.view.AlertView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,12 +15,17 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainMenuController {
+    private AlertView alertView = new AlertView();
+    private final Logger logger = Logger.getLogger(MainMenuController.class.getName());
     //Activos
     @FXML
     private Button btnLogout;
@@ -47,10 +56,13 @@ public class MainMenuController {
     @FXML
     private Button btnSaveChanges;
     @FXML
+    private Button btnChangeImage;
+    @FXML
     private ImageView imgProfile;
     @FXML
     private ComboBox cmbDivisa;
     private User userLogged = new User();
+
 
     private CryptoController cryptoController = new CryptoController();
     private LoginController loginController = new LoginController();
@@ -71,7 +83,16 @@ public class MainMenuController {
     btnLogout.setOnAction(event -> {
         logout();
     });
+    btnSaveChanges.setOnAction(event -> {
+        saveChanges();
+    });
+    btnChangeImage.setOnAction(event -> {
+        changeImage();
+    });
     }
+
+
+
     private ArrayList getCrypto(){
 
         try {
@@ -127,6 +148,7 @@ public class MainMenuController {
     //Configuracion
     private void initConfig(){
         //Cargamos la configuración del usuario
+
         userLogged.setUserConfig(userController.getUserConfig(userLogged));
         System.out.println("Usuario logeado "+userLogged.getUsername());
         System.out.println("Configuración del usuario "+userLogged.getUserConfig().toString());
@@ -143,5 +165,56 @@ public class MainMenuController {
         this.userLogged = userLogged;
         initConfig();
 
+    }
+    public void saveChanges(){
+        Exceptions exceptions = new Exceptions();
+        UserRepository userRepository = new UserRepository();
+        exceptions.validateUserField(txtUser.getText());
+        exceptions.checkPasswordMatch(txtPassword.getText(),txtPasswordConfirm.getText());
+        exceptions.validateMoney(txtMoney.getText());
+        exceptions.validateImage(imgProfile.getImage());
+
+        logger.log(Level.INFO,"Validaciones pasadas");
+        logger.log(Level.INFO,"Usuario logeado "+userLogged.getUsername());
+        //CComprobar si existre el usuario y si el usuario es diferente al actual
+        if (userLogged.getUsername().equals(txtUser.getText()) || !userController.checkUserExists(new User(txtUser.getText(),txtPassword.getText()))){
+            //Crear usuario
+
+            User user = new User(txtUser.getText(),txtPassword.getText());
+            //Si el usuario deja la casilla de la contraseña vacia se deja la contraseña anterior
+            if (txtPassword.getText().isEmpty()){
+                user.setPassword(userLogged.getPassword());
+            }
+            //Si no se ha seleccionado imagen y la imagen es la default se lo dejamos como null
+            /*if (imgProfile.getImage().getUrl().equals("file:/C:/Users/aleja/IdeaProjects/proyecto-broker/src/main/resources/com/example/proyectobroker/default.png")){
+                imgProfile.setImage(null);
+
+            }*/
+            //Crear configuración
+            user.setUserConfig(new UserConfig(user,cmbDivisa.getValue().toString(),Double.parseDouble(txtMoney.getText()),userLogged.getUserConfig().getProfileImage()));
+            //guardamos la configuracion del usuario
+            userController.updateUserConfig(user);
+            logger.log(Level.INFO,"Usuario actualizado");
+            alertView = new AlertView("Información","Cambios guardados","Cambios guardados");
+            alertView.mostrarAlerta();
+        }
+
+    }
+    private void changeImage() {
+        //Creamos un filechooser donde solo se puedan coger imagenes
+        FileChooser fileChooser = new FileChooser();
+        //Filtro de imagenes
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        //Abrimos el filechooser
+        File file = fileChooser.showOpenDialog(null);
+        //Comprobamos si se ha seleccionado una imagen
+        if (file != null) {
+
+            System.out.println(file.getAbsolutePath());
+            //Cargamos la imagen
+            imgProfile.setImage(new javafx.scene.image.Image(file.toURI().toString()));
+            userLogged.getUserConfig().setProfileImage(imgProfile.getImage());
+
+        }
     }
 }

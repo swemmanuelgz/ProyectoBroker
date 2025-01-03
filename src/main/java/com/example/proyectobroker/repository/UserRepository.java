@@ -5,6 +5,7 @@ import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.view.AlertView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.scene.image.Image;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 public class UserRepository {
     private ArrayList<User> usersList = new ArrayList<>();
     private final String pathProfileImg = "/com/example/proyectobroker/img/profile/";
-
-
+    private static final System.Logger logger = System.getLogger(UserRepository.class.getName());
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     public UserRepository() {
 
     }
@@ -25,6 +26,8 @@ public class UserRepository {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File archivoJson = new File("src/main/java/database/data.json");
+            logger.log(System.Logger.Level.INFO, "Ruta del archivo: "+archivoJson);
+            System.out.println("UserRepository: "+archivoJson);
 
             //Comprobar si existe el archivo
             if (!archivoJson.exists()) {
@@ -47,6 +50,7 @@ public class UserRepository {
             for (JsonNode node : rootNode) {
                 String usuarioExistente = node.get("username").asText();
                 if (usuarioExistente.equalsIgnoreCase(user.getUsername())) {
+                    System.out.println("El usuario ya existe");
                     AlertView alertView = new AlertView("Usuario existente", "El usuario ya existe", "El usuario ya existe en la base de datos");
                     alertView.mostrarAlerta();
                     return true; //usuario existe
@@ -92,6 +96,7 @@ public class UserRepository {
 
             //Imprimimos la ruta del archivo
             System.out.println(archivoJson);
+            logger.log(System.Logger.Level.INFO, "Ruta del archivo: "+archivoJson);
 
             //Escribimos el nuevo array en el archivo
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(archivoJson, userArray);
@@ -143,7 +148,7 @@ public class UserRepository {
     public UserConfig getUserConfig(User user){
         UserConfig userConfig = new UserConfig();
         userConfig.setUser(user);
-        String userProfile = pathProfileImg+user.getUsername()+".png";
+        String userProfile = pathProfileImg+user.getUsername();
         String defaultProfile = pathProfileImg+"defaultProfile.png";
         try {
             //Inicializamos el maper
@@ -162,7 +167,7 @@ public class UserRepository {
             //Buscamos al usuario en el JSON
             for (JsonNode node : rootNode){
 
-               if (node.has("username") ||rootNode.get("username").asText().equals(user.getUsername())  ) {
+               if (node.has("username") && rootNode.get("username").asText().equals(user.getUsername())  ) {
                    String divisa = node.get("divisa").asText();
                    Double saldo = node.get("saldo").asDouble();
                      userConfig.setDivisa(divisa);
@@ -174,7 +179,8 @@ public class UserRepository {
                        userConfig.setProfileImage(image);
                        return userConfig;
                    }else {
-                          Image image = loadImageFromResouces(userProfile);
+                       //En ese nodo está la extension de imagen
+                          Image image = loadImageFromResouces(userProfile+node.get("img").asText());
                        userConfig.setProfileImage(image);
                           return userConfig;
                    }
@@ -192,6 +198,110 @@ public class UserRepository {
         }
 
         return userConfig;
+    }
+    //Este metodo es el segundo que se emplea para guardar la configuracion del usuario
+    //Despues llamamos al otro para soobresicbir los datos del usuario
+    private void saveUserConfig(UserConfig userConfig){
+        try {
+            //Inicializamos el maper
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);//Formatea el json
+
+            //Guardar el archivo en la ruta resources
+            File archivoConfig = new File("src/main/java/database/config.json");
+            logger.log(System.Logger.Level.INFO, "Ruta del archivo de configuraciones: "+archivoConfig);
+            System.out.println("Ruta del archivo de configuraciones: "+archivoConfig);
+
+            ArrayNode userArray;
+            if (archivoConfig.exists() && archivoConfig.length() > 0) {
+                ;
+                userArray = (ArrayNode) objectMapper.readTree(archivoConfig);
+            } else {
+                userArray = objectMapper.createArrayNode();
+            }
+            //Buscamos si existe el usuario en el archivo de configuraciones o si no existe lo creamos
+            boolean userExists = false;
+            for (JsonNode node : userArray){
+                logger.log(System.Logger.Level.INFO, "Usuario encontrado en el archivo de configuraciones");
+                System.out.println("Usuario encontrado en el archivo de configuraciones");
+                String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
+                if (node.get("username").asText().equals(userConfig.getUser().getUsername())){
+                    ((ObjectNode) node).put("divisa", userConfig.getDivisa());
+                    ((ObjectNode) node).put("saldo", userConfig.getSaldo());
+                    //Validamos que la imagen no sea la default
+                    if (userConfig.getProfileImage().getUrl().equals(pathProfileImg+"defaultProfile.png")){
+                        ((ObjectNode) node).put("img", false);
+                    }else {
+                         extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
+                        ((ObjectNode) node).put("img", extensionImg);
+                    }
+                    ((ObjectNode) node).put("username", userConfig.getUser().getUsername());
+                    ((ObjectNode) node).put("password", userConfig.getUser().getPassword());
+                    userExists = true;
+                    break;
+                }
+            }
+            //Si no existe el usuario lo creamos
+            if (!userExists){
+                logger.log(System.Logger.Level.INFO, "Usuario no existe, se creará uno nuevo");
+                System.out.println("Usuario no existe, se creará uno nuevo");
+                ObjectNode newUser = objectMapper.createObjectNode();
+                newUser.put("username", userConfig.getUser().getUsername());
+                newUser.put("password", userConfig.getUser().getPassword());
+                newUser.put("divisa", userConfig.getDivisa());
+                newUser.put("saldo", userConfig.getSaldo());
+                if (userConfig.getProfileImage().getUrl().equals(pathProfileImg+"defaultProfile.png")){
+                    newUser.put("img", false);
+                }else {
+                    String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
+                    newUser.put("img", extensionImg);
+                }
+                userArray.add(newUser);
+            }
+            //Escribimos el nuevo array en el archivo
+            objectMapper.writeValue(archivoConfig, userArray);
+            logger.log(System.Logger.Level.INFO, "Usuario guardado "+userConfig.getUser().getUsername()+"en el archivo de configuraciones");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //Para actualizar al usuario y la configuracion usamos este metodo que a su vez emplea el otro
+    //Creamos el metodo para sobreescribir los datos del usuario del archivo data.json
+    public void updateUser(UserConfig userConfig){
+        try {
+            //Inicializamos el maper
+            ObjectMapper objectMapper = new ObjectMapper();
+            //Guardar el archivo en la ruta resources
+            File archivoJson = new File("src/main/java/database/data.json");
+
+            logger.log(System.Logger.Level.INFO, "Ruta del archivo de usuarios: "+archivoJson);
+            System.out.println("Ruta del archivo de usuarios: "+archivoJson);
+
+            ArrayNode userArray;
+            if (archivoJson.exists() && archivoJson.length() > 0) {
+                ;
+                userArray = (ArrayNode) objectMapper.readTree(archivoJson);
+            } else {
+                userArray = objectMapper.createArrayNode();
+            }
+            //Buscamos si existe el usuario en el archivo de configuraciones o si no existe lo creamos
+            for (JsonNode node : userArray){
+                logger.log(System.Logger.Level.INFO, "Usuario encontrado en el archivo de usuarios");
+                if (node.get("username").asText().equals(userConfig.getUser().getUsername())){
+                    ((ObjectNode) node).put("username", userConfig.getUser().getUsername());
+                    ((ObjectNode) node).put("password", userConfig.getUser().getPassword());
+                    break;
+                }
+            }
+            //Escribimos el nuevo array en el archivo
+            objectMapper.writeValue(archivoJson, userArray);
+            logger.log(System.Logger.Level.INFO, "Usuario actualizado "+userConfig.getUser().getUsername()+"en el archivo de usuarios");
+            System.out.println("Usuario actualizado "+userConfig.getUser().getUsername()+"en el archivo de usuarios");
+            //Guardamos la configuración del usuario
+            saveUserConfig(userConfig);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
    private Image loadImageFromResouces(String path){
         try {
