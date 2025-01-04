@@ -12,11 +12,15 @@ import javafx.scene.image.Image;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class UserRepository {
     private ArrayList<User> usersList = new ArrayList<>();
     private final String pathProfileImg = "/com/example/proyectobroker/img/profile/";
+    private final String pathProfileImgSave = "src/main/resources/com/example/proyectobroker/img/profile/";
     private static final System.Logger logger = System.getLogger(UserRepository.class.getName());
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     public UserRepository() {
@@ -169,30 +173,34 @@ public class UserRepository {
 
                if (node.has("username") && node.get("username").asText().equals(user.getUsername())  ) {
                    String divisa = node.get("divisa").asText();
+                   logger.log(System.Logger.Level.INFO, "Divisa del usuario: "+divisa);
                    Double saldo = node.get("saldo").asDouble();
+                   logger.log(System.Logger.Level.INFO, "Saldo del usuario: "+saldo);
                      userConfig.setDivisa(divisa);
                         userConfig.setSaldo(saldo);
 
                    //Commprobamos si tiene foto de perfil
-                   if (!node.get("img").asBoolean()){
+                   if (node.get("img").asText().equals("false")){
                        Image image = loadImageFromResouces(defaultProfile);
                        userConfig.setProfileImage(image);
                        return userConfig;
                    }else {
                        //En ese nodo está la extension de imagen
-                          Image image = loadImageFromResouces(userProfile+node.get("img").asText());
+                          Image image = loadImageFromResouces(userProfile+"."+node.get("img").asText());
                        userConfig.setProfileImage(image);
                           return userConfig;
                    }
                }//si no tiewne configuracion le ponemos una default
-               else {
-                   userConfig.setDivisa("USD");
-                   userConfig.setSaldo(1000.0);
-                   Image image = loadImageFromResouces(defaultProfile);
-                   userConfig.setProfileImage(image);
-                     return userConfig;
-               }
+
+
+
             }
+            logger.log(System.Logger.Level.INFO, "Usuario no tiene configuración");
+            userConfig.setDivisa("USD");
+            userConfig.setSaldo(1000.0);
+            Image image = loadImageFromResouces(defaultProfile);
+            userConfig.setProfileImage(image);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -232,6 +240,7 @@ public class UserRepository {
                     if (userConfig.getProfileImage().getUrl().contains("defaultProfile.png")){
                         ((ObjectNode) node).put("img", false);
                     }else {
+                        saveImageToResourcesPath(userConfig);
                          extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
                         ((ObjectNode) node).put("img", extensionImg);
                     }
@@ -248,14 +257,16 @@ public class UserRepository {
                 ObjectNode newUser = objectMapper.createObjectNode();
                 newUser.put("username", userConfig.getUser().getUsername());
                 newUser.put("password", userConfig.getUser().getPassword());
-                newUser.put("divisa", userConfig.getDivisa());
-                newUser.put("saldo", userConfig.getSaldo());
                 if (userConfig.getProfileImage().getUrl().contains("defaultProfile.png")){
                     newUser.put("img", false);
                 }else {
+                    saveImageToResourcesPath(userConfig);
                     String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
                     newUser.put("img", extensionImg);
                 }
+                newUser.put("divisa", userConfig.getDivisa());
+                newUser.put("saldo", userConfig.getSaldo());
+
                 userArray.add(newUser);
             }
             //Escribimos el nuevo array en el archivo
@@ -271,6 +282,8 @@ public class UserRepository {
         try {
             //Inicializamos el maper
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);//Formatea el json
+
             //Guardar el archivo en la ruta resources
             File archivoJson = new File("src/main/java/database/data.json");
 
@@ -305,13 +318,44 @@ public class UserRepository {
     }
    private Image loadImageFromResouces(String path){
         try {
-            String fullPath = getClass().getResource(path).toExternalForm();
-            return new Image(fullPath);
+            URL resourceUrl = getClass().getResource(path);
+            logger.log(System.Logger.Level.INFO, "Imagen cargada desde "+resourceUrl.toExternalForm());
+            return new Image(resourceUrl.toExternalForm());
         } catch (NullPointerException e) {
             throw new RuntimeException("Error al cargar imagen"+e);
         }catch (Exception e){
             throw new RuntimeException("Error al cargar imagen no existe"+e);
         }
+   }
+   private void saveImageToResourcesPath(UserConfig userConfig){
+        try {
+            //Cogemos la imagen del usuario
+            Image image = userConfig.getProfileImage();
+            String extension = image.getUrl().substring(image.getUrl().lastIndexOf(".")+1);
+            String nombreArchivo = userConfig.getUser().getUsername()+"."+extension;
+            File output = new File(pathProfileImgSave+nombreArchivo);
+            URL url = new URL(image.getUrl());
+
+            //Guardamos esa imagen en el directorio
+            try(InputStream inputStream = url.openStream()){
+                //Copiamos la imagen
+                FileOutputStream fileOutputStream = new FileOutputStream(output);
+                byte[] buffer = new byte[1024];
+                int bytesLeidos;
+
+                while ((bytesLeidos = inputStream.read(buffer)) != -1){
+                    fileOutputStream.write(buffer,0,bytesLeidos);
+                }
+                System.out.println("Imagen guardada en "+output.getAbsolutePath());
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Error al cargar imagen"+e);
+        }catch (Exception e){
+            throw new RuntimeException("Error al cargar imagen no existe"+e);
+        }
+
    }
 
 }

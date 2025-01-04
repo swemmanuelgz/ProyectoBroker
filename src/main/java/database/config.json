@@ -1,7 +1,7 @@
 [ {
   "username" : "emmanuel",
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
-  "img" : false,
+  "img" : "png",
   "divisa" : "EUR",
   "saldo" : 178900.0
 }, {
@@ -16,4 +16,10 @@
   "img" : false,
   "divisa" : "EUR",
   "saldo" : 1900.0
+}, {
+  "username" : "jorge",
+  "password" : "$2a$10$ScIqzganTIEig0.ajL6lpOblXR7vZYbN8HlFw5T1pqmdGmWL3/eUe",
+  "img" : "png",
+  "divisa" : "EUR",
+  "saldo" : 1700.0
 } ]

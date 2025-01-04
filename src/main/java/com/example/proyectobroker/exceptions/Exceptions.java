@@ -91,7 +91,7 @@ public class Exceptions  {
             alert.mostrarAlerta();
             throw new RuntimeException("Imagen no válida");
         }
-        if (image.getHeight() > 600 || image.getWidth() > 600){
+        if (image.getHeight() > 1000 || image.getWidth() > 1000){
             alert = new AlertView("Error", "Imagen muy grande", "Imagen muy grande");
             alert.mostrarAlerta();
             throw new RuntimeException("Imagen muy grande");

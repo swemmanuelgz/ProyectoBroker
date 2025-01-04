@@ -172,7 +172,7 @@ public class MainMenuController {
         exceptions.validateUserField(txtUser.getText());
         exceptions.checkPasswordMatch(txtPassword.getText(),txtPasswordConfirm.getText());
         exceptions.validateMoney(txtMoney.getText());
-        exceptions.validateImage(imgProfile.getImage());
+        //exceptions.validateImage(imgProfile.getImage());
 
         logger.log(Level.INFO,"Validaciones pasadas");
         logger.log(Level.INFO,"Usuario logeado "+userLogged.getUsername());
