@@ -1,5 +1,7 @@
 package com.example.proyectobroker.repository;
 
+import com.example.proyectobroker.model.Crypto;
+import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.view.AlertView;
@@ -15,13 +17,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class UserRepository {
     private ArrayList<User> usersList = new ArrayList<>();
     private final String pathProfileImg = "/com/example/proyectobroker/img/profile/";
     private final String pathProfileImgSave = "src/main/resources/com/example/proyectobroker/img/profile/";
     private static final System.Logger logger = System.getLogger(UserRepository.class.getName());
+    private final CryptoRepository cryptoRepository = new CryptoRepository();
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     public UserRepository() {
 
@@ -138,11 +142,12 @@ public class UserRepository {
                 User user = new User(usuarioExistente, password);
                 usersList.add(user);
             }
+            return usersList;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return usersList;
+        //return usersList;
     }
 
     public ArrayList<User> getUsersList() {
@@ -316,6 +321,7 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+    //METODOS PARA LAS IMAGENES
    private Image loadImageFromResouces(String path){
         try {
             URL resourceUrl = getClass().getResource(path);
@@ -357,5 +363,160 @@ public class UserRepository {
         }
 
    }
+   //METODOS PARA LAS INVERSIONES DEL USUARIO
+    public ArrayList <Inversion> getUserInversiones(User user){
+        ArrayList<Inversion> userInversionesList = new ArrayList<>();
+        Inversion inversiones = new Inversion();
 
+        System.out.println("Buscando inversiones del usuario: "+user.getUsername());
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            File archivoJson = new File("src/main/java/database/inversiones.json");
+            //Comprobamos que sigue existiendo el archivo
+            if (!archivoJson.exists()) {
+                System.out.printf("El archivo no existe: ", archivoJson.getName());
+                return null;
+            }
+            //Comprobamos que no esté vacio
+            if (archivoJson.length() == 0) {
+                System.out.printf("El archivo está vacío: ", archivoJson.getName());
+                return null;
+            }
+            //Leemos el contenido del archivo
+            JsonNode rootNode = objectMapper.readTree(archivoJson);
+            //Buscamos las inversiones del usuario en el JSON
+            for (JsonNode node : rootNode){
+                if (node.get("username").asText().equals(user.getUsername())){
+                    //Conseguimos los datos
+                    Date fechaInversion = stringToDate(node.get("fecha").asText());
+                    Crypto crypto = cryptoRepository.getCoinByName(node.get("crypto").asText());
+                    Double precioCompraCrypto = node.get("precioCompraCrypto").asDouble();
+                    Double importeCrypto = node.get("importe").asDouble();
+                    String tipo = node.get("tipo").asText();
+                    String divisa = node.get("divisa").asText();
+                    String transaccion = node.get("transaccion").asText();
+
+
+                    //Creamos la inversion y le ponemos la transaccion
+                    Inversion inversion = new Inversion(divisa, tipo,importeCrypto,precioCompraCrypto,fechaInversion,crypto,user);
+                    inversion.setTransaccion(transaccion);
+                    //Añadimos la inversion a la lista
+                    userInversionesList.add(inversion);
+                    System.out.println("Inversion encontrada: "+inversion.getTransaccion() +"----"+inversion.getFechaInversion());
+                    logger.log(System.Logger.Level.INFO, "Inversion encontrada: "+inversion.getTransaccion()+"---"+inversion.getCrypto().getName());
+                }
+            }
+        }catch (NullPointerException ex){
+            System.out.println("Error al consegur inversiones :"+ ex.getMessage());
+        }catch (Exception e){
+            System.out.println("Error al conseguir inversiones: "+e.getMessage());
+        }
+
+        return userInversionesList;
+    }
+    //Metodo para guardar las inversiones del usuario
+    public void saveInversion(Inversion inversion) {
+        try {
+            //Inicializamos el maper
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);//Formatea el json
+
+            //Guardar el archivo en la ruta resources
+            File archivoJson = new File("src/main/java/database/inversiones.json");
+
+            logger.log(System.Logger.Level.INFO, "Ruta del archivo de inversiones: " + archivoJson);
+            System.out.println("Ruta del archivo de inversiones: " + archivoJson);
+
+            ArrayNode inversionArray;
+            if (archivoJson.exists() && archivoJson.length() > 0) {
+                ;
+                inversionArray = (ArrayNode) objectMapper.readTree(archivoJson);
+            } else {
+                inversionArray = objectMapper.createArrayNode();
+            }
+            //Asignamos un serial a la transaccion
+            inversion.setTransaccion(randomTransactionSerial());
+            System.out.println("Transaccion: "+inversion.getTransaccion());
+
+            //Creamos nuevo objecto de inversion
+            ObjectNode newInversion = objectMapper.createObjectNode();
+            newInversion.put("username", inversion.getUser().getUsername());
+            newInversion.put("fecha", inversion.getFechaInversion().toString());
+            newInversion.put("transaccion", inversion.getTransaccion());
+            newInversion.put("crypto", inversion.getCrypto().getName());
+            newInversion.put("precioCompraCrypto", inversion.getPrecioCompraCrypto());
+            newInversion.put("importe", inversion.getImporteInversion());
+            newInversion.put("tipo", inversion.getTipo());
+            newInversion.put("divisa", inversion.getDivisa());
+            //Añadimos la inversion al array
+            inversionArray.add(newInversion);
+            //Escribimos el nuevo array en el archivo
+            objectMapper.writeValue(archivoJson, inversionArray);
+            logger.log(System.Logger.Level.INFO, "Inversion guardada " + inversion.getTransaccion() + "en el archivo de inversiones");
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    //Metodo pasar un String en formato Fri Jan 17 00:37:11 CET 2025 a Date
+    public Date stringToDate(String fecha){
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        try {
+            return formatter.parse(fecha);
+        }catch (Exception e){
+            throw new RuntimeException("Error al convertir la fecha: "+e.getMessage());
+        }
+    }
+    public String randomTransactionSerial(){
+        String [] letras = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        String [] numeros = {"0","1","2","3","4","5","6","7","8","9"};
+        String serial = "";
+        Random random = new Random();
+        for (int i = 0; i <10 ; i++) {
+            serial += letras[random.nextInt(letras.length)];
+            serial += numeros[random.nextInt(numeros.length)];
+        }
+        //Comprobamos que no exista el serial
+        if (checkSerialNumber(serial)){
+            randomTransactionSerial();
+        }
+        System.out.println("Serial ÚNICO: "+serial);
+        return serial;
+    }
+    public Boolean checkSerialNumber(String serial){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            File archivoJson = new File("src/main/java/database/inversiones.json");
+            //Comprobamos que sigue existiendo el archivo
+            if (!archivoJson.exists()) {
+                System.out.printf("El archivo no existe: ", archivoJson.getName());
+                return false;
+            }
+            //Comprobamos que no esté vacio
+            if (archivoJson.length() == 0) {
+                System.out.printf("El archivo está vacío: ", archivoJson.getName());
+                return false;
+            }
+            //Leemos el contenido del archivo
+            JsonNode rootNode = objectMapper.readTree(archivoJson);
+            //Buscamos las inversiones del usuario en el JSON
+            for (JsonNode node : rootNode){
+                if (node.get("transaccion").asText().equals(serial)){
+                    System.out.println("Serial ya existe");
+                    return true;
+                }
+            }
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

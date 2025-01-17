@@ -18,4 +18,8 @@ public class CryptoController {
             return cryptoRepository.getCoins();
 
     }
+
+    public Crypto convertToEuros(Crypto crypto){
+        return cryptoRepository.convertToEuros(crypto);
+    }
 }

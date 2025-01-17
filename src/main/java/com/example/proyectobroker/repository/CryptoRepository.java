@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class CryptoRepository {
     private final String API_KEY="d46adc9f3bc442659d0987d576c4a744hw";
     private final String BASE_URL =  "https://api.finazon.io";
-    
+
 
     public void CryptoRepository() {
 
@@ -195,5 +195,39 @@ public class CryptoRepository {
 
 
         return cryptoList;
+    }
+    //Para conseguir la moneda por su uuid
+    public Crypto getCoinByuuid(String uuiid){
+        ArrayList<Crypto> cryptoList = getCoins();
+        for (Crypto crypto : cryptoList) {
+            if (crypto.getUuid().equals(uuiid)){
+                return crypto;
+            }
+        }
+        return null;
+    }
+    //Para conseguir la moneda por su nombre
+    public Crypto getCoinByName(String name){
+        ArrayList<Crypto> cryptoList = getCoins();
+        for (Crypto crypto : cryptoList) {
+            if (crypto.getName().equalsIgnoreCase(name)){
+                return crypto;
+            }
+        }
+        return null;
+    }
+    //Metodo para pasar el precio de una cryto de Dolares a Euros
+    public Crypto convertToEuros(Crypto crypto){
+        System.out.println("Precio en dolares: " + crypto.getPrice());
+        Double price = Double.parseDouble(crypto.getPrice().replace(",","."));
+        System.out.println("Precio en dolares: " + price);
+        Double priceEur = price * 0.9710;
+
+        String precio = String.valueOf(priceEur).replace(".",",");
+        System.out.println("Precio en euros con coma: " + precio);
+        crypto.setPrice(String.valueOf(priceEur));
+        crypto.roundPrice();
+
+        return crypto;
     }
 }

@@ -12,22 +12,22 @@ import java.net.URL;
 import java.util.Arrays;
 
 public class Crypto {
- private String uuid;
- private String symbol;
- private String name;
- private String color;
- private String iconUrl;
- private Image icon;
- private String marketcap;
- private String price;
- private String listedAt;
- private String tier;
- private Double change;
- private Integer rank;
- private Double[] sparkline;
- private String coinRankingUrl;
+    private String uuid;
+    private String symbol;
+    private String name;
+    private String color;
+    private String iconUrl;
+    private Image icon;
+    private String marketcap;
+    private String price;
+    private String listedAt;
+    private String tier;
+    private Double change;
+    private Integer rank;
+    private Double[] sparkline;
+    private String coinRankingUrl;
 
-    public Crypto(String uuid, String symbol,String name, String color, String iconUrl, String marketcap, String price, String listedAt, String tier, Double change, Integer rank, Double[] sparkline, String coinRankingUrl) {
+    public Crypto(String uuid, String symbol, String name, String color, String iconUrl, String marketcap, String price, String listedAt, String tier, Double change, Integer rank, Double[] sparkline, String coinRankingUrl) {
         this.uuid = uuid;
         this.symbol = symbol;
         this.name = name;
@@ -158,20 +158,32 @@ public class Crypto {
     public void setName(String name) {
         this.name = name;
     }
-    public void downloadIcon(){
+
+    //Metodo que redondea el precio de la criptomoneda a dos decimales
+    public Double roundPrice() {
+        Double precioRedondeado;
+        String price = String.format("%.2f", Double.parseDouble(this.price));
+        price = price.replace(",", ".");
+        System.out.println("Precio redondeado: " + price);
+        precioRedondeado = Double.parseDouble(price);
+        return precioRedondeado;
+    }
+
+    public void downloadIcon() {
         //Soporte para imagenes SVG
-        try(InputStream inputStream = new java.net.URL(iconUrl).openStream()) {
+        try (InputStream inputStream = new java.net.URL(iconUrl).openStream()) {
             if (iconUrl.endsWith(".svg")) {
                 SVGImage svgImage = SVGLoader.load(new URL(iconUrl));
                 this.icon = svgImage.toImage();
             } else {
                 icon = new Image(inputStream);
             }
-            System.out.println("Icono descargado"+iconUrl);
+            System.out.println("Icono descargado" + iconUrl);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public String toString() {
         return "Crypto{" +

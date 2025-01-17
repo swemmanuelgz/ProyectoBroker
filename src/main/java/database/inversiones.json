@@ -1,0 +1,38 @@
+[ {
+  "username" : "emmanuel",
+  "crypto" : "Bitcoin",
+  "transaccion" : "21342erws33",
+  "uuid" : "Qwsogvtv82FCd",
+  "fecha" : "Fri Jan 17 00:20:11 CET 2025",
+  "precioCompraCrypto" : "18888.0",
+  "importe" : "1.0",
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 14 00:27:11 CET 2025",
+  "transaccion" : "N6X2F5J7P4W7U7X9Z3W0",
+  "crypto" : "Bitcoin",
+  "precioCompraCrypto" : 97017.77571082572,
+  "importe" : 138.59682244403675,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 00:37:11 CET 2025",
+  "transaccion" : "Q5X0E1I7C0H5W2M3H7T7",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3204.972783631132,
+  "importe" : 10.683242612103774,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 01:19:03 CET 2025",
+  "transaccion" : "W5I7K9S6K2A9S3C6H0A4",
+  "crypto" : "Solana",
+  "precioCompraCrypto" : 205.0498598698245,
+  "importe" : 204,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+} ]
