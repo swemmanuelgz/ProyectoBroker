@@ -345,10 +345,10 @@ public class MainMenuController {
                 fechaActual,
                 cryptoSelected,
                 userLogged);
-
+        System.out.println("Saldo antes de la compra : "+userLogged.getUserConfig().getSaldo());
         Double saldoRestante = userLogged.getUserConfig().getSaldo() - Double.valueOf(txtImporte.getText());
         userLogged.getUserConfig().setSaldo(saldoRestante);
-        System.out.println("Saldo antes de la compra : "+userLogged.getUserConfig().getSaldo());
+
         System.out.println("Saldo restante : "+saldoRestante);
         //Subimos la inversion a la base de datos
         inversionController.saveInversion(inversion);
@@ -359,6 +359,7 @@ public class MainMenuController {
 
         AlertView alertView = new AlertView("Información","Compra realizada","Compra realizada");
         alertView.mostrarAlerta();
+        initChartWallet();
     }
 
 

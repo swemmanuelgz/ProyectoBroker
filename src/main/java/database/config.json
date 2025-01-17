@@ -3,7 +3,7 @@
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
   "img" : "png",
   "divisa" : "EUR",
-  "saldo" : 178900.0
+  "saldo" : 178577.0
 }, {
   "username" : "admin",
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
@@ -22,22 +22,4 @@
   "img" : "png",
   "divisa" : "EUR",
   "saldo" : 1700.0
-}, {
-  "username" : "emmanuel",
-  "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
-  "img" : "png",
-  "divisa" : "EUR",
-  "saldo" : 178200.0
-}, {
-  "username" : "emmanuel",
-  "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
-  "img" : "png",
-  "divisa" : "EUR",
-  "saldo" : 178600.0
-}, {
-  "username" : "emmanuel",
-  "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
-  "img" : "png",
-  "divisa" : "EUR",
-  "saldo" : 178666.0
 } ]

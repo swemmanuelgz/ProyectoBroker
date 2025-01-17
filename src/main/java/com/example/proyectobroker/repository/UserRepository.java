@@ -227,7 +227,6 @@ public class UserRepository {
 
             ArrayNode userArray;
             if (archivoConfig.exists() && archivoConfig.length() > 0) {
-                ;
                 userArray = (ArrayNode) objectMapper.readTree(archivoConfig);
             } else {
                 userArray = objectMapper.createArrayNode();
@@ -238,7 +237,7 @@ public class UserRepository {
                 logger.log(System.Logger.Level.INFO, "Usuario encontrado en el archivo de configuraciones");
                 System.out.println("Usuario encontrado en el archivo de configuraciones");
                 String extensionImg = userConfig.getProfileImage().getUrl().substring(userConfig.getProfileImage().getUrl().lastIndexOf(".")+1);
-                if (node.get("username").asText().equals(userConfig.getLastname())){
+                if (node.get("username").asText().equals(userConfig.getUser().getUsername())){
                     ((ObjectNode) node).put("divisa", userConfig.getDivisa());
                     ((ObjectNode) node).put("saldo", userConfig.getSaldo());
                     //Validamos que la imagen no sea la default
@@ -251,6 +250,7 @@ public class UserRepository {
                     }
                     ((ObjectNode) node).put("username", userConfig.getUser().getUsername());
                     ((ObjectNode) node).put("password", userConfig.getUser().getPassword());
+
                     userExists = true;
                     break;
                 }

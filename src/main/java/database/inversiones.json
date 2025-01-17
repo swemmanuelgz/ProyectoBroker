@@ -35,4 +35,40 @@
   "importe" : 204,
   "tipo" : "compra",
   "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 01:54:36 CET 2025",
+  "transaccion" : "O4U1R4G3I9H4R3W3I6D5",
+  "crypto" : "Dogecoin",
+  "precioCompraCrypto" : 0.36619622977256183,
+  "importe" : 200.0,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 01:58:48 CET 2025",
+  "transaccion" : "F8T3S1Q8N5F7K1H4Y5G6",
+  "crypto" : "XRP",
+  "precioCompraCrypto" : 3.178788125591398,
+  "importe" : 300.0,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 02:07:33 CET 2025",
+  "transaccion" : "G8F6P5V4I6M1B7V0D4O4",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3222.6454807527493,
+  "importe" : 300.0,
+  "tipo" : "compra",
+  "divisa" : "EUR"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 17 02:09:06 CET 2025",
+  "transaccion" : "M3J6D5D9A4R9H0S3K9U8",
+  "crypto" : "Bitcoin",
+  "precioCompraCrypto" : 97251.32252750317,
+  "importe" : 23.0,
+  "tipo" : "compra",
+  "divisa" : "EUR"
 } ]
