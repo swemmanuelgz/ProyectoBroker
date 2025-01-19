@@ -111,8 +111,7 @@ public class MainMenuController {
     @FXML
     public void initialize() {
 
-        initList();
-        initListActivos();
+        //initList();
         //initChart((Crypto) listCryptos.getItems().get(0));
 
         listCryptos.setOnMouseClicked(event -> {
@@ -243,6 +242,8 @@ public class MainMenuController {
                 }
             }
         });
+        listInversionesActivos.getItems().addAll(comprasCrypto);
+        System.out.println("Iniciamos la lista de inversiones activas");
     }
     //Configuracion
     private void initConfig(){
@@ -304,6 +305,7 @@ public class MainMenuController {
         initHistorial();
         initChartWallet();
         initList();
+        initListActivos();
 
     }
     public void saveChanges(){
