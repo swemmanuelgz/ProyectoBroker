@@ -24,6 +24,7 @@ import java.util.HashMap;
 public class CryptoRepository {
     private final String API_KEY="d46adc9f3bc442659d0987d576c4a744hw";
     private final String BASE_URL =  "https://api.finazon.io";
+    ArrayList<Crypto> cryptoList = new ArrayList<>();
 
 
     public void CryptoRepository() {
@@ -129,7 +130,7 @@ public class CryptoRepository {
          final String urlRapidApi ="https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
          final String apiKeyRapidApi ="925195b3dfmsh3ee477449ad3425p17feffjsn72acfbb0657f";
          final String hostRapidApi ="coinranking1.p.rapidapi.com";
-            ArrayList<Crypto> cryptoList = new ArrayList<>();
+
             try {
                 URL url = new URL(urlRapidApi);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -198,7 +199,6 @@ public class CryptoRepository {
     }
     //Para conseguir la moneda por su uuid
     public Crypto getCoinByuuid(String uuiid){
-        ArrayList<Crypto> cryptoList = getCoins();
         for (Crypto crypto : cryptoList) {
             if (crypto.getUuid().equals(uuiid)){
                 return crypto;
@@ -206,9 +206,12 @@ public class CryptoRepository {
         }
         return null;
     }
+    public void initCriptoList(){
+        cryptoList = getCoins();
+    }
     //Para conseguir la moneda por su nombre
     public Crypto getCoinByName(String name){
-        ArrayList<Crypto> cryptoList = getCoins();
+
         for (Crypto crypto : cryptoList) {
             if (crypto.getName().equalsIgnoreCase(name)){
                 return crypto;

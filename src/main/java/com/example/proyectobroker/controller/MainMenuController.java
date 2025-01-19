@@ -33,6 +33,21 @@ public class MainMenuController {
     @FXML
     private Button btnLogout;
     @FXML
+    private StackedAreaChart<?,?> stonkActivos;
+    @FXML
+    private NumberAxis timeAxis;
+    @FXML
+    private NumberAxis moneyAxis;
+    @FXML
+    private ListView listInversionesActivos;
+    @FXML
+    private TextArea txtActivos;
+    @FXML
+    private ComboBox cmbVender;
+    @FXML
+    private Button btnVender;
+    //Invertir
+    @FXML
     private ListView listCryptos ;
     @FXML
     private CategoryAxis x;
@@ -44,7 +59,7 @@ public class MainMenuController {
     private Label txtCryptoName;
     @FXML
     private Label txtCryptoPrice;
-    //Invertir
+
     @FXML
     private ImageView imgCryptoImage;
     @FXML
@@ -97,7 +112,7 @@ public class MainMenuController {
     public void initialize() {
 
         initList();
-
+        initListActivos();
         //initChart((Crypto) listCryptos.getItems().get(0));
 
         listCryptos.setOnMouseClicked(event -> {
@@ -212,6 +227,22 @@ public class MainMenuController {
             }
         });
         listCryptos.getItems().addAll(cryptos);
+    }
+    //este metodo inicializa la lista de inversiones del usuario que tiene abiertas
+    private void initListActivos(){
+        ArrayList<Inversion> comprasCrypto = inversionController.getCompras(userLogged);
+        //Añadimos las compras a la lista
+        listInversionesActivos.setCellFactory(param -> new ListCell<Inversion>() {
+            @Override
+            protected void updateItem(Inversion item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.getCrypto().getName() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getCrypto().getName());
+                }
+            }
+        });
     }
     //Configuracion
     private void initConfig(){

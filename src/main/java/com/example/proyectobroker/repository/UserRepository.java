@@ -384,6 +384,7 @@ public class UserRepository {
             }
             //Leemos el contenido del archivo
             JsonNode rootNode = objectMapper.readTree(archivoJson);
+            cryptoRepository.initCriptoList();
             //Buscamos las inversiones del usuario en el JSON
             for (JsonNode node : rootNode){
                 if (node.get("username").asText().equals(user.getUsername())){

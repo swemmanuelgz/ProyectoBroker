@@ -21,4 +21,25 @@ public class InversionController {
     public void saveInversion(Inversion inversion) {
         userRepository.saveInversion(inversion);
     }
+    //metodo para coger inversiones que sean de compra
+    public ArrayList<Inversion> getCompras(User user) {
+        ArrayList<Inversion> compras = new ArrayList<>();
+
+        for (Inversion inversion : getUserInversions(user)) {
+            if (inversion.getTipo().equals("compra")) {
+                compras.add(inversion);
+            }
+        }
+        return compras;
+    }
+    //metodo para coger inversiones que sean de venta
+    public ArrayList<Inversion> getVentas(User user) {
+        ArrayList<Inversion> ventas = new ArrayList<>();
+        for (Inversion inversion : getUserInversions(user)) {
+            if (inversion.getTipo().equals("venta")) {
+                ventas.add(inversion);
+            }
+        }
+        return ventas;
+    }
 }
