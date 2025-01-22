@@ -33,7 +33,7 @@ public class MainMenuController {
     @FXML
     private Button btnLogout;
     @FXML
-    private StackedAreaChart<?,?> stonkActivos;
+    private StackedAreaChart<Number,Number> stonkActivos;
     @FXML
     private NumberAxis timeAxis;
     @FXML
@@ -50,11 +50,11 @@ public class MainMenuController {
     @FXML
     private ListView listCryptos ;
     @FXML
-    private CategoryAxis x;
+    private NumberAxis x;
     @FXML
     private NumberAxis y;
     @FXML
-    private LineChart<?,?> stonksChart;
+    private LineChart<Number,Number> stonksChart;
     @FXML
     private Label txtCryptoName;
     @FXML
@@ -108,6 +108,7 @@ public class MainMenuController {
     private UserController userController = new UserController();
     private InversionController inversionController = new InversionController();
     private Crypto cryptoSelected = new Crypto();
+    private ArrayList<Inversion> inversiones = new ArrayList<>();
     @FXML
     public void initialize() {
 
@@ -159,6 +160,12 @@ public class MainMenuController {
         txtFechaHistorial.setText(formatter.format(inversion.getFechaInversion()));
         System.out.println("Cantidad de cripto "+inversion.getCantidadCrypto());
     });
+    listInversionesActivos.setOnMouseClicked(event -> {
+        Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
+        txtActivos.setText(inversion.getCrypto().getName());
+        cmbVender.getItems().add(inversion.getCrypto().getName());
+        initStackedAreaChart(inversion.getCrypto());
+    });
 
     }
 
@@ -200,14 +207,46 @@ public class MainMenuController {
 
     }
     private void initChart(Crypto crypto){
+        System.out.println("Generando chart para invertir");
+        XYChart.Series<Number, Number> series = new XYChart.Series();
 
-        XYChart.Series series = new XYChart.Series();
+        // Variables para el precio máximo y mínimo
+        double maxPrice = Double.MIN_VALUE;
+        double minPrice = Double.MAX_VALUE;
 
-        for (int i = 0; i < crypto.getSparkline().length; i++) {
-            int contador = i;
-            String cont = String.valueOf(contador);
-            series.getData().add(new XYChart.Data(cont, crypto.getSparkline()[i]));
+        // Iterar sobre los datos del sparkline
+        Double[] sparkline = crypto.getSparkline();
+        for (int i = 0; i < sparkline.length; i++) {
+            double price = crypto.getSparkline()[i];
+
+            if (price <= 0.01){
+                //verificamos que no es el primer indice
+                if (i != 0){
+                    price = crypto.getSparkline()[i-1];
+                }else{
+                    //si es el primer indice ponemos el precio a 0.01
+                    price = 0.01;
+                }
+
+            }
+
+            // Actualizar el precio máximo y mínimo
+            maxPrice = Math.max(maxPrice, price);
+            minPrice = Math.min(minPrice, price);
+
+
+            // Añadir el dato a la serie
+            series.getData().add(new XYChart.Data<>(i, price));
         }
+        // Configurar el eje Y
+        y.setAutoRanging(false);
+        double margin = (maxPrice - minPrice) * 0.1;
+        y.setLowerBound(minPrice - margin);
+        y.setUpperBound(maxPrice + margin);
+        y.setTickUnit((maxPrice - minPrice) / 10);
+
+        x.setAutoRanging(true);
+
         stonksChart.getData().clear();
         stonksChart.getData().add(series);
     }
@@ -261,7 +300,7 @@ public class MainMenuController {
 
     }
     private void initChartWallet(){
-        ArrayList<Inversion> inversiones = getHistorial();
+
         if (inversiones.isEmpty() || inversiones == null){
             System.out.println("No hay inversiones");
             return;
@@ -281,9 +320,52 @@ public class MainMenuController {
         }
         chartCryptoWallet.setData(FXCollections.observableArrayList(pieChartData));
     }
+    //para el stacked area chart
+    private void initStackedAreaChart(Crypto crypto){
+        System.out.println("\nGenerando stacked area chart");
+          //TODO: arreglar sparkline por si sale 0
+        XYChart.Series <Number, Number> series = new XYChart.Series<>();
+        //variables para saber cual es el precio maximo y el minimo
+        double maxPrice = Double.MIN_VALUE;
+        double minPrice = Double.MAX_VALUE;
+        for (int i = 0; i < crypto.getSparkline().length; i++) {
+
+            double price = crypto.getSparkline()[i];
+
+            if (price <= 0.01){
+                //verificamos que no es el primer indice
+                if (i != 0){
+                    price = crypto.getSparkline()[i-1];
+                }else{
+                    //si es el primer indice ponemos el precio a 0.01
+                    price = 0.01;
+                }
+
+            }
+            if (price < minPrice){
+                minPrice= price;
+            }if (price > maxPrice){
+                maxPrice = price;
+            }
+
+            series.getData().add(new XYChart.Data<>(i, price));
+        }
+        //ponemos el precio maximo y minimo en el eje Y
+        moneyAxis.setAutoRanging(false); //para que no se autoajuste
+        double margen = (maxPrice-minPrice)*0.1;
+        moneyAxis.setLowerBound(minPrice-margen);
+        moneyAxis.setUpperBound(maxPrice+margen);
+        moneyAxis.setTickUnit((maxPrice-minPrice)/10);
+        //ponemos el tiempo en el eje X
+        timeAxis.setAutoRanging(true); //para que no se autoajuste
+
+        stonkActivos.getData().clear();
+        stonkActivos.getData().add(series);
+
+    }
     private void initHistorial(){
         System.out.println("Generando historial");
-        ArrayList<Inversion> inversiones = getHistorial();
+         inversiones = getHistorial();
         listHistorial.setCellFactory(param -> new ListCell<Inversion>() {
             @Override
             protected void updateItem(Inversion item, boolean empty) {

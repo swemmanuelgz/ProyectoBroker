@@ -67,7 +67,7 @@
             <ListView fx:id="listCryptos" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="200.0" />
             <LineChart fx:id="stonksChart" layoutX="232.0" layoutY="95.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" fx:id="x" />
+                <NumberAxis side="BOTTOM" fx:id="x" />
               </xAxis>
               <yAxis>
                 <NumberAxis fx:id="y" side="LEFT" />
