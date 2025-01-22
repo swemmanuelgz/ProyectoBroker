@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,9 +35,9 @@ public class MainMenuController {
     @FXML
     private Button btnLogout;
     @FXML
-    private StackedAreaChart<Number,Number> stonkActivos;
+    private StackedAreaChart<String,Number> stonkActivos;
     @FXML
-    private NumberAxis timeAxis;
+    private CategoryAxis timeAxis;
     @FXML
     private NumberAxis moneyAxis;
     @FXML
@@ -324,7 +326,11 @@ public class MainMenuController {
     private void initStackedAreaChart(Crypto crypto){
         System.out.println("\nGenerando stacked area chart");
           //TODO: arreglar sparkline por si sale 0
-        XYChart.Series <Number, Number> series = new XYChart.Series<>();
+        XYChart.Series <String, Number> series = new XYChart.Series<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
+        LocalTime horaEmpieza = LocalTime.of(0,0);
+
         //variables para saber cual es el precio maximo y el minimo
         double maxPrice = Double.MIN_VALUE;
         double minPrice = Double.MAX_VALUE;
@@ -347,8 +353,10 @@ public class MainMenuController {
             }if (price > maxPrice){
                 maxPrice = price;
             }
+            //ponemos la hora en formato HH:mm
+            String hora = horaEmpieza.plusHours(i).format(formatter);
 
-            series.getData().add(new XYChart.Data<>(i, price));
+            series.getData().add(new XYChart.Data<>(hora, price));
         }
         //ponemos el precio maximo y minimo en el eje Y
         moneyAxis.setAutoRanging(false); //para que no se autoajuste
@@ -358,7 +366,8 @@ public class MainMenuController {
         moneyAxis.setTickUnit((maxPrice-minPrice)/10);
         //ponemos el tiempo en el eje X
         timeAxis.setAutoRanging(true); //para que no se autoajuste
-
+        timeAxis.setLabel("Hora");
+        timeAxis.setTickLabelRotation(45);
         stonkActivos.getData().clear();
         stonkActivos.getData().add(series);
 
