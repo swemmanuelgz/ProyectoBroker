@@ -6,6 +6,8 @@ import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.repository.UserRepository;
+import com.example.proyectobroker.utils.Constantes;
+import com.example.proyectobroker.utils.PantallaUtils;
 import com.example.proyectobroker.view.AlertView;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -47,16 +49,18 @@ public class MainMenuController {
     @FXML
     private ComboBox cmbVender;
     @FXML
+    private ImageView imgCryptoActivo;
+    @FXML
     private Button btnVender;
     //Invertir
     @FXML
     private ListView listCryptos ;
     @FXML
-    private NumberAxis x;
+    private CategoryAxis x;
     @FXML
     private NumberAxis y;
     @FXML
-    private LineChart<Number,Number> stonksChart;
+    private LineChart<String,Number> stonksChart;
     @FXML
     private Label txtCryptoName;
     @FXML
@@ -64,8 +68,7 @@ public class MainMenuController {
 
     @FXML
     private ImageView imgCryptoImage;
-    @FXML
-    private ComboBox cmbImporte;
+
     @FXML
     private TextField txtImporte;
     @FXML
@@ -100,6 +103,8 @@ public class MainMenuController {
     private TextField txtFechaHistorial;
     @FXML
     private ListView listHistorial;
+    @FXML
+    private TextField txtTipoTransaccion;
     @FXML
     private PieChart chartCryptoWallet;
     private User userLogged = new User();
@@ -152,20 +157,26 @@ public class MainMenuController {
         }
         compraCrypto();
     });
+    //Listener para las ventas
+    btnVender.setOnAction(event -> {
+        Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
+        venderCrypto(inversion);
+    });
     listHistorial.setOnMouseClicked(event -> {
         Inversion inversion = (Inversion) listHistorial.getSelectionModel().getSelectedItem();
         txtAccionHistorial.setText(inversion.getCrypto().getName() );
         txtidTransaccion.setText(inversion.getTransaccion());
         txtImporteHistorial.setText(inversion.getImporteInversion().toString());
         txtCantidadHistorial.setText(inversion.getCantidadCrypto().toString());
+        txtTipoTransaccion.setText(inversion.getTipo());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         txtFechaHistorial.setText(formatter.format(inversion.getFechaInversion()));
         System.out.println("Cantidad de cripto "+inversion.getCantidadCrypto());
     });
     listInversionesActivos.setOnMouseClicked(event -> {
         Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
-        txtActivos.setText(inversion.getCrypto().getName());
-        cmbVender.getItems().add(inversion.getCrypto().getName());
+        //TODO: arreglar texto de las inversiones
+        txtActivos.setText(getInversionStat(inversion).toString());
         initStackedAreaChart(inversion.getCrypto());
     });
 
@@ -193,16 +204,13 @@ public class MainMenuController {
     private void logout(){
 
         try {
-            //Logout
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/proyectobroker/login.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 522, 335);
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            Stage stageActual = (Stage) btnLogout.getScene().getWindow();
-            stageActual.close();
-            stage.setScene(scene);
-            stage.show();
-            System.out.println("Logout del usuario "+loginController.getUserLogged().getUsername());
+            //Obtenemos la escena actual
+            Stage stage = new PantallaUtils().cerrarEstaPantalla(btnLogout);
+            //Cerramos la sesión
+            userLogged = null;
+            //Mostramos la pantalla de login
+            LoginController loginController = new LoginController().showEstaPantalla(stage);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -210,7 +218,10 @@ public class MainMenuController {
     }
     private void initChart(Crypto crypto){
         System.out.println("Generando chart para invertir");
-        XYChart.Series<Number, Number> series = new XYChart.Series();
+        XYChart.Series<String, Number> series = new XYChart.Series();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
+        LocalTime horaEmpieza = LocalTime.of(0,0);
 
         // Variables para el precio máximo y mínimo
         double maxPrice = Double.MIN_VALUE;
@@ -235,10 +246,11 @@ public class MainMenuController {
             // Actualizar el precio máximo y mínimo
             maxPrice = Math.max(maxPrice, price);
             minPrice = Math.min(minPrice, price);
-
+            //ponemos la hora en formato HH
+            String hora = horaEmpieza.plusHours(i).format(formatter);
 
             // Añadir el dato a la serie
-            series.getData().add(new XYChart.Data<>(i, price));
+            series.getData().add(new XYChart.Data<>(hora, price));
         }
         // Configurar el eje Y
         y.setAutoRanging(false);
@@ -248,6 +260,7 @@ public class MainMenuController {
         y.setTickUnit((maxPrice - minPrice) / 10);
 
         x.setAutoRanging(true);
+        x.setLabel("Hora");
 
         stonksChart.getData().clear();
         stonksChart.getData().add(series);
@@ -310,9 +323,11 @@ public class MainMenuController {
         //Hacemos un hashmap para guardar las inversiones y su importe total
         Map<String, Double> inversionesMap = new HashMap<>();
         for (Inversion inversion : inversiones){
-            String nombreCrypto = inversion.getCrypto().getName();
-            Double importe = inversion.getImporteInversion();
-            inversionesMap.put(nombreCrypto,inversionesMap.getOrDefault(nombreCrypto,0.0)+importe);
+            if (!inversion.getTipo().equals("venta") && !inversion.getVendida()){
+                String nombreCrypto = inversion.getCrypto().getName();
+                Double importe = inversion.getImporteInversion();
+                inversionesMap.put(nombreCrypto,inversionesMap.getOrDefault(nombreCrypto,0.0)+importe);
+            }
         }
 
         ArrayList<PieChart.Data> pieChartData = new ArrayList<>();
@@ -325,7 +340,8 @@ public class MainMenuController {
     //para el stacked area chart
     private void initStackedAreaChart(Crypto crypto){
         System.out.println("\nGenerando stacked area chart");
-          //TODO: arreglar sparkline por si sale 0
+        crypto.downloadIcon();
+        imgCryptoActivo.setImage(crypto.getIcon());
         XYChart.Series <String, Number> series = new XYChart.Series<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
@@ -397,6 +413,10 @@ public class MainMenuController {
         initChartWallet();
         initList();
         initListActivos();
+        //para inicializar los graficos una vez que ya tenemos los datos
+        txtActivos.setText("Seleccione activo para ver detalles");
+        initChart((Crypto) listCryptos.getItems().get(0));
+        initStackedAreaChart(listHistorial.getItems().isEmpty() ? null : ((Inversion) listHistorial.getItems().get(0)).getCrypto());
 
     }
     public void saveChanges(){
@@ -456,6 +476,19 @@ public class MainMenuController {
 
         }
     }
+    public StringBuilder getInversionStat(Inversion inversion){
+        StringBuilder stringBuilder = new StringBuilder();
+        String ganancia = String.valueOf(inversion.getGanancia());
+        if (!ganancia.contains("-")){
+            ganancia = "+"+ganancia;
+        }
+        stringBuilder.append("Transacción: "+inversion.getTransaccion()+"\n");
+        stringBuilder.append("Fecha: "+inversion.getFechaInversion()+"\n");
+        stringBuilder.append("Importe: "+inversion.getImporteInversion()+"\n");
+        stringBuilder.append("Precio de compra: "+inversion.getPrecioCompraCrypto()+"\n");
+        stringBuilder.append("Ganancia:  "+ganancia+"\n");
+        return stringBuilder;
+    }
 
     public void compraCrypto(){
 
@@ -469,6 +502,8 @@ public class MainMenuController {
                 fechaActual,
                 cryptoSelected,
                 userLogged);
+        //vendida false como que no se ha vendido
+        inversion.setVendida(false);
         System.out.println("Saldo antes de la compra : "+userLogged.getUserConfig().getSaldo());
         Double saldoRestante = userLogged.getUserConfig().getSaldo() - Double.valueOf(txtImporte.getText());
         userLogged.getUserConfig().setSaldo(saldoRestante);
@@ -483,8 +518,49 @@ public class MainMenuController {
 
         AlertView alertView = new AlertView("Información","Compra realizada","Compra realizada");
         alertView.mostrarAlerta();
+        initListActivos();
         initChartWallet();
     }
+    public void venderCrypto (Inversion inversionVenta){
+        Inversion inversionInsertar = new Inversion();
+        //Creamos una inversion parecida a la que nos viene pero cambiando sus parámetros
+        inversionInsertar.setUser(userLogged);
+        inversionInsertar.setFechaInversion(new Date());
+        inversionInsertar.setCrypto(inversionVenta.getCrypto());
+        inversionInsertar.setPrecioCompraCrypto(inversionVenta.getPrecioCompraCrypto());
+        inversionInsertar.setImporteInversion(inversionVenta.getGanancia());
+        inversionInsertar.setTipo("venta"); //venta
+        inversionInsertar.setDivisa(userLogged.getUserConfig().getDivisa());
+        inversionInsertar.setVendida(true);
+        //Guardamos la inversion
+        inversionController.saveInversion(inversionInsertar);
+        //actualizamos la inversion a vendida para que no aparezca en el menu de activos
+        inversionController.updateInversion(inversionVenta);
+        if (inversionVenta.getGanancia() > 0){
+            //Si la ganancia es positiva la sumamos al saldo
+            userLogged.getUserConfig().setSaldo(userLogged.getUserConfig().getSaldo()+inversionVenta.getGanancia());
+            alertView = new AlertView("Información","Venta realizada con ganancias ","Venta realizada con ganancia de "+inversionVenta.getGanancia());
+            alertView.mostrarAlerta();
+        }else{
+            //Si la ganancia es negativa la restamos al saldo
+            userLogged.getUserConfig().setSaldo(userLogged.getUserConfig().getSaldo()-inversionVenta.getGanancia());
+            alertView = new AlertView("Información","Venta realizada con pérdidas ","Venta realizada con pérdida de "+inversionVenta.getGanancia());
+            alertView.mostrarAlerta();
+        }
+        //actualizamos los activos del usuario
+        initChartWallet();
+        initChart((Crypto) listCryptos.getItems().get(0));
+        listInversionesActivos.getItems().remove(inversionVenta);
+        //actualizamos el saldo del usuario
+        userController.updateUserConfig(userLogged);
+        txtMoney.setText(String.valueOf(userLogged.getUserConfig().getSaldo()));
 
 
+    }
+
+    public MainMenuController showEstaPantalla(Stage stage)throws Exception{
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_SEGUNDA_PANTALLA.getDescripcion(),Constantes.TITULO_SEGUNDA_PANTALLA.getDescripcion(),963,622);
+        MainMenuController controller = fxmlLoader.getController();
+        return controller;
+    }
 }

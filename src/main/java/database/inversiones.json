@@ -7,7 +7,8 @@
   "precioCompraCrypto" : "18888.0",
   "importe" : "1.0",
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 14 00:27:11 CET 2025",
@@ -16,7 +17,8 @@
   "precioCompraCrypto" : 97017.77571082572,
   "importe" : 138.59682244403675,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 00:37:11 CET 2025",
@@ -25,7 +27,8 @@
   "precioCompraCrypto" : 3204.972783631132,
   "importe" : 10.683242612103774,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : true
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 01:19:03 CET 2025",
@@ -34,7 +37,8 @@
   "precioCompraCrypto" : 205.0498598698245,
   "importe" : 204,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 01:54:36 CET 2025",
@@ -43,7 +47,8 @@
   "precioCompraCrypto" : 0.36619622977256183,
   "importe" : 200.0,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 01:58:48 CET 2025",
@@ -52,7 +57,8 @@
   "precioCompraCrypto" : 3.178788125591398,
   "importe" : 300.0,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 02:07:33 CET 2025",
@@ -61,7 +67,8 @@
   "precioCompraCrypto" : 3222.6454807527493,
   "importe" : 300.0,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : true
 }, {
   "username" : "emmanuel",
   "fecha" : "Fri Jan 17 02:09:06 CET 2025",
@@ -70,5 +77,56 @@
   "precioCompraCrypto" : 97251.32252750317,
   "importe" : 23.0,
   "tipo" : "compra",
-  "divisa" : "EUR"
+  "divisa" : "EUR",
+  "vendida" : "false"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Wed Jan 22 16:35:10 CET 2025",
+  "transaccion" : "I1J7R0I2O0J1D3X1V6T7",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3222.6454807527493,
+  "importe" : 57.18622558460811,
+  "tipo" : "venta",
+  "divisa" : "EUR",
+  "vendida" : "true"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Wed Jan 22 17:14:59 CET 2025",
+  "transaccion" : "U6P7I6Q0P5K7P8M5K7F8",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3204.972783631132,
+  "importe" : 61.88048452241719,
+  "tipo" : "venta",
+  "divisa" : "EUR",
+  "vendida" : "true"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Wed Jan 22 17:23:17 CET 2025",
+  "transaccion" : "F4K2F0U7L3C9A9E4K9S1",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3204.972783631132,
+  "importe" : 67.6389968132712,
+  "tipo" : "venta",
+  "divisa" : "EUR",
+  "vendida" : "true"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Wed Jan 22 17:32:17 CET 2025",
+  "transaccion" : "J1J2Q8L5V4M8X2J1Z0I5",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3222.6454807527493,
+  "importe" : 50.05511641192379,
+  "tipo" : "venta",
+  "divisa" : "EUR",
+  "vendida" : "true"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Wed Jan 22 23:41:31 CET 2025",
+  "transaccion" : "D0E0W6K5D6P7F4S6T2X4",
+  "crypto" : "Dogecoin",
+  "precioCompraCrypto" : 0.3545795961423363,
+  "importe" : 300.0,
+  "tipo" : "compra",
+  "divisa" : "EUR",
+  "vendida" : "false"
 } ]

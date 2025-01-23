@@ -21,12 +21,17 @@ public class InversionController {
     public void saveInversion(Inversion inversion) {
         userRepository.saveInversion(inversion);
     }
+    //metodo para actualizar la inversion y ponerla como vendida en la base de datos
+    public void updateInversion(Inversion inversion) {
+        userRepository.updateInvsersion(inversion.getTransaccion());
+    }
     //metodo para coger inversiones que sean de compra
     public ArrayList<Inversion> getCompras(User user) {
         ArrayList<Inversion> compras = new ArrayList<>();
 
         for (Inversion inversion : getUserInversions(user)) {
-            if (inversion.getTipo().equals("compra")) {
+            //si la inversion es de compra y no esta vendida la añadimos a la lista
+            if (inversion.getTipo().equals("compra") && !inversion.getVendida()) {
                 compras.add(inversion);
             }
         }

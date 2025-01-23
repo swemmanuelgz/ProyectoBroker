@@ -12,6 +12,7 @@ public class Inversion {
     private Double cantidadCrypto;
     private String tipo; //compra o venta
     private String divisa;
+    private Boolean vendida;
 
 
     public Inversion() {
@@ -80,8 +81,17 @@ public class Inversion {
         return cantidadCrypto;
     }
 
+
     public void setCantidadCrypto(Double cantidadCrypto) {
         this.cantidadCrypto = cantidadCrypto;
+    }
+
+    public Boolean getVendida() {
+        return vendida;
+    }
+
+    public void setVendida(Boolean vendida) {
+        this.vendida = vendida;
     }
 
     public String getTipo() {
@@ -112,6 +122,14 @@ public class Inversion {
         Double cantidad;
         cantidad = (importeInversion / precioCompraCrypto);
         this.cantidadCrypto = cantidad;
+    }
+    public Double getGanancia(){
+        Crypto crypto = this.crypto;
+        Double precioActual = Double.parseDouble(crypto.getPrice());
+        Double ganancia = (precioActual - precioCompraCrypto);
+
+        return ganancia;
+
     }
     @Override
     public String toString() {

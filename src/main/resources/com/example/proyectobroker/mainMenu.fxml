@@ -6,71 +6,65 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="963.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.MainMenuController">
+<TabPane id="TablePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="963.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.MainMenuController">
   <tabs>
-    <Tab text="Activos">
+    <Tab id="tabActivos" text="Activos">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="748.0">
                <children>
                  <Button fx:id="btnLogout" layoutX="862.0" layoutY="541.0" mnemonicParsing="false">
                    <graphic>
-                     <ImageView>
+                     <ImageView id="btnLogout">
                           <image>
                              <Image url="@img/ico/logout.png" />
                           </image>
                      </ImageView>
                    </graphic>
                  </Button>
-                  <Label layoutX="40.0" layoutY="14.0" text="Mis inversiones">
+                  <Label layoutX="40.0" layoutY="14.0" text="Mis inversiones" textFill="#ff9000">
                      <font>
                         <Font name="Arial Black" size="14.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="listInversionesActivos" layoutX="14.0" layoutY="64.0" prefHeight="475.0" prefWidth="200.0" />
-                  <StackedAreaChart fx:id="stonkActivos" layoutX="215.0" layoutY="86.0" prefHeight="403.0" prefWidth="562.0">
+                  <ListView id="listInversionesActivos" fx:id="listInversionesActivos" layoutX="14.0" layoutY="64.0" prefHeight="475.0" prefWidth="200.0" />
+                  <StackedAreaChart id="stonkActivos" fx:id="stonkActivos" layoutX="215.0" layoutY="86.0" prefHeight="403.0" prefWidth="562.0">
                     <xAxis>
-                      <CategoryAxis fx:id="timeAxis" side="BOTTOM" />
+                      <CategoryAxis fx:id="timeAxis" side="BOTTOM" tickLabelFill="#f28006" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis fx:id="moneyAxis" side="LEFT" />
+                      <NumberAxis fx:id="moneyAxis" side="LEFT" tickLabelFill="#f28006" />
                     </yAxis>
                   </StackedAreaChart>
-                  <Label layoutX="818.0" layoutY="64.0" text="Crypto">
+                  <Label layoutX="822.0" layoutY="98.0" text="Crypto" textFill="#f28006">
                      <font>
                         <Font name="Arial Black" size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="762.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="btnVender" layoutX="805.0" layoutY="460.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="122.0" text="Vender">
+                  <Button id="btnVender" fx:id="btnVender" layoutX="805.0" layoutY="460.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="122.0" text="Vender">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <ComboBox fx:id="cmbVender" layoutX="805.0" layoutY="385.0" prefHeight="26.0" prefWidth="109.0" promptText="100%" />
-                  <Label fx:id="tctSaldoActivos" layoutX="321.0" layoutY="514.0" text="Mi Saldo Actual">
-                     <font>
-                        <Font name="Arial Black" size="12.0" />
-                     </font>
-                  </Label>
-                  <TextArea fx:id="txtActivos" layoutX="778.0" layoutY="144.0" prefHeight="200.0" prefWidth="176.0">
+                  <TextArea id="txtActivos" fx:id="txtActivos" editable="false" layoutX="778.0" layoutY="144.0" prefHeight="200.0" prefWidth="176.0">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font></TextArea>
+                  <ImageView fx:id="imgCryptoActivo" fitHeight="70.0" fitWidth="95.0" layoutX="818.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
 
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Invertir">
+    <Tab id="tabInvertir" text="Invertir">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
-            <ListView fx:id="listCryptos" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="200.0" />
-            <LineChart fx:id="stonksChart" layoutX="232.0" layoutY="95.0">
+            <ListView id="listCryptos" fx:id="listCryptos" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="200.0" />
+            <LineChart id="stonksChart" fx:id="stonksChart" layoutX="232.0" layoutY="95.0">
               <xAxis>
-                <NumberAxis side="BOTTOM" fx:id="x" />
+                <CategoryAxis side="BOTTOM" tickLabelFill="#f28006" fx:id="x" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="y" side="LEFT" />
+                <NumberAxis fx:id="y" side="LEFT" tickLabelFill="#f28006" />
               </yAxis>
             </LineChart>
                   <Label fx:id="txtCryptoName" layoutX="279.0" layoutY="37.0">
@@ -78,7 +72,7 @@
                         <Font name="Serif Bold" size="32.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="imgCryptoImage" fitHeight="150.0" fitWidth="200.0" layoutX="739.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView id="imgCryptoImage" fx:id="imgCryptoImage" fitHeight="150.0" fitWidth="200.0" layoutX="739.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="txtCryptoPrice" layoutX="772.0" layoutY="252.0" text="Precio de acción:" />
                   <TextField fx:id="txtImporte" alignment="TOP_CENTER" layoutX="324.0" layoutY="517.0" promptText="importe" />
                   <Button fx:id="btnPagar" layoutX="532.0" layoutY="508.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" text="Pagar">
@@ -86,38 +80,39 @@
                         <Font name="System Bold" size="21.0" />
                      </font>
                   </Button>
-                  <ComboBox fx:id="cmbImporte" layoutX="324.0" layoutY="483.0" prefWidth="150.0" promptText="Importe" />
-                  <TextArea fx:id="txtResumeOrder" layoutX="739.0" layoutY="354.0" prefHeight="200.0" prefWidth="200.0" />
+                  <ComboBox id="cmbImporte" fx:id="cmbImporte" layoutX="324.0" layoutY="483.0" prefWidth="150.0" promptText="Importe" />
+                  <TextArea id="txtResumeOrder" fx:id="txtResumeOrder" editable="false" layoutX="739.0" layoutY="354.0" prefHeight="200.0" prefWidth="200.0" />
           </children>
         </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Historial">
+    <Tab id="tabHistorial" text="Historial">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ListView fx:id="listHistorial" layoutX="26.0" layoutY="12.0" prefHeight="566.0" prefWidth="200.0" />
-                  <Label layoutX="306.0" layoutY="14.0" text="Historial">
+                  <ListView id="listHistorial" fx:id="listHistorial" layoutX="26.0" layoutY="12.0" prefHeight="566.0" prefWidth="200.0" />
+                  <Label layoutX="306.0" layoutY="14.0" text="Historial" textFill="#ff8800">
                      <font>
                         <Font size="44.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAccionHistorial" layoutX="318.0" layoutY="110.0" promptText="Acción" />
-                  <TextField fx:id="txtidTransaccion" layoutX="318.0" layoutY="153.0" promptText="id de transacción" />
-                  <TextField fx:id="txtImporteHistorial" layoutX="319.0" layoutY="201.0" promptText="importe" />
-                  <TextField fx:id="txtCantidadHistorial" layoutX="320.0" layoutY="257.0" promptText="cantidad de acciones" />
-                  <TextField fx:id="txtFechaHistorial" layoutX="321.0" layoutY="311.0" promptText="fecha" />
+                  <TextField id="txtAccionHistorial" fx:id="txtAccionHistorial" editable="false" layoutX="318.0" layoutY="110.0" promptText="Acción" />
+                  <TextField id="txtidTransaccion" fx:id="txtidTransaccion" editable="false" layoutX="318.0" layoutY="153.0" promptText="id de transacción" />
+                  <TextField id="txtImporteHistorial" fx:id="txtImporteHistorial" editable="false" layoutX="319.0" layoutY="201.0" promptText="importe" />
+                  <TextField id="txtCantidadHistorial" fx:id="txtCantidadHistorial" editable="false" layoutX="320.0" layoutY="257.0" promptText="cantidad de acciones" />
+                  <TextField id="txtFechaHistorial" fx:id="txtFechaHistorial" editable="false" layoutX="321.0" layoutY="311.0" promptText="fecha" />
                   <PieChart layoutX="585.0" layoutY="113.0" prefHeight="340.0" prefWidth="364.0" />
-                  <Label layoutX="676.0" layoutY="80.0" text="\% de Crypto en cartera">
+                  <Label layoutX="676.0" layoutY="80.0" text="\% de Crypto en cartera" textFill="#ff9000">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <PieChart fx:id="chartCryptoWallet" layoutX="491.0" layoutY="114.0" prefHeight="356.0" prefWidth="458.0" />
+                  <PieChart id="chart-pie-label " fx:id="chartCryptoWallet" layoutX="491.0" layoutY="114.0" prefHeight="356.0" prefWidth="458.0" />
+                  <TextField id="txtTipoTransaccion" fx:id="txtTipoTransaccion" editable="false" layoutX="320.0" layoutY="373.0" promptText="tipo" />
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Configuracion">
+    <Tab id="tabConfiguracion" text="Configuracion">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -136,13 +131,13 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="cmbDivisa" layoutX="467.0" layoutY="253.0" prefWidth="150.0" promptText="Divisa" />
-                  <Button fx:id="btnChangeImage" layoutX="72.0" layoutY="179.0" mnemonicParsing="false" text="cambiar foto" />
-                  <TextField fx:id="txtUser" layoutX="468.0" layoutY="72.0" />
-                  <TextField fx:id="txtMoney" layoutX="467.0" layoutY="179.0" />
-                  <TextField fx:id="txtPasswordConfirm" layoutX="682.0" layoutY="129.0" />
-                  <Button fx:id="btnSaveChanges" layoutX="469.0" layoutY="398.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="146.0" text="Guardar Cambios" />
-                  <PasswordField fx:id="txtPassword" layoutX="467.0" layoutY="128.0" />
+                  <ComboBox id="cmbDivisa" fx:id="cmbDivisa" layoutX="467.0" layoutY="253.0" prefWidth="150.0" promptText="Divisa" />
+                  <Button id="btnChangeImage" fx:id="btnChangeImage" layoutX="72.0" layoutY="179.0" mnemonicParsing="false" text="cambiar foto" />
+                  <TextField id="txtUser" fx:id="txtUser" layoutX="468.0" layoutY="72.0" />
+                  <TextField id="txtMoney" fx:id="txtMoney" editable="false" layoutX="467.0" layoutY="179.0" />
+                  <TextField id="txtPasswordConfirm" fx:id="txtPasswordConfirm" layoutX="682.0" layoutY="129.0" />
+                  <Button id="btnSaveChanges" fx:id="btnSaveChanges" layoutX="469.0" layoutY="398.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="146.0" text="Guardar Cambios" />
+                  <PasswordField id="txtPassword" fx:id="txtPassword" layoutX="467.0" layoutY="128.0" />
                </children></AnchorPane>
       </content>
     </Tab>

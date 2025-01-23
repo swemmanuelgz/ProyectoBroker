@@ -396,15 +396,16 @@ public class UserRepository {
                     String tipo = node.get("tipo").asText();
                     String divisa = node.get("divisa").asText();
                     String transaccion = node.get("transaccion").asText();
-
+                    Boolean vendida = node.get("vendida").asBoolean();
 
                     //Creamos la inversion y le ponemos la transaccion
                     Inversion inversion = new Inversion(divisa, tipo,importeCrypto,precioCompraCrypto,fechaInversion,crypto,user);
                     inversion.setTransaccion(transaccion);
+                    inversion.setVendida(vendida); //si está vendida
                     //Añadimos la inversion a la lista
                     userInversionesList.add(inversion);
                     System.out.println("Inversion encontrada: "+inversion.getTransaccion() +"----"+inversion.getFechaInversion());
-                    logger.log(System.Logger.Level.INFO, "Inversion encontrada: "+inversion.getTransaccion()+"---"+inversion.getCrypto().getName());
+                    logger.log(System.Logger.Level.INFO, "Inversion encontrada: "+inversion.getVendida()+"---"+inversion.getCrypto().getName());
                 }
             }
         }catch (NullPointerException ex){
@@ -414,6 +415,39 @@ public class UserRepository {
         }
 
         return userInversionesList;
+    }
+    public void updateInvsersion (String transaccion){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);//Formatea el json
+
+            File archivoJson = new File("src/main/java/database/inversiones.json");
+            //Comprobamos que sigue existiendo el archivo
+            if (!archivoJson.exists()) {
+                System.out.printf("El archivo no existe: ", archivoJson.getName());
+                return;
+            }
+            //Comprobamos que no esté vacio
+            if (archivoJson.length() == 0) {
+                System.out.printf("El archivo está vacío: ", archivoJson.getName());
+                return;
+            }
+            //Leemos el contenido del archivo
+            JsonNode rootNode = objectMapper.readTree(archivoJson);
+            //Buscamos las inversiones del usuario en el JSON
+            for (JsonNode node : rootNode) {
+                if (node.get("transaccion").asText().equals(transaccion)) {
+                    ((ObjectNode) node).put("vendida", true);
+                    break;
+                }
+            }
+            //Escribimos el nuevo array en el archivo
+            objectMapper.writeValue(archivoJson, rootNode);
+            logger.log(System.Logger.Level.INFO, "Inversion actualizada "+transaccion+"en el archivo de inversiones");
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
     //Metodo para guardar las inversiones del usuario
     public void saveInversion(Inversion inversion) {
@@ -449,6 +483,7 @@ public class UserRepository {
             newInversion.put("importe", inversion.getImporteInversion());
             newInversion.put("tipo", inversion.getTipo());
             newInversion.put("divisa", inversion.getDivisa());
+            newInversion.put("vendida", inversion.getVendida() ? "true" : "false");
             //Añadimos la inversion al array
             inversionArray.add(newInversion);
             //Escribimos el nuevo array en el archivo

@@ -1,0 +1,201 @@
+/* Fondo negro para el panel principal */
+#loginPane {
+    -fx-background-color: #000000; /* Negro */
+}
+
+/* Estilo para las etiquetas (User, Password) */
+Label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-text-fill: #ff910b; /* Naranja */
+}
+
+/* Campo de texto (User y Password) */
+#txtUsername, #txtPassword {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-color: #333333; /* Gris oscuro */
+    -fx-text-fill: #ffffff; /* Blanco */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Botón de login */
+#btnLogin {
+    -fx-background-color: #ff910b; /* Naranja */
+    -fx-text-fill: #ffffff; /* Blanco */
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+#btnLogin:hover {
+    -fx-background-color: #ffa54d; /* Naranja más claro al pasar el ratón */
+    -fx-cursor: hand; /* Cambia el cursor al pasar */
+}
+
+/* Texto para "Crear Cuenta" */
+#txtCreateAccount {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #039ada; /* Azul claro */
+    -fx-underline: true;
+}
+
+#txtCreateAccount:hover {
+    -fx-text-fill: #5cb3ff; /* Azul más claro al pasar el ratón */
+    -fx-cursor: hand;
+}
+
+/* CSS PARA EL MAIN */
+/* Fondo del TabPane */
+#TablePane {
+    -fx-background-color: #1e1e1e; /* Fondo oscuro */
+}
+
+/* Estilos para las Tabs */
+.tab {
+    -fx-background-color: #2e2e2e; /* Fondo gris oscuro */
+    -fx-text-base-color: #ffffff; /* Texto blanco */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+.tab:selected {
+    -fx-background-color: #ff910b; /* Naranja al estar seleccionada */
+    -fx-text-base-color: #000000; /* Texto negro */
+}
+
+/* Botón de Logout */
+#btnLogout {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-cursor: hand;
+}
+
+#btnLogout:hover {
+    -fx-opacity: 0.7; /* Efecto de opacidad al pasar el cursor */
+}
+
+/* Lista de inversiones y otros ListView */
+#listInversionesActivos, #listCryptos, #listHistorial {
+    -fx-background-color: #1e1e1e; /* Fondo oscuro */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-width: 1px;
+}
+
+/* Gráficos (Charts) */
+.StackedAreaChart, .LineChart, .PieChart {
+    -fx-background-color: #2e2e2e; /* Fondo gris oscuro */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-width: 1px;
+}
+
+/* Botón de Vender y Pagar */
+#btnVender, #btnPagar {
+    -fx-background-color: #ff910b; /* Naranja */
+    -fx-text-fill: #ffffff; /* Blanco */
+    -fx-font-family: "Arial Bold";
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+#btnVender:hover, #btnPagar:hover {
+    -fx-background-color: #ffa54d; /* Naranja más claro */
+}
+
+/* TextArea de resumen y descripción */
+#txtActivos, #txtResumeOrder {
+    -fx-background-color: #333333; /* Gris oscuro */
+    -fx-text-fill: #f28006; /* Texto blanco */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+/* ComboBox de selección */
+#cmbImporte, #cmbDivisa {
+    -fx-background-color: #1e1e1e; /* Fondo oscuro */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-radius: 5px;
+}
+
+/* Campos de texto */
+#txtUser, #txtMoney, #txtPassword, #txtPasswordConfirm,
+#txtAccionHistorial, #txtidTransaccion, #txtImporteHistorial,
+#txtCantidadHistorial, #txtFechaHistorial, #txtTipoTransaccion,
+#txtImporte {
+    -fx-background-color: #333333; /* Gris oscuro */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-border-color: #ff910b; /* Borde naranja */
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+/* Labels */
+Label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff; /* Blanco */
+}
+
+Label[textFill="#ff9000"] {
+    -fx-text-fill: #ff9000; /* Naranja */
+}
+
+Label[textFill="#f28006"] {
+    -fx-text-fill: #f28006; /* Naranja oscuro */
+}
+/* Estilo para las etiquetas del PieChart */
+.chart-pie-label {
+    -fx-fill: #ff9000; /* Color naranja */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px; /* Tamaño de letra ajustable */
+}
+
+/* Imagenes (logout y crypto) */
+#imgCryptoActivo, #imgCryptoImage {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+/* Botón cambiar foto */
+#btnChangeImage {
+    -fx-background-color: #ff910b; /* Naranja */
+    -fx-text-fill: #ffffff; /* Blanco */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+}
+
+#btnChangeImage:hover {
+    -fx-background-color: #ffa54d; /* Naranja más claro */
+}
+
+/* Botón de guardar cambios */
+#btnSaveChanges {
+    -fx-background-color: #4caf50; /* Verde */
+    -fx-text-fill: #ffffff; /* Blanco */
+    -fx-font-family: "Arial Bold";
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+}
+
+#btnSaveChanges:hover {
+    -fx-background-color: #66bb6a; /* Verde más claro */
+}
+

@@ -2,7 +2,10 @@ package com.example.proyectobroker.controller;
 
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.repository.UserRepository;
+import com.example.proyectobroker.utils.Constantes;
+import com.example.proyectobroker.utils.PantallaUtils;
 import com.example.proyectobroker.view.AlertView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,6 +38,12 @@ public class LoginController {
 
     }
     public LoginController() {
+    }
+    public LoginController showEstaPantalla(Stage stage)throws IOException {
+        FXMLLoader fxmlloader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_INICIAL.getDescripcion(), Constantes.PAGINA_INICIAL.getDescripcion(), 522, 335);
+        //Obtenemos el controlador de la ventana
+        LoginController loginController = fxmlloader.getController();
+        return loginController;
     }
 
     public LoginController(PasswordField txtPassword, TextField txtUsername, Button btnLogin, Label txtCreateAccount, User userLogged, UserController userController) {
@@ -96,27 +105,10 @@ public class LoginController {
            System.out.println("Usuario logeado "+userLogged.getUsername());
 
 
-           try {
-               FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/proyectobroker/mainMenu.fxml"));
-               Scene scene = new Scene(fxmlLoader.load(), 963, 622);
-               Stage stage = new Stage();
-               stage.setTitle("Main");
-               //Cogemos el controlador
-               System.out.println("Mandamos el usuario al main "+userLogged.getUsername());
-               MainMenuController mainMenuController = fxmlLoader.getController();
-               mainMenuController.setUserLogged(userLogged);
+
+               cerraerVentana();
 
 
-               //Cerramos el stage actual
-               Stage stageActual = (Stage) btnLogin.getScene().getWindow();
-               stageActual.close();
-               stage.setScene(scene);
-               stage.show();
-
-           } catch (IOException ex) {
-               alertView = new AlertView("Error", "Error al cargar la ventana de main", "Error al cargar la ventana de creación de cuenta "+ ex.getMessage());
-               throw new RuntimeException("Error al cargar la ventana de creación de main"+ ex.getMessage());
-           }
        }
 
 
@@ -131,5 +123,20 @@ public class LoginController {
 
     public void setUserLogged(User userLogged) {
         this.userLogged = userLogged;
+    }
+
+    @FXML
+    private void cerraerVentana() {
+        try {
+            Stage stage = new PantallaUtils().cerrarEstaPantalla(btnLogin);
+
+            //Mostramos el main
+            MainMenuController mainMenuController = new MainMenuController().showEstaPantalla(stage);
+            mainMenuController.setUserLogged(userLogged);
+
+        } catch (Exception ex) {
+           AlertView  alertView = new AlertView("Error", "Error al cargar la ventana de main", "Error al cargar la ventana de creación de cuenta "+ ex.getMessage());
+            throw new RuntimeException("Error al cargar la ventana de creación de main"+ ex.getMessage());
+        }
     }
 }

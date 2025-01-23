@@ -1,5 +1,6 @@
 package com.example.proyectobroker;
 
+import com.example.proyectobroker.controller.LoginController;
 import com.example.proyectobroker.repository.CryptoRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,12 +12,8 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 522, 335);
         stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
+        new LoginController().showEstaPantalla(stage);
 
 
     }
