@@ -8,7 +8,7 @@ public class TabTransition {
 
     public static void switchTabsWithTransition(TabPane tabPane, Pane currentPane, Pane nextPane) {
         // Duración de la animación
-        Duration duration = Duration.millis(500);
+        Duration duration = Duration.millis(200);
 
         // Crear una transición de deslizamiento para el pane actual (hacia la izquierda)
         TranslateTransition outTransition = new TranslateTransition(duration, currentPane);

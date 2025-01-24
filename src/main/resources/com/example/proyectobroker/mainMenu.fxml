@@ -23,7 +23,7 @@
                  </Button>
                   <Label layoutX="40.0" layoutY="14.0" text="Mis inversiones" textFill="#ff9000">
                      <font>
-                        <Font name="Arial Black" size="14.0" />
+                        <Font name="Arial Black" size="21.0" />
                      </font>
                   </Label>
                   <ListView id="listInversionesActivos" fx:id="listInversionesActivos" layoutX="14.0" layoutY="64.0" prefHeight="475.0" prefWidth="200.0" />
@@ -101,7 +101,7 @@
                   <TextField id="txtImporteHistorial" fx:id="txtImporteHistorial" editable="false" layoutX="319.0" layoutY="201.0" promptText="importe" />
                   <TextField id="txtCantidadHistorial" fx:id="txtCantidadHistorial" editable="false" layoutX="320.0" layoutY="257.0" promptText="cantidad de acciones" />
                   <TextField id="txtFechaHistorial" fx:id="txtFechaHistorial" editable="false" layoutX="321.0" layoutY="311.0" promptText="fecha" />
-                  <PieChart layoutX="585.0" layoutY="113.0" prefHeight="340.0" prefWidth="364.0" />
+                  <PieChart id="chartPie" layoutX="585.0" layoutY="113.0" prefHeight="340.0" prefWidth="364.0" />
                   <Label layoutX="676.0" layoutY="80.0" text="\% de Crypto en cartera" textFill="#ff9000">
                      <font>
                         <Font size="18.0" />

@@ -109,6 +109,9 @@ Label {
 
 #btnVender:hover, #btnPagar:hover {
     -fx-background-color: #ffa54d; /* Naranja más claro */
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: all 0.4s ease-in-out; /* Efecto de transición */
 }
 
 /* TextArea de resumen y descripción */
@@ -180,6 +183,13 @@ Label[textFill="#f28006"] {
     -fx-padding: 5px;
     -fx-cursor: hand;
 }
+#btnVender:hover, #btnPagar:hover {
+    -fx-background-color: #ff0000; /* Rojo */
+    -fx-scale-x: 1.1; /* Escalar el tamaño horizontal */
+    -fx-scale-y: 1.1; /* Escalar el tamaño vertical */
+    -fx-transition: all 0.4s ease-in-out 0.2s; /* Efecto de transición */
+}
+
 
 #btnChangeImage:hover {
     -fx-background-color: #ffa54d; /* Naranja más claro */
@@ -302,5 +312,13 @@ Label[textFill="#f28006"] {
     -fx-scale-x: 1;
     -fx-scale-y: 1;
 }
+.chart-legend-item > Label {
+    -fx-text-fill: black; /* Cambia el color del texto a negro */
+}
 
+/* Aplica a un PieChart con el id específico */
+#chartPie .chart-legend-item > Label,
+#chartCryptoWallet .chart-legend-item > Label {
+    -fx-text-fill: black; /* Cambia el color del texto de la leyenda a negro */
+}
 

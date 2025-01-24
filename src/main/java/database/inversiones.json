@@ -139,4 +139,14 @@
   "tipo" : "compra",
   "divisa" : "USD",
   "vendida" : "false"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Fri Jan 24 15:25:36 CET 2025",
+  "transaccion" : "T5R3A4V3B0E5F8L1F7M5",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3294.3413391053805,
+  "importe" : 300.0,
+  "tipo" : "compra",
+  "divisa" : "EUR",
+  "vendida" : "false"
 } ]
