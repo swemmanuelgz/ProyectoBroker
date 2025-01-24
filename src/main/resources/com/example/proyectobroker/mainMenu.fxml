@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<TabPane id="TablePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="963.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.MainMenuController">
+<TabPane id="TablePaneMain" fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="963.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.MainMenuController">
   <tabs>
-    <Tab id="tabActivos" text="Activos">
+    <Tab id="tabActivos" fx:id="tabActivos" text="Activos">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="748.0">
+        <AnchorPane fx:id="paneActivos" minHeight="0.0" minWidth="0.0" prefHeight="480.0" prefWidth="748.0">
                <children>
                  <Button fx:id="btnLogout" layoutX="862.0" layoutY="541.0" mnemonicParsing="false">
                    <graphic>
@@ -35,7 +35,7 @@
                       <NumberAxis fx:id="moneyAxis" side="LEFT" tickLabelFill="#f28006" />
                     </yAxis>
                   </StackedAreaChart>
-                  <Label layoutX="822.0" layoutY="98.0" text="Crypto" textFill="#f28006">
+                  <Label fx:id="lblCryptoActivo" layoutX="822.0" layoutY="98.0" text="Crypto" textFill="#f28006">
                      <font>
                         <Font name="Arial Black" size="24.0" />
                      </font>
@@ -47,16 +47,16 @@
                   </Button>
                   <TextArea id="txtActivos" fx:id="txtActivos" editable="false" layoutX="778.0" layoutY="144.0" prefHeight="200.0" prefWidth="176.0">
                      <font>
-                        <Font name="Arial Bold" size="14.0" />
+                        <Font name="Arial Bold" size="10.0" />
                      </font></TextArea>
                   <ImageView fx:id="imgCryptoActivo" fitHeight="70.0" fitWidth="95.0" layoutX="818.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
 
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab id="tabInvertir" text="Invertir">
+    <Tab id="tabInvertir" fx:id="tabInvertir" text="Invertir">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane fx:id="paneInvertir" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
             <ListView id="listCryptos" fx:id="listCryptos" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="200.0" />
             <LineChart id="stonksChart" fx:id="stonksChart" layoutX="232.0" layoutY="95.0">
@@ -73,7 +73,7 @@
                      </font>
                   </Label>
                   <ImageView id="imgCryptoImage" fx:id="imgCryptoImage" fitHeight="150.0" fitWidth="200.0" layoutX="739.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="txtCryptoPrice" layoutX="772.0" layoutY="252.0" text="Precio de acción:" />
+                  <Label fx:id="txtCryptoPrice" layoutX="723.0" layoutY="217.0" text="Precio de acción:" />
                   <TextField fx:id="txtImporte" alignment="TOP_CENTER" layoutX="324.0" layoutY="517.0" promptText="importe" />
                   <Button fx:id="btnPagar" layoutX="532.0" layoutY="508.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="87.0" text="Pagar">
                      <font>
@@ -86,9 +86,9 @@
         </AnchorPane>
       </content>
     </Tab>
-    <Tab id="tabHistorial" text="Historial">
+    <Tab id="tabHistorial" fx:id="tabHistorial" text="Historial">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane fx:id="paneHistorial" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ListView id="listHistorial" fx:id="listHistorial" layoutX="26.0" layoutY="12.0" prefHeight="566.0" prefWidth="200.0" />
                   <Label layoutX="306.0" layoutY="14.0" text="Historial" textFill="#ff8800">
@@ -112,9 +112,9 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab id="tabConfiguracion" text="Configuracion">
+    <Tab id="tabConfiguracion" fx:id="tabConfiguracion" text="Configuracion">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane fx:id="paneConfiguracion" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="imgProfile" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                   <Label layoutX="278.0" layoutY="71.0" text="Username:">

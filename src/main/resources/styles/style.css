@@ -1,7 +1,10 @@
-/* Fondo negro para el panel principal */
-#loginPane {
-    -fx-background-color: #000000; /* Negro */
+/* Fondo animado para el panel principal y las otras dos  */
+#loginPane,#TablePaneMain,#createPane {
+    -fx-background-color: linear-gradient(to bottom, #000000, #a56605);
 }
+
+
+
 
 /* Estilo para las etiquetas (User, Password) */
 Label {
@@ -52,10 +55,7 @@ Label {
 }
 
 /* CSS PARA EL MAIN */
-/* Fondo del TabPane */
-#TablePane {
-    -fx-background-color: #1e1e1e; /* Fondo oscuro */
-}
+
 
 /* Estilos para las Tabs */
 .tab {
@@ -118,6 +118,7 @@ Label {
     -fx-border-color: #ff910b; /* Borde naranja */
     -fx-border-radius: 5px;
     -fx-padding: 10px;
+    -fx-alignment: left;
 }
 
 /* ComboBox de selección */
@@ -198,4 +199,108 @@ Label[textFill="#f28006"] {
 #btnSaveChanges:hover {
     -fx-background-color: #66bb6a; /* Verde más claro */
 }
+/*VENTANA DE CREAR CUENTA*/
+
+
+/* Estilo para las etiquetas (Labels) */
+#lblUserCreate, #lblPasswordCreate, #lblPasswordCheckCreate,#txtCryptoPrice {
+    -fx-text-fill: #f0a500; /* Color de texto naranja */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold; /* Negrita */
+}
+
+/* Estilo para los campos de texto (TextField y PasswordField) */
+#txtUsernameCreate, #txtPasswordCreate, #txtPasswordCheckCreate {
+    -fx-pref-height: 30px;
+    -fx-pref-width: 200px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #444444; /* Borde gris oscuro */
+    -fx-background-color: #333333; /* Fondo gris oscuro */
+    -fx-text-fill: #ffffff; /* Texto blanco */
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+}
+
+/* Efecto al pasar el cursor sobre los campos de texto */
+#txtUsernameCreate:hover, #txtPasswordCreate:hover, #txtPasswordCheckCreate:hover {
+    -fx-border-color: #f0a500; /* Borde naranja al pasar el cursor */
+}
+
+#txtUsernameCreate:focused, #txtPasswordCreate:focused, #txtPasswordCheckCreate:focused {
+    -fx-border-color: #f0a500; /* Borde naranja intenso */
+    -fx-background-color: #262626; /* Fondo gris más oscuro */
+}
+
+/* Estilo para los botones */
+#btnCreateAccount, #btnAtrasCreate {
+    -fx-pref-height: 40px;
+    -fx-pref-width: 100px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #f0a500; /* Borde naranja */
+    -fx-background-color: #f0a500; /* Naranja */
+    -fx-text-fill: #1c1c1c; /* Texto negro */
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* Cambiar el cursor a mano */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.5, 0, 2);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* Efecto al pasar el cursor sobre los botones */
+#btnCreateAccount:hover, #btnAtrasCreate:hover {
+    -fx-background-color: #d48806; /* Naranja más oscuro */
+    -fx-border-color: #d48806;
+    -fx-scale-x: 1.1; /* Escalar el tamaño horizontal */
+    -fx-scale-y: 1.1; /* Escalar el tamaño vertical */
+}
+
+/* Efecto al presionar los botones */
+#btnCreateAccount:pressed, #btnAtrasCreate:pressed {
+    -fx-background-color: #a56605; /* Naranja aún más oscuro */
+    -fx-border-color: #a56605;
+    -fx-scale-x: 1; /* Volver al tamaño original */
+    -fx-scale-y: 1;
+}
+
+/* Estilo específico para el botón "Atrás" */
+#btnAtrasCreate {
+    -fx-pref-width: 70px; /* Botón más pequeño */
+    -fx-background-color: #444444; /* Gris oscuro */
+    -fx-border-color: #f0a500;
+    -fx-text-fill: #f0a500; /* Texto naranja */
+}
+
+#btnAtrasCreate:hover {
+    -fx-background-color: #333333; /* Gris más oscuro */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#btnAtrasCreate:pressed {
+    -fx-background-color: #262626; /* Gris aún más oscuro */
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+/* Estilo específico para el botón "Crear Cuenta" */
+#btnCreateAccount {
+    -fx-background-color: #f0a500; /* Naranja */
+    -fx-border-color: #d48806;
+    -fx-text-fill: #1c1c1c; /* Texto negro */
+}
+
+#btnCreateAccount:hover {
+    -fx-background-color: #d48806; /* Naranja más oscuro */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#btnCreateAccount:pressed {
+    -fx-background-color: #a56605; /* Naranja intenso */
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
 

@@ -4,6 +4,8 @@ import com.example.proyectobroker.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ public class PantallaUtils {
      * @param vista le pasamos la vista que se va a cargar
      */
     public FXMLLoader showEstaPantalla(Stage stage, String vista, String titulo, int ancho, int alto) throws IOException {
+        System.out.println("Mostrando pantalla: " + vista);
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(vista));
         Scene scene = new Scene(fxmlLoader.load(), ancho, alto);
         //Agregamos el css
@@ -41,6 +44,16 @@ public class PantallaUtils {
     public Stage cerrarEstaPantalla(Button botonDelAction){
         //OBTENEMOS EL STAGE DE LA PANTALLA ACTUAL, A PARTIR DEL BOTÓN QUE SE ACCIONA
         Stage stageAhora = (Stage) botonDelAction.getScene().getWindow();
+
+        //SE CIERRA EL STAGE
+        stageAhora.close();
+
+        //DEVUELVE EL STAGE PARA PODER SER REUTILIZADO EN OTRA PANTALLA POR EJEMPLO.
+        return stageAhora;
+    }
+    public Stage cerrarEstaPantalla(Label textField){
+        //OBTENEMOS EL STAGE DE LA PANTALLA ACTUAL, A PARTIR DEL BOTÓN QUE SE ACCIONA
+        Stage stageAhora = (Stage) textField.getScene().getWindow();
 
         //SE CIERRA EL STAGE
         stageAhora.close();

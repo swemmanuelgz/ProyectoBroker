@@ -22,4 +22,10 @@
   "img" : "png",
   "divisa" : "EUR",
   "saldo" : 1700.0
+}, {
+  "username" : "jordi",
+  "password" : "$2a$10$Uso92NIJ80bio0BMceCFMehNFjqXdIBr0.NIKhgkZLb/EBmaVmxBy",
+  "img" : false,
+  "divisa" : "USD",
+  "saldo" : 700.0
 } ]

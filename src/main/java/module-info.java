@@ -17,6 +17,7 @@ module com.example.proyectobroker {
     requires javafxsvg;
     requires org.girod.javafx.svgimage;
     requires java.logging;
+    requires java.desktop;
 
     opens com.example.proyectobroker to javafx.fxml;
     exports com.example.proyectobroker;

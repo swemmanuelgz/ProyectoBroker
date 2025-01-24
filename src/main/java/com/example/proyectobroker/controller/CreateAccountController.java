@@ -3,6 +3,9 @@ package com.example.proyectobroker.controller;
 import com.example.proyectobroker.exceptions.Exceptions;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.repository.UserRepository;
+import com.example.proyectobroker.utils.Constantes;
+import com.example.proyectobroker.utils.GradientAnimation;
+import com.example.proyectobroker.utils.PantallaUtils;
 import com.example.proyectobroker.view.AlertView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +30,8 @@ public class CreateAccountController {
     private TextField txtPassword;
     @FXML
     private TextField txtPasswordCheck;
-
+    @FXML
+    private Pane createPane;
     //Atributos
     private UserController userController = new UserController();
     private User usuario;
@@ -34,6 +39,7 @@ public class CreateAccountController {
 
     @FXML
     public void initialize() {
+
         btnCreateAccount.setOnAction(e -> {
             System.out.println("Username: " + txtUsername.getText());
             System.out.println("Password: " + txtPassword.getText());
@@ -52,7 +58,35 @@ public class CreateAccountController {
             }
 
         });
-        Atras();
+        //para animar el fondo
+        //GradientAnimation.animateBackground(createPane);
+
+        btnAtras.setOnAction(event -> {
+            cerrarVentana();
+        });
+
+    }
+
+
+    //Metodo para mostrar la panatalla de creacion de cuenta
+    public CreateAccountController showEstaPantalla(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_CREAR_CUENTA.getDescripcion(), Constantes.TITULO_CREAR_CUENTA.getDescripcion(), 522, 335);
+        //Obtenemos el controlador de la ventana
+        CreateAccountController createAccountController = fxmlLoader.getController();
+        return createAccountController;
+    }
+
+    //METODO PARA CERRAR VENTANA
+    private void cerrarVentana() {
+        try {
+            System.out.println("Cerrando crear cuenta");
+            Stage stage = new PantallaUtils().cerrarEstaPantalla(btnAtras);
+
+            //mostrar el main
+            LoginController loginController = new LoginController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void CreateAccount(TextField user, TextField pass, TextField passCheck) {
@@ -63,6 +97,7 @@ public class CreateAccountController {
 
             if (userController.checkUserExists(usuario)) {
                 System.out.println("El usuario ya existe");
+                AlertView alertView = new AlertView("Error", "El usuario ya existe", "El usuario ya existe");
                 return;
             } else {
                 userController.createUser(usuario);
@@ -74,24 +109,7 @@ public class CreateAccountController {
         });
 
     }
-    @FXML
-    public void Atras() {
-        btnAtras.setOnAction(e -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/proyectobroker/login.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 522, 335);
-                Stage stage = new Stage();
-                stage.setTitle("Login");
-                Stage stageActual = (Stage) btnAtras.getScene().getWindow();
-                stageActual.close();
 
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            System.out.println("Atras");
-        });
-    }
+
 
 }

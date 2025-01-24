@@ -129,4 +129,14 @@
   "tipo" : "compra",
   "divisa" : "EUR",
   "vendida" : "false"
+}, {
+  "username" : "jordi",
+  "fecha" : "Thu Jan 23 17:46:03 CET 2025",
+  "transaccion" : "V1W0K4Y2O9Q4S4Q3H2G6",
+  "crypto" : "Solana",
+  "precioCompraCrypto" : 253.50524958187916,
+  "importe" : 300.0,
+  "tipo" : "compra",
+  "divisa" : "USD",
+  "vendida" : "false"
 } ]

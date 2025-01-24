@@ -4,11 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<Pane id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="522.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.LoginController">
-   <stylesheets>
-      <URL value="/css/login.css" />
-   </stylesheets>
+<Pane id="loginPane" fx:id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="522.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyectobroker.controller.LoginController">
    <children>
       <PasswordField id="txtPassword" fx:id="txtPassword" layoutX="262.0" layoutY="177.0" text="abc123." />
       <TextField id="txtUsername" fx:id="txtUsername" layoutX="262.0" layoutY="133.0" text="emmanuel" />

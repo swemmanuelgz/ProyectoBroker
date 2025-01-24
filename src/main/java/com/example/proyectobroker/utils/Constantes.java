@@ -6,8 +6,11 @@ package com.example.proyectobroker.utils;
 public enum Constantes {
     PAGINA_INICIAL("login.fxml"),
     PAGINA_SEGUNDA_PANTALLA("mainMenu.fxml"),
+    PAGINA_CREAR_CUENTA("createAccount.fxml"),
     TITULO_PAGINA_INICIAL("Login"),
-    TITULO_SEGUNDA_PANTALLA("Main Menu");
+    TITULO_SEGUNDA_PANTALLA("Main Menu"),
+    TITULO_CREAR_CUENTA("Create Account"),
+    PANTALLA_CARGANDO("loading.fxml");
 
     private final String descripcion;
 

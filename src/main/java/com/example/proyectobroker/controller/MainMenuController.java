@@ -7,7 +7,9 @@ import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.repository.UserRepository;
 import com.example.proyectobroker.utils.Constantes;
+import com.example.proyectobroker.utils.GradientAnimation;
 import com.example.proyectobroker.utils.PantallaUtils;
+import com.example.proyectobroker.utils.TabTransition;
 import com.example.proyectobroker.view.AlertView;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -52,6 +56,8 @@ public class MainMenuController {
     private ImageView imgCryptoActivo;
     @FXML
     private Button btnVender;
+    @FXML
+    private Label lblCryptoActivo;
     //Invertir
     @FXML
     private ListView listCryptos ;
@@ -107,6 +113,19 @@ public class MainMenuController {
     private TextField txtTipoTransaccion;
     @FXML
     private PieChart chartCryptoWallet;
+    //Pane
+    @FXML
+    private TabPane mainPane;
+    //los tabs
+    @FXML
+    private AnchorPane paneInvertir;
+    @FXML
+    private AnchorPane paneActivos;
+    @FXML
+    private AnchorPane paneConfiguracion;
+    @FXML
+    private AnchorPane paneHistorial;
+
     private User userLogged = new User();
 
 
@@ -121,6 +140,11 @@ public class MainMenuController {
 
         //initList();
         //initChart((Crypto) listCryptos.getItems().get(0));
+
+        //animamos el fondo
+        //GradientAnimation.animateBackground(mainPane);
+        //eventos de transicion
+        initTransitionTab();
 
         listCryptos.setOnMouseClicked(event -> {
             Crypto crypto = (Crypto) listCryptos.getSelectionModel().getSelectedItem();
@@ -177,6 +201,7 @@ public class MainMenuController {
         Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
         //TODO: arreglar texto de las inversiones
         txtActivos.setText(getInversionStat(inversion).toString());
+        lblCryptoActivo.setText(inversion.getCrypto().getName());
         initStackedAreaChart(inversion.getCrypto());
     });
 
@@ -336,12 +361,14 @@ public class MainMenuController {
             pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
         }
         chartCryptoWallet.setData(FXCollections.observableArrayList(pieChartData));
+
     }
     //para el stacked area chart
     private void initStackedAreaChart(Crypto crypto){
         System.out.println("\nGenerando stacked area chart");
         crypto.downloadIcon();
         imgCryptoActivo.setImage(crypto.getIcon());
+        //inicializamos un Grafico
         XYChart.Series <String, Number> series = new XYChart.Series<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
@@ -485,7 +512,7 @@ public class MainMenuController {
         stringBuilder.append("Transacción: "+inversion.getTransaccion()+"\n");
         stringBuilder.append("Fecha: "+inversion.getFechaInversion()+"\n");
         stringBuilder.append("Importe: "+inversion.getImporteInversion()+"\n");
-        stringBuilder.append("Precio de compra: "+inversion.getPrecioCompraCrypto()+"\n");
+        stringBuilder.append(userLogged.getUserConfig().getDivisa()+" "+inversion.getPrecioCompraCrypto()+"\n");
         stringBuilder.append("Ganancia:  "+ganancia+"\n");
         return stringBuilder;
     }
@@ -556,6 +583,41 @@ public class MainMenuController {
         txtMoney.setText(String.valueOf(userLogged.getUserConfig().getSaldo()));
 
 
+    }
+    //inizializar listeners para las transiciones de cambio de tab
+    public void initTransitionTab(){
+        // Configura un listener para cambiar de tab
+        mainPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+            if (oldTab != null && newTab != null) {
+                // Obtén los panes asociados a los tabs
+                AnchorPane oldPane = (AnchorPane) oldTab.getContent();
+                AnchorPane newPane = (AnchorPane) newTab.getContent();
+
+                // Asegurarse de que el nuevo pane es visible
+                newPane.setVisible(true);
+
+                // Ejecutar la transición
+                TabTransition.switchTabsWithTransition(mainPane, oldPane, newPane);
+            }
+        });
+
+
+        // Configuración inicial para mostrar el primer tab
+        initializeTabVisibility();
+    }
+    // Metodo para inicializar la visibilidad de los panes
+    private void initializeTabVisibility() {
+        paneInvertir.setVisible(false);
+        paneActivos.setVisible(false);
+        paneConfiguracion.setVisible(false);
+        paneHistorial.setVisible(false);
+
+        // Mostrar solo el pane correspondiente al primer tab seleccionado
+        Tab selectedTab = mainPane.getSelectionModel().getSelectedItem();
+        if (selectedTab != null) {
+            AnchorPane firstPane = (AnchorPane) selectedTab.getContent();
+            firstPane.setVisible(true);
+        }
     }
 
     public MainMenuController showEstaPantalla(Stage stage)throws Exception{
