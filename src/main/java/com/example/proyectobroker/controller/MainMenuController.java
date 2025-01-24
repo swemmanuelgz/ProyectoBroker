@@ -142,7 +142,7 @@ public class MainMenuController {
         //initChart((Crypto) listCryptos.getItems().get(0));
 
         //animamos el fondo
-        //GradientAnimation.animateBackground(mainPane);
+        GradientAnimation.animateBackground(mainPane);
         //eventos de transicion
         initTransitionTab();
 

@@ -59,7 +59,7 @@ public class CreateAccountController {
 
         });
         //para animar el fondo
-        //GradientAnimation.animateBackground(createPane);
+        GradientAnimation.animateBackground(createPane);
 
         btnAtras.setOnAction(event -> {
             cerrarVentana();

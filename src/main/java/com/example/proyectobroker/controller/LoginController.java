@@ -47,7 +47,7 @@ public class LoginController {
             login();
         });
         createAccount();
-        // GradientAnimation.animateBackground(loginPane);
+        GradientAnimation.animateBackground(loginPane);
 
     }
 

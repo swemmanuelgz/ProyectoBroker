@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<Pane id="loadingPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="120.0" layoutY="100.0" text="Cargando..." style="-fx-font-size: 18; -fx-text-fill: white;"/>
+        <ProgressIndicator layoutX="160.0" layoutY="140.0" prefHeight="50.0" prefWidth="50.0"/>
+    </children>
+
+</Pane>
+
