@@ -6,7 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class GradientAnimation {
-
+    // Método para animar el fondo de un pane con un gradiente de colores
+    /**
+     * Método para animar el fondo de un pane con un gradiente de colores
+     * @param pane Pane
+     */
     public static void animateBackground(Pane pane) {
         Timeline timeline = new Timeline();
         final int steps = 200; // Más pasos para fluidez
@@ -31,6 +35,11 @@ public class GradientAnimation {
         timeline.setCycleCount(Timeline.INDEFINITE); // Animación infinita
         timeline.play(); // Inicia la animación
     }
+    //metodo para generar un ciclo continuo entre dos colores
+    /**
+     * Método para generar un ciclo continuo entre dos colores
+     * @param pane Pane
+     */
     public static void animateBackground(TabPane pane) {
         Timeline timeline = new Timeline();
         final int steps = 200; // Más pasos para fluidez
@@ -57,6 +66,13 @@ public class GradientAnimation {
     }
 
     // Método para generar un ciclo continuo entre dos colores
+    /**
+     * Método para generar un ciclo continuo entre dos colores
+     * @param startColor String
+     * @param endColor String
+     * @param fraction double
+     * @return String
+     */
     private static String cycleColor(String startColor, String endColor, double fraction) {
         int r1 = Integer.parseInt(startColor.substring(1, 3), 16);
         int g1 = Integer.parseInt(startColor.substring(3, 5), 16);

@@ -69,7 +69,9 @@ public class LoginController {
         this.userLogged = userLogged;
         this.userController = userController;
     }
-
+    /**
+     * Metodo para crear una cuenta
+     */
     @FXML
     public void createAccount() {
         txtCreateAccount.setOnMouseClicked(e -> {
@@ -79,6 +81,9 @@ public class LoginController {
         });
     }
 
+        /**
+         * Metodo para logearse
+         */
 
     @FXML
     public void login() {
@@ -126,6 +131,9 @@ public class LoginController {
         this.userLogged = userLogged;
     }
 
+    /**
+     * Metodo para cerrar la ventana
+     */
     @FXML
     private void cerrarVentana() {
         try {
@@ -142,6 +150,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * Metodo para abrir la ventana de crear cuenta
+     */
     public void abrirCrearCuenta() {
         try {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(txtCreateAccount);
@@ -153,7 +164,10 @@ public class LoginController {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Metodo para mostrar la pantalla de carga
+     * @param tarea
+     */
     private void mostrarPantallaDeCarga(Runnable tarea) {
         try {
             // Cargar la pantalla de carga
@@ -194,7 +208,9 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Metodo para ocultar la pantalla de carga
+     */
     private void ocultarPantallaDeCarga() {
         if (loadingStage != null) {
             loadingStage.close();

@@ -9,6 +9,10 @@ public class Exceptions  {
 
     //CREAR USER
     //metodo validar campo usuario , solo se pueden poner letras o numeros
+    /**
+     * Metodo para validar el campo usuario
+     * @param usernameField
+     */
     public void validateUserField(String usernameField){
         //Comprobamos si está el campo vacio
         if (usernameField.isEmpty()){
@@ -36,6 +40,10 @@ public class Exceptions  {
         }
     }
     //Metodo validar campo contraseña
+    /**
+     * Metodo para validar el campo contraseña
+     * @param passwordField
+     */
     public void validatePasswordField(String passwordField){
         //comprobar si está vacio
         if (passwordField.isEmpty()){
@@ -56,6 +64,12 @@ public class Exceptions  {
             throw new RuntimeException("Longitud mínina 8 caracteres y maxima 40");
         }
     }
+    //Metodo validar campo contraseña
+    /**
+     * Metodo para validar el campo contraseña
+     * @param password
+     * @param passwordCheck
+     */
     public void checkPasswordMatch(String password, String passwordCheck) {
         if (!password.equalsIgnoreCase(passwordCheck)){
             AlertView alerta = new AlertView("Error", "Error en la contraseña", "Las contraseñas no coinciden");
@@ -64,6 +78,11 @@ public class Exceptions  {
         }
     }
     //CONFIGURACION
+    //Metodo para validar el campo dinero
+    /**
+     * Metodo para validar el campo dinero
+     * @param money
+     */
     public void validateMoney(String money){
 
         //comprobar si está vacio
@@ -85,6 +104,11 @@ public class Exceptions  {
             throw new RuntimeException("No se permiten valores negativos");
         }
     }
+    //metodo validar imagen
+    /**
+     * Metodo para validar la imagen
+     * @param image
+     */
     public void validateImage(Image image){
         if (image == null){
             alert = new AlertView("Error", "Imagen no válida", "Imagen no válida");

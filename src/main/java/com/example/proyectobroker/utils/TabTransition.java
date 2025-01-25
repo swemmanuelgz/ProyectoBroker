@@ -5,7 +5,13 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class TabTransition {
-
+    // Método para cambiar de pestaña con una animación de deslizamiento
+    /**
+     * Método para cambiar de pestaña con una animación de deslizamiento
+     * @param tabPane TabPane
+     * @param currentPane Pane
+     * @param nextPane Pane
+     */
     public static void switchTabsWithTransition(TabPane tabPane, Pane currentPane, Pane nextPane) {
         // Duración de la animación
         Duration duration = Duration.millis(200);

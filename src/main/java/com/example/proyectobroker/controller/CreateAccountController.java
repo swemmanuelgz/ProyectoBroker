@@ -2,15 +2,12 @@ package com.example.proyectobroker.controller;
 
 import com.example.proyectobroker.exceptions.Exceptions;
 import com.example.proyectobroker.model.User;
-import com.example.proyectobroker.repository.UserRepository;
 import com.example.proyectobroker.utils.Constantes;
 import com.example.proyectobroker.utils.GradientAnimation;
 import com.example.proyectobroker.utils.PantallaUtils;
 import com.example.proyectobroker.view.AlertView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -36,7 +33,10 @@ public class CreateAccountController {
     private UserController userController = new UserController();
     private User usuario;
     private Exceptions exceptions = new Exceptions();
-
+    //javadoc
+    /**
+     * Metodo para inicializar la pantalla de crear cuenta
+     */
     @FXML
     public void initialize() {
 
@@ -66,7 +66,10 @@ public class CreateAccountController {
         });
 
     }
-
+    //javadoc
+    /**
+     * Metodo para abrir la pantalla de crear cuenta
+     */
 
     //Metodo para mostrar la panatalla de creacion de cuenta
     public CreateAccountController showEstaPantalla(Stage stage) throws IOException {
@@ -75,6 +78,11 @@ public class CreateAccountController {
         CreateAccountController createAccountController = fxmlLoader.getController();
         return createAccountController;
     }
+
+    //javadoc
+    /**
+     * Metodo para abrir la pantalla de crear cuenta
+     */
 
     //METODO PARA CERRAR VENTANA
     private void cerrarVentana() {
@@ -88,6 +96,13 @@ public class CreateAccountController {
             throw new RuntimeException(e);
         }
     }
+    //javadoc
+    /**
+     * Metodo para crear una cuenta
+     * @param user
+     * @param pass
+     * @param passCheck
+     */
     @FXML
     public void CreateAccount(TextField user, TextField pass, TextField passCheck) {
         btnCreateAccount.setOnAction(e -> {

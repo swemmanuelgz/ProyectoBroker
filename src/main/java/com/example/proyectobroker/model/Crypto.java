@@ -160,6 +160,10 @@ public class Crypto {
     }
 
     //Metodo que redondea el precio de la criptomoneda a dos decimales
+    /**
+     * Metodo que redondea el precio de la criptomoneda a dos decimales
+     * @return Double
+     */
     public Double roundPrice() {
         Double precioRedondeado;
         String price = String.format("%.2f", Double.parseDouble(this.price));
@@ -168,7 +172,10 @@ public class Crypto {
         precioRedondeado = Double.parseDouble(price);
         return precioRedondeado;
     }
-
+    //Metodo para descargar el icono
+    /**
+     * Metodo para descargar el icono
+     */
     public void downloadIcon() {
         //Soporte para imagenes SVG
         try (InputStream inputStream = new java.net.URL(iconUrl).openStream()) {

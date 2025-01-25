@@ -199,7 +199,6 @@ public class MainMenuController {
     });
     listInversionesActivos.setOnMouseClicked(event -> {
         Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
-        //TODO: arreglar texto de las inversiones
         txtActivos.setText(getInversionStat(inversion).toString());
         lblCryptoActivo.setText(inversion.getCrypto().getName());
         initStackedAreaChart(inversion.getCrypto());
@@ -208,8 +207,12 @@ public class MainMenuController {
     }
 
 
-
-    private ArrayList getCrypto(){
+        //metodo para coger la crypto
+    /**
+     * Metodo para obtener las criptomonedas
+     * @return
+     */
+    private ArrayList<Crypto> getCrypto(){
 
         try {
            return cryptoController.getAllCrypto();
@@ -226,6 +229,9 @@ public class MainMenuController {
                 throw new RuntimeException(e);
             }
     }
+    /**
+     * Metodo para cerrar la sesión
+     */
     private void logout(){
 
         try {
@@ -241,6 +247,10 @@ public class MainMenuController {
         }
 
     }
+    /**
+     * Metodo para inicializar el chart
+     * @param crypto
+     */
     private void initChart(Crypto crypto){
         System.out.println("Generando chart para invertir");
         XYChart.Series<String, Number> series = new XYChart.Series();
@@ -258,7 +268,7 @@ public class MainMenuController {
             double price = crypto.getSparkline()[i];
 
             if (price <= 0.01){
-                //verificamos que no es el primer indice
+                //verificamos que no es el primer index
                 if (i != 0){
                     price = crypto.getSparkline()[i-1];
                 }else{
@@ -290,6 +300,9 @@ public class MainMenuController {
         stonksChart.getData().clear();
         stonksChart.getData().add(series);
     }
+    /**
+     * Metodo para inicializar la lista de cryptos
+     */
     private void initList(){
         ArrayList<Crypto> cryptos = getCrypto();
         System.out.println("Iniciamos la lista de cryptos");
@@ -307,6 +320,9 @@ public class MainMenuController {
         listCryptos.getItems().addAll(cryptos);
     }
     //este metodo inicializa la lista de inversiones del usuario que tiene abiertas
+    /**
+     * Metodo para inicializar la lista de inversiones activas
+     */
     private void initListActivos(){
         ArrayList<Inversion> comprasCrypto = inversionController.getCompras(userLogged);
         //Añadimos las compras a la lista
@@ -325,6 +341,9 @@ public class MainMenuController {
         System.out.println("Iniciamos la lista de inversiones activas");
     }
     //Configuracion
+    /**
+     * Metodo para inicializar la configuración del usuario
+     */
     private void initConfig(){
         //Cargamos la configuración del usuario
         System.out.println("Usuario que recibimos "+userLogged.getUsername());
@@ -339,6 +358,9 @@ public class MainMenuController {
 
 
     }
+    /**
+     * Metodo para inicializar el chart de la wallet
+     */
     private void initChartWallet(){
 
         if (inversiones.isEmpty() || inversiones == null){
@@ -364,6 +386,10 @@ public class MainMenuController {
 
     }
     //para el stacked area chart
+    /**
+     * Metodo para inicializar el stacked area chart
+     * @param crypto
+     */
     private void initStackedAreaChart(Crypto crypto){
         System.out.println("\nGenerando stacked area chart");
         crypto.downloadIcon();
@@ -415,6 +441,9 @@ public class MainMenuController {
         stonkActivos.getData().add(series);
 
     }
+    /**
+     * Metodo para inicializar el historial
+     */
     private void initHistorial(){
         System.out.println("Generando historial");
          inversiones = getHistorial();
@@ -432,7 +461,11 @@ public class MainMenuController {
         listHistorial.getItems().addAll(inversiones);
 
     }
-
+    //metodo para settear el usuario como logueado
+    /**
+     * Metodo para settear el usuario logueado
+     * @param userLogged
+     */
     public void setUserLogged(User userLogged) {
         this.userLogged = userLogged;
         initConfig();
@@ -446,6 +479,10 @@ public class MainMenuController {
         initStackedAreaChart(listHistorial.getItems().isEmpty() ? null : ((Inversion) listHistorial.getItems().get(0)).getCrypto());
 
     }
+    //metodo para guardar los cambios
+    /**
+     * Metodo para guardar los cambios
+     */
     public void saveChanges(){
         Exceptions exceptions = new Exceptions();
         UserRepository userRepository = new UserRepository();
@@ -473,7 +510,7 @@ public class MainMenuController {
             //Crear configuración
             user.setUserConfig(new UserConfig(user,cmbDivisa.getValue().toString(),Double.parseDouble(txtMoney.getText()),userLogged.getUserConfig().getProfileImage()));
 
-                //le ponemos el ultimo nombre de usuario para que pueda encontrarlo en el json
+                //le ponemos el último nombre de usuario para que pueda encontrarlo en el json
                 //por si el usuario cambia el nombre
                 logger.log(Level.INFO,"Usuario diferente en nombres: "+userLogged.getUsername()+" "+txtUser.getText());
                 user.getUserConfig().setLastname(userLogged.getUsername());
@@ -486,6 +523,10 @@ public class MainMenuController {
         }
 
     }
+    //metodo para cambiar la imagen
+    /**
+     * Metodo para cambiar la imagen
+     */
     private void changeImage() {
         //Creamos un filechooser donde solo se puedan coger imagenes
         FileChooser fileChooser = new FileChooser();
@@ -503,6 +544,12 @@ public class MainMenuController {
 
         }
     }
+    //metodo para obtener la inversion
+    /**
+     * Metodo para obtener la inversion
+     * @param inversion
+     * @return
+     */
     public StringBuilder getInversionStat(Inversion inversion){
         StringBuilder stringBuilder = new StringBuilder();
         String ganancia = String.valueOf(inversion.getGanancia());
@@ -517,6 +564,9 @@ public class MainMenuController {
         return stringBuilder;
     }
 
+    /**
+     * Metodo para comprar criptomonedas
+     */
     public void compraCrypto(){
 
 
@@ -548,6 +598,11 @@ public class MainMenuController {
         initListActivos();
         initChartWallet();
     }
+    //metodo para vender criptomonedas
+    /**
+     * Metodo para vender criptomonedas
+     * @param inversionVenta
+     */
     public void venderCrypto (Inversion inversionVenta){
         Inversion inversionInsertar = new Inversion();
         //Creamos una inversion parecida a la que nos viene pero cambiando sus parámetros
@@ -585,6 +640,9 @@ public class MainMenuController {
 
     }
     //inizializar listeners para las transiciones de cambio de tab
+    /**
+     * Metodo para inicializar las transiciones de cambio de tab
+     */
     public void initTransitionTab(){
         // Configura un listener para cambiar de tab
         mainPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
@@ -600,12 +658,13 @@ public class MainMenuController {
                 TabTransition.switchTabsWithTransition(mainPane, oldPane, newPane);
             }
         });
-
-
         // Configuración inicial para mostrar el primer tab
         initializeTabVisibility();
     }
     // Metodo para inicializar la visibilidad de los panes
+    /**
+     * Metodo para inicializar la visibilidad de los panes
+     */
     private void initializeTabVisibility() {
         paneInvertir.setVisible(false);
         paneActivos.setVisible(false);

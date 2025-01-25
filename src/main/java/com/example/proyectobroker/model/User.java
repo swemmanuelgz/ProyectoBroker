@@ -1,8 +1,6 @@
 package com.example.proyectobroker.model;
 
 
-import javafx.scene.image.Image;
-
 public class User {
     private String username;
     private String password;

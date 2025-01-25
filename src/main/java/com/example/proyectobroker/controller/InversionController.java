@@ -12,20 +12,39 @@ public class InversionController {
     public InversionController() {
 
     }
+    //metodo para coger las inversiones de un usuario
+    /**
+     * Metodo para coger las inversiones de un usuario
+     * @param user
+     * @return
+     */
     public ArrayList<Inversion> getUserInversions(User user) {
         System.out.println("Getting user inversions");
         return userRepository.getUserInversiones(user);
     }
 
     //Metodo para guardar una inversion
+    /**
+     * Metodo para guardar una inversion
+     * @param inversion
+     */
     public void saveInversion(Inversion inversion) {
         userRepository.saveInversion(inversion);
     }
     //metodo para actualizar la inversion y ponerla como vendida en la base de datos
+    /**
+     * Metodo para actualizar la inversion y ponerla como vendida en la base de datos
+     * @param inversion
+     */
     public void updateInversion(Inversion inversion) {
         userRepository.updateInvsersion(inversion.getTransaccion());
     }
     //metodo para coger inversiones que sean de compra
+    /**
+     * Metodo para coger inversiones que sean de compra
+     * @param user
+     * @return
+     */
     public ArrayList<Inversion> getCompras(User user) {
         ArrayList<Inversion> compras = new ArrayList<>();
 
@@ -38,6 +57,11 @@ public class InversionController {
         return compras;
     }
     //metodo para coger inversiones que sean de venta
+    /**
+     * Metodo para coger inversiones que sean de venta
+     * @param user
+     * @return
+     */
     public ArrayList<Inversion> getVentas(User user) {
         ArrayList<Inversion> ventas = new ArrayList<>();
         for (Inversion inversion : getUserInversions(user)) {

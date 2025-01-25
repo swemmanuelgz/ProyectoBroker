@@ -26,10 +26,14 @@ public class UserRepository {
     private final String pathProfileImgSave = "src/main/resources/com/example/proyectobroker/img/profile/";
     private static final System.Logger logger = System.getLogger(UserRepository.class.getName());
     private final CryptoRepository cryptoRepository = new CryptoRepository();
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     public UserRepository() {
 
     }
+    /**
+     * Método para comprobar si el usuario existe en la base de datos
+     * @param user
+     * @return
+     */
     public  boolean checkUserExists(User user) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -72,6 +76,12 @@ public class UserRepository {
         }
         return false; //usuario no existe
     }
+
+    /**
+     *metodo para crear un usuario
+     * @param userInsert
+     * @return
+     */
     public void createUser(User userInsert){
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -119,6 +129,11 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Método para conseguir todos los usuarios
+     * @return
+     */
     public ArrayList<User> getAllUsers(){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -154,6 +169,11 @@ public class UserRepository {
         getAllUsers();
         return usersList;
     }
+    /**
+     * Método para conseguir la configuración del usuario
+     * @param user
+     * @return
+     */
     public UserConfig getUserConfig(User user){
         UserConfig userConfig = new UserConfig();
         userConfig.setUser(user);
@@ -212,8 +232,13 @@ public class UserRepository {
 
         return userConfig;
     }
+
     //Este metodo es el segundo que se emplea para guardar la configuracion del usuario
     //Despues llamamos al otro para soobresicbir los datos del usuario
+    /**
+     * Método para guardar la configuración del usuario
+     * @param userConfig
+     */
     private void saveUserConfig(UserConfig userConfig){
         try {
             //Inicializamos el maper
@@ -283,6 +308,10 @@ public class UserRepository {
     }
     //Para actualizar al usuario y la configuracion usamos este metodo que a su vez emplea el otro
     //Creamos el metodo para sobreescribir los datos del usuario del archivo data.json
+    /**
+     * Método para actualizar el usuario
+     * @param userConfig
+     */
     public void updateUser(UserConfig userConfig){
         try {
             //Inicializamos el maper
@@ -322,6 +351,11 @@ public class UserRepository {
         }
     }
     //METODOS PARA LAS IMAGENES
+    /**
+     * Método para cargar una imagen desde resources
+     * @param path
+     * @return
+     */
    private Image loadImageFromResouces(String path){
         try {
             URL resourceUrl = getClass().getResource(path);
@@ -333,6 +367,10 @@ public class UserRepository {
             throw new RuntimeException("Error al cargar imagen no existe"+e);
         }
    }
+   /**
+    * Método para guardar una imagen en resources
+    * @param userConfig
+    */
    private void saveImageToResourcesPath(UserConfig userConfig){
         try {
             //Cogemos la imagen del usuario
@@ -364,6 +402,11 @@ public class UserRepository {
 
    }
    //METODOS PARA LAS INVERSIONES DEL USUARIO
+    /**
+     * Método para conseguir las inversiones del usuario
+     * @param user
+     * @return
+     */
     public ArrayList <Inversion> getUserInversiones(User user){
         ArrayList<Inversion> userInversionesList = new ArrayList<>();
         Inversion inversiones = new Inversion();
@@ -416,6 +459,11 @@ public class UserRepository {
 
         return userInversionesList;
     }
+    //metodo para actualizar la inversion
+    /**
+     * Método para actualizar la inversion
+     * @param transaccion
+     */
     public void updateInvsersion (String transaccion){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -450,6 +498,10 @@ public class UserRepository {
         }
     }
     //Metodo para guardar las inversiones del usuario
+    /**
+     * Método para guardar la inversion
+     * @param inversion
+     */
     public void saveInversion(Inversion inversion) {
         try {
             //Inicializamos el maper
@@ -500,6 +552,11 @@ public class UserRepository {
 
 
     //Metodo pasar un String en formato Fri Jan 17 00:37:11 CET 2025 a Date
+    /**
+     * Método para convertir un string en fecha
+     * @param fecha
+     * @return
+     */
     public Date stringToDate(String fecha){
         SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         try {
@@ -508,6 +565,11 @@ public class UserRepository {
             throw new RuntimeException("Error al convertir la fecha: "+e.getMessage());
         }
     }
+    //metodo para generar un serial unico
+    /**
+     * Método para generar un serial único
+     * @return
+     */
     public String randomTransactionSerial(){
         String [] letras = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
         String [] numeros = {"0","1","2","3","4","5","6","7","8","9"};
@@ -524,6 +586,12 @@ public class UserRepository {
         System.out.println("Serial ÚNICO: "+serial);
         return serial;
     }
+    //Metodo para comprobar si el serial ya existe
+    /**
+     * Método para comprobar si el serial ya existe
+     * @param serial
+     * @return
+     */
     public Boolean checkSerialNumber(String serial){
         try {
             ObjectMapper objectMapper = new ObjectMapper();

@@ -22,110 +22,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CryptoRepository {
-    private final String API_KEY="d46adc9f3bc442659d0987d576c4a744hw";
-    private final String BASE_URL =  "https://api.finazon.io";
+
     ArrayList<Crypto> cryptoList = new ArrayList<>();
 
 
     public void CryptoRepository() {
 
     }
-
-   /* public ArrayList<Crypto> getCryptoList() {
-        ArrayList<Crypto> cryptoList = new ArrayList<>();
-        String[] usdtPairs = {
-                "BTC/USDT",  // Bitcoin
-                "ETH/USDT",  // Ethereum
-                "BNB/USDT",  // Binance Coin
-                "XRP/USDT",  // Ripple
-                "ADA/USDT",  // Cardano
-                "DOGE/USDT", // Dogecoin
-                "MATIC/USDT",// Polygon
-                "SOL/USDT",  // Solana
-                "DOT/USDT",  // Polkadot
-                "LTC/USDT",  // Litecoin
-                "SHIB/USDT", // Shiba Inu
-                "TRX/USDT",  // TRON
-                "AVAX/USDT", // Avalanche
-                "ATOM/USDT", // Cosmos
-                "ALGO/USDT", // Algorand
-                "FTM/USDT",  // Fantom
-                "NEAR/USDT", // NEAR Protocol
-                "VET/USDT",  // VeChain
-                "XTZ/USDT",  // Tezos
-                "EOS/USDT"   // EOS
-        };
-
-        for (int i = 0; i < usdtPairs.length; i++) {
-            String finalURL = BASE_URL + "/latest/finazon/crypto/time_series?ticker=" + usdtPairs[2] + "&interval=1d&page=0&page_size=30&apikey=" + API_KEY;
-           // System.out.println(finalURL);
-            //peticion get
-            try {
-                URL url = new URL(finalURL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("Content-Type", "application/json");
-
-                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuilder response = new StringBuilder();
-                    while ((inputLine = in.readLine()) != null){
-                        response.append(inputLine);
-                    }
-                    in.close();
-                    //Comvertir la respuesta en JSON
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    JsonNode jsonResponse = objectMapper.readTree(response.toString());
-                    //System.out.println("JSON: " + jsonResponse.toPrettyString());
-
-// Iteramos una sola vez porque el primer nodo contiene los datos actuales
-                    if ( jsonResponse.size() > 0) {
-                        // Primer nodo
-                        JsonNode dataArray = jsonResponse.get("data");
-                        JsonNode firstNode =dataArray.get(0);
-                        Crypto crypto = new Crypto();
-
-                        // Asignar valores del primer nodo
-                        crypto.setTicker(usdtPairs[2]); // "BTC-USDT" es el ticker
-                        crypto.setTimestamp(Instant.ofEpochSecond(firstNode.get("t").asLong())); // "t" es el timestamp
-                        crypto.setOpen(firstNode.get("o").asDouble()); // "o" es el open
-                        crypto.setHigh(firstNode.get("h").asDouble()); // "h" es el high
-                        crypto.setLow(firstNode.get("l").asDouble()); // "l" es el low
-                        crypto.setVolume(firstNode.get("v").asDouble()); // "v" es el volume
-
-                        // Crear el histórico para la criptomoneda
-                        HashMap<Instant, Crypto> cryptoHistorical = new HashMap<>();
-                        for (JsonNode historicalNode : dataArray) {
-                            String historicalTicker = usdtPairs[2];
-                            Instant historicalTimestamp = Instant.ofEpochSecond(historicalNode.get("t").asLong());
-                            Double historicalOpen = historicalNode.get("o").asDouble();
-                            Double historicalHigh = historicalNode.get("h").asDouble();
-                            Double historicalLow = historicalNode.get("l").asDouble();
-                            Double historicalVolume = historicalNode.get("v").asDouble();
-
-                            // Crear un objeto Crypto para cada nodo histórico
-                            Crypto historicalCrypto = new Crypto(historicalTicker,historicalTimestamp, historicalOpen, historicalHigh, historicalLow, historicalVolume);
-
-                            // Añadirlo al mapa histórico
-                            cryptoHistorical.put(historicalTimestamp, historicalCrypto);
-                        }
-                        // Asignar el mapa histórico al objeto Crypto principal
-                        crypto.setCrypyoHistorical(cryptoHistorical);
-
-                        // Añadir el objeto Crypto a la lista
-                        System.out.println("Crypto: " + crypto.toString());
-                        cryptoList.add(crypto);
-                    }
-                    //return cryptoList;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        return cryptoList;
-    }*/
+    //Metodo para conseguir las criptomonedas de la API
+    /**
+     * Metodo para conseguir las criptomonedas de la API
+     * @return
+     */
     public ArrayList<Crypto> getCoins(){
          final String urlRapidApi ="https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
          final String apiKeyRapidApi ="925195b3dfmsh3ee477449ad3425p17feffjsn72acfbb0657f";
@@ -198,6 +106,11 @@ public class CryptoRepository {
         return cryptoList;
     }
     //Para conseguir la moneda por su uuid
+    /**
+     * Para conseguir la moneda por su uuid
+     * @param uuiid
+     * @return
+     */
     public Crypto getCoinByuuid(String uuiid){
         for (Crypto crypto : cryptoList) {
             if (crypto.getUuid().equals(uuiid)){
@@ -206,10 +119,20 @@ public class CryptoRepository {
         }
         return null;
     }
+    //metodo para inicializar la lista de criptomonedas
+    /**
+     * Metodo para inicializar la lista de criptomonedas
+     */
     public void initCriptoList(){
         cryptoList = getCoins();
     }
+
     //Para conseguir la moneda por su nombre
+    /**
+     * Para conseguir la moneda por su nombre
+     * @param name
+     * @return
+     */
     public Crypto getCoinByName(String name){
 
         for (Crypto crypto : cryptoList) {
@@ -220,6 +143,12 @@ public class CryptoRepository {
         return null;
     }
     //Metodo para pasar el precio de una cryto de Dolares a Euros
+
+    /**
+     * Método para pasar el precio de una cryto de Dolares a Euros
+     * @param crypto
+     * @return
+     */
     public Crypto convertToEuros(Crypto crypto){
         System.out.println("Precio en dolares: " + crypto.getPrice());
         Double price = Double.parseDouble(crypto.getPrice().replace(",","."));

@@ -110,6 +110,10 @@ public class Inversion {
         this.divisa = divisa;
     }
     //Redondeo a dos decimales
+    /**
+     * Metodo que redondea el precio de la criptomoneda a dos decimales
+     * @return Double
+     */
     public Double roundPrice(){
         Double valor;
         String precio = String.format("%.2f", precioCompraCrypto);
@@ -118,11 +122,19 @@ public class Inversion {
         return valor;
     }
     //Metodo que consigue la cantidad de criptomonedas multiplicando el importe de la inversion por el precio de compra
+    /**
+     * Metodo que calcula la cantidad de criptomonedas que se han comprado
+     */
     public void calcularCantidadCrypto(){
         Double cantidad;
         cantidad = (importeInversion / precioCompraCrypto);
         this.cantidadCrypto = cantidad;
     }
+    //Metodo que consigue la ganancia de la inversion
+    /**
+     * Metodo que calcula la ganancia de la inversion
+     * @return Double
+     */
     public Double getGanancia(){
         Crypto crypto = this.crypto;
         Double precioActual = Double.parseDouble(crypto.getPrice());
