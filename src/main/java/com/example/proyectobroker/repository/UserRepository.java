@@ -373,6 +373,15 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+    //coger las inversiones del usuario
+    /**
+     * Método para conseguir las inversiones del usuario
+     * @param user
+     * @return
+     */
+    public ArrayList<Inversion> getInversionesBD(User user){
+        return new ConnectMysql().getInversionesBD(user);
+    }
     //METODOS PARA LAS IMAGENES
     /**
      * Método para cargar una imagen desde resources
@@ -648,4 +657,11 @@ public class UserRepository {
     }
 
 
+    public void saveInversionesBD(Inversion inversione) {
+        new ConnectMysql().saveInversion(inversione);
+    }
+
+    public ArrayList<Inversion> getUserInversionesBd(User user) {
+        return new ConnectMysql().getInversionesBD(user);
+    }
 }

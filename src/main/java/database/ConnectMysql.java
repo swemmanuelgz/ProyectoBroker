@@ -54,7 +54,6 @@ public class ConnectMysql {
     public Connection conectar(){
         Connection con = null;
 
-        //TODO: cambiar a sqlite
         try {
             con = DriverManager.getConnection(URL);
             System.out.println(Main.ANSI_GREEN+"Conexión establecida"+Main.ANSI_RESET);
@@ -182,39 +181,60 @@ public class ConnectMysql {
             e.printStackTrace();
         }
     }
-    public ArrayList<Inversion> getInversionesBD(User user) {
+     public ArrayList<Inversion> getInversionesBD(User user) {
         int id = user.getId();
-        String query = "SELECT * FROM inversiones WHERE idusername = "+id;
-        PreparedStatement ps;
-        try {
-            ps = conectar().prepareStatement(query);
-            ps.executeQuery();
-            //cogemos el usuario de la peticion
-            ArrayList<Inversion> inversiones = new ArrayList<>();
-            while (ps.getResultSet().next()) {
-                Inversion inversion = new Inversion();
-                inversion.setUser(user);
-                inversion.setCrypto(cryptoController.getCoinByName(ps.getResultSet().getString("crypto")));
-                inversion.setTransaccion(ps.getResultSet().getString("transaccion"));
-                inversion.setFechaInversion(ps.getResultSet().getDate("fecha"));
-                inversion.setPrecioCompraCrypto(ps.getResultSet().getDouble("precio_compra"));
-                inversion.setImporteInversion(ps.getResultSet().getDouble("importe"));
-                inversion.setTipo(ps.getResultSet().getString("tipo"));
-                inversion.setDivisa(ps.getResultSet().getString("divisa"));
-                inversion.setVendida(ps.getResultSet().getBoolean("vendida"));
+        String query = "SELECT * FROM inversiones WHERE idusername = ?";
+        ArrayList<Inversion> inversiones = new ArrayList<>();
 
-                inversion.calcularCantidadCrypto();
-                //añadimos la inversion a la lista
-                inversiones.add(inversion);
+        try (Connection con = conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Inversion inversion = new Inversion();
+                    inversion.setUser(user);
+                    inversion.setCrypto(cryptoController.getCoinByName(rs.getString("crypto")));
+                    inversion.setTransaccion(rs.getString("transaccion"));
+                    inversion.setFechaInversion(rs.getDate("fecha"));
+                    inversion.setPrecioCompraCrypto(rs.getDouble("precio_compra"));
+                    inversion.setImporteInversion(rs.getDouble("importe"));
+                    inversion.setTipo(rs.getString("tipo"));
+                    inversion.setDivisa(rs.getString("divisa"));
+                    inversion.setVendida(rs.getBoolean("vendida"));
+
+                    inversion.calcularCantidadCrypto();
+                    inversiones.add(inversion);
+                    System.out.println(Main.ANSI_GREEN + "Inversión encontrada: " + inversion.getCrypto().getName() + Main.ANSI_RESET);
+                }
             }
-            System.out.println(Main.ANSI_GREEN + "Inversiones encontradas" + Main.ANSI_RESET);
-
-            ps.close();
-            return inversiones;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return inversiones;
+    }
+    //metodo para insertar una inversion en la base de datos
+    public void saveInversion(Inversion inversion) {
+        String query = "INSERT INTO inversiones (idusername, transaccion, fecha, precio_compra, importe, tipo, divisa, vendida, crypto) VALUES (?,?,?,?,?,?,?,?,?)";
+        PreparedStatement ps;
+        try {
+            ps = conectar().prepareStatement(query);
+            ps.setInt(1, inversion.getUser().getId());
+            ps.setString(2, inversion.getTransaccion());
+            ps.setDate(3, new Date(inversion.getFechaInversion().getTime()));
+            ps.setDouble(4, inversion.getPrecioCompraCrypto());
+            ps.setDouble(5, inversion.getImporteInversion());
+            ps.setString(6, inversion.getTipo());
+            ps.setString(7, inversion.getDivisa());
+            ps.setBoolean(8, inversion.getVendida());
+            ps.setString(9, inversion.getCrypto().getName());
+            ps.executeUpdate();
+            System.out.println(Main.ANSI_GREEN+"Inversión guardada: "+inversion.getCrypto().getName()+Main.ANSI_RESET);
+            ps.close();
+        } catch (SQLException e) {
+            AlertView alertView = new AlertView("Error", "Error al guardar la inversión", "Error al guardar la inversión\n"+e.getMessage());
+            alertView.mostrarAlerta();
+            System.out.println(Main.ANSI_RED+"Error al guardar la inversión"+Main.ANSI_RESET);
+        }
     }
 }

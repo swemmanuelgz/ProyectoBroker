@@ -1,5 +1,6 @@
 package com.example.proyectobroker.controller;
 
+import com.example.proyectobroker.Main;
 import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.repository.UserRepository;
@@ -22,7 +23,14 @@ public class InversionController {
         System.out.println("Getting user inversions");
         return userRepository.getUserInversiones(user);
     }
-
+    //MNETODO GUARDAR INVERSIONES BD
+    /**
+     * Metodo para guardar inversiones en la base de datos
+     * @param inversion
+     */
+    public void saveInversionesBd(Inversion inversion) {
+        userRepository.saveInversionesBD(inversion);
+    }
     //Metodo para guardar una inversion
     /**
      * Metodo para guardar una inversion
@@ -39,18 +47,33 @@ public class InversionController {
     public void updateInversion(Inversion inversion) {
         userRepository.updateInvsersion(inversion.getTransaccion());
     }
-    //metodo para coger inversiones que sean de compra
+    //metodo para coger inversiones que sean de compra de la base de datos
     /**
      * Metodo para coger inversiones que sean de compra
      * @param user
      * @return
      */
+    public ArrayList<Inversion> getComprasBd(User user) {
+        ArrayList<Inversion> compras = userRepository.getUserInversionesBd(user);
+        ArrayList<Inversion> comprasFiltradas = new ArrayList<>();
+        System.out.println(Main.ANSI_PURPLE + "Filtrando Compras" + Main.ANSI_RESET);
+        for (Inversion inversion : compras) {
+            if ( !inversion.getVendida()) {
+                comprasFiltradas.add(inversion);
+            }
+        }
+        return comprasFiltradas;
+    }
+    //metodo para coger inversiones que sean de compra de la memoria
+    /**
+     * Metodo para coger inversiones que sean de compra de la memoria
+     * @param user
+     * @return
+     */
     public ArrayList<Inversion> getCompras(User user) {
         ArrayList<Inversion> compras = new ArrayList<>();
-
         for (Inversion inversion : getUserInversions(user)) {
-            //si la inversion es de compra y no esta vendida la añadimos a la lista
-            if (inversion.getTipo().equals("compra") && !inversion.getVendida()) {
+            if (inversion.getTipo().equals("compra")) {
                 compras.add(inversion);
             }
         }
@@ -70,5 +93,21 @@ public class InversionController {
             }
         }
         return ventas;
+    }
+    //TODO: metodo para coger las inversiones que esten vendidas de la base de datos
+    //metodo para coger las inversiones que esten vendidas de la base de datos
+    /**
+     * Metodo para coger las inversiones que esten vendidas de la base de datos
+     * @param user
+     * @return
+     */
+    public ArrayList<Inversion> getVendidas(User user) {
+        ArrayList<Inversion> vendidas = new ArrayList<>();
+        for (Inversion inversion : getUserInversions(user)) {
+            if (inversion.getVendida()) {
+                vendidas.add(inversion);
+            }
+        }
+        return vendidas;
     }
 }
