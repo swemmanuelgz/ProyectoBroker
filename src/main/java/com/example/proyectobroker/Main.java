@@ -22,7 +22,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         System.out.println("Iniciando aplicación");
-
+        ConnectMysql connectMysql = new ConnectMysql();
+        connectMysql.verificarConexion();
         stage.setTitle("Login");
         new LoginController().showEstaPantalla(stage);
 

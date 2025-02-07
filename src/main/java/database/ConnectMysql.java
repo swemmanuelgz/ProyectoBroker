@@ -8,10 +8,8 @@ import com.example.proyectobroker.model.UserConfig;
 import com.example.proyectobroker.view.AlertView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ConnectMysql {
@@ -20,13 +18,39 @@ public class ConnectMysql {
    // private final String username ="root";
    // private final String password = "";
    // private final String driver = "com.mysql.cj.jdbc.Driver";
-    private final String URL = "jdbc:sqlite:database/bdbrokeremmanuel.db";
+    private final String URL = "jdbc:sqlite:src/main/java/database/bdbrokeremmanuel.db";
 
     private CryptoController cryptoController = new CryptoController();
 
     public ConnectMysql() {
 
     }
+    public void verificarConexion() {
+        try (Connection con = conectar()) {
+            if (con != null) {
+                System.out.println("✅ Conexión establecida con SQLite.");
+
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("PRAGMA database_list;");
+
+                while (rs.next()) {
+                    System.out.println("📂 Base de datos en uso: " + rs.getString("file"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error al conectar a la base de datos: " + e.getMessage());
+        }
+
+        File dbFile = new File("bdbrokeremmanuel.db");
+        System.out.println("Ruta esperada: " + dbFile.getAbsolutePath());
+
+        if (!dbFile.exists()) {
+            System.out.println("⚠️ El archivo de la base de datos NO existe en esa ruta.");
+        } else {
+            System.out.println("✅ El archivo de la base de datos sí existe.");
+        }
+    }
+
     public Connection conectar(){
         Connection con = null;
 
@@ -42,77 +66,86 @@ public class ConnectMysql {
     }
     public boolean checkUserExists(User user){
         String nombre = user.getUsername();
-        String query = "SELECT * FROM users WHERE username = '"+nombre+"'";
-        PreparedStatement ps;
-        try {
-           ps = conectar().prepareStatement(query);
-              ps.executeQuery();
-              //si hay resultados
-                if (ps.getResultSet().next()){
-                    System.out.println(Main.ANSI_GREEN+"El usuario ya existe: "+user.getUsername()+Main.ANSI_RESET);
-                    return true;
-                }else {
-                    System.out.println(Main.ANSI_RED+"El usuario no existe: "+user.getUsername()+Main.ANSI_RESET);
-                    return false;
-                }
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (Connection con = conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("✅ Usuario encontrado: " + nombre);
+                return true;
+            } else {
+                System.out.println("❌ Usuario no encontrado: " + nombre);
+                return false;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("❌ Error en checkUserExists: " + e.getMessage());
         }
         return false;
     }
+
     public User getUserBD(User user) {
         String nombre = user.getUsername();
-        String password = user.getPassword();
-        String query = "SELECT * FROM users WHERE username LIKE '"+nombre+"'";
-        PreparedStatement ps;
-        try {
-            ps = conectar().prepareStatement(query);
-            ps.executeQuery();
-            //cogemos el usuario de la peticion
-            if (ps.getResultSet().next()) {
-                user.setId(ps.getResultSet().getInt("idusername"));
-                user.setUsername(ps.getResultSet().getString("username"));
-                user.setPassword(ps.getResultSet().getString("password"));
-                System.out.println(Main.ANSI_GREEN + "Usuario encontrado: " +user.getUsername()+ Main.ANSI_RESET);
-                return user;
-            }else {
-                System.out.println(Main.ANSI_RED + "Usuario no encontrado: " +user.getUsername()+ Main.ANSI_RESET);
-            }
+        // Utilizamos un parámetro en lugar de concatenar la cadena para evitar inyección SQL
+        String query = "SELECT * FROM users WHERE username LIKE ?";
+        try (Connection con = conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
+            ps.setString(1, nombre);  // Asigna el valor al parámetro
+
+            // Ejecuta la consulta y guarda el ResultSet en una variable
+            try (ResultSet rs = ps.executeQuery()) {
+                // Si hay resultados, extrae los datos del usuario
+                if (rs.next()) {
+                    user.setId(rs.getInt("idusername"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    System.out.println(Main.ANSI_GREEN + "Usuario encontrado: " + user.getUsername() + Main.ANSI_RESET);
+                    return user;
+                } else {
+                    System.out.println(Main.ANSI_RED + "Usuario no encontrado: " + user.getUsername() + Main.ANSI_RESET);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
+
 
     public UserConfig getUserConfigBD(User user) {
         int id = user.getId();
-        String query = "SELECT * FROM config WHERE iduser = "+id;
-        PreparedStatement ps;
-        try {
-            ps = conectar().prepareStatement(query);
-            ps.executeQuery();
-            //cogemos el usuario de la peticion
-            if (ps.getResultSet().next()) {
-                UserConfig userConfig = new UserConfig();
-                userConfig.setUser(user);
-                //userConfig.setProfileImage(ps.getResultSet().getBlob("img"));
-                userConfig.setDivisa(ps.getResultSet().getString("divisa"));
-                userConfig.setSaldo(ps.getResultSet().getDouble("saldo"));
-                System.out.println(Main.ANSI_GREEN + "Configuración encontrada" + Main.ANSI_RESET);
+        String query = "SELECT * FROM config WHERE iduser = ?";
 
-                ps.close();
-                return userConfig;
-            }else {
-                System.out.println(Main.ANSI_GREEN + "Configuración no encontrada" + Main.ANSI_RESET);
+        try (Connection con = conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            // Asigna el parámetro
+            ps.setInt(1, id);
+
+            // Ejecuta la consulta y almacena el ResultSet
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    UserConfig userConfig = new UserConfig();
+                    userConfig.setUser(user);
+                    // Si en algún momento deseas recuperar la imagen, descomenta la siguiente línea:
+                    // userConfig.setProfileImage(rs.getBlob("img"));
+                    userConfig.setDivisa(rs.getString("divisa"));
+                    userConfig.setSaldo(rs.getDouble("saldo"));
+                    System.out.println(Main.ANSI_GREEN + "Configuración encontrada" + Main.ANSI_RESET);
+                    return userConfig;
+                } else {
+                    System.out.println(Main.ANSI_GREEN + "Configuración no encontrada" + Main.ANSI_RESET);
+                }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     //metodo para insertar un usuario
     public void createUser(User user) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
