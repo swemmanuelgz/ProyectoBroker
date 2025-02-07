@@ -479,8 +479,8 @@ public class UserRepository {
                     inversion.setVendida(vendida); //si está vendida
                     //Añadimos la inversion a la lista
                     userInversionesList.add(inversion);
-                    System.out.println("Inversion encontrada: "+inversion.getTransaccion() +"----"+inversion.getFechaInversion());
-                    logger.log(System.Logger.Level.INFO, "Inversion encontrada: "+inversion.getVendida()+"---"+inversion.getCrypto().getName());
+                   // System.out.println("Inversion encontrada: "+inversion.getTransaccion() +"----"+inversion.getFechaInversion());
+                  //  logger.log(System.Logger.Level.INFO, "Inversion encontrada: "+inversion.getVendida()+"---"+inversion.getCrypto().getName());
                 }
             }
         }catch (NullPointerException ex){
