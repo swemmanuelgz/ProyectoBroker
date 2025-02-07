@@ -148,5 +148,15 @@
   "importe" : 300.0,
   "tipo" : "compra",
   "divisa" : "EUR",
-  "vendida" : "false"
+  "vendida" : true
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Tue Jan 28 21:41:33 CET 2025",
+  "transaccion" : "A1M8S6A1D9L2C0D0A8G7",
+  "crypto" : "Ethereum",
+  "precioCompraCrypto" : 3294.3413391053805,
+  "importe" : -165.7416302767765,
+  "tipo" : "venta",
+  "divisa" : "EUR",
+  "vendida" : "true"
 } ]

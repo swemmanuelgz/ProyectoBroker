@@ -28,6 +28,9 @@ public class CryptoController {
             return cryptoRepository.getCoins();
 
     }
+    public Crypto getCoinByName(String name){
+        return cryptoRepository.getCoinByName(name);
+    }
     //metodo para converit una criptomoneda a euros
     /**
      * Metodo para convertir una criptomoneda a euros

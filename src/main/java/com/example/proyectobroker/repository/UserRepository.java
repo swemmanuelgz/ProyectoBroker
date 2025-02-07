@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import database.ConnectMysql;
 import javafx.scene.image.Image;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -76,7 +78,10 @@ public class UserRepository {
         }
         return false; //usuario no existe
     }
-
+    public boolean checkuserExistsBd(User user){
+        ConnectMysql connectMysql = new ConnectMysql();
+        return connectMysql.checkUserExists(user);
+    }
     /**
      *metodo para crear un usuario
      * @param userInsert
@@ -164,6 +169,10 @@ public class UserRepository {
         }
         //return usersList;
     }
+    public User getUserBD(User user){
+        Connection conexion = new ConnectMysql().conectar();
+        return new ConnectMysql().getUserBD(user);
+    }
 
     public ArrayList<User> getUsersList() {
         getAllUsers();
@@ -233,6 +242,11 @@ public class UserRepository {
         return userConfig;
     }
 
+    //Creamos el metodo para guardar la configuracion PREDETERMINADA del usuario
+    public void createUserConfigBD(User user){
+        Connection conexion = new ConnectMysql().conectar();
+        new ConnectMysql().createUserConfig(user);
+    }
     //Este metodo es el segundo que se emplea para guardar la configuracion del usuario
     //Despues llamamos al otro para soobresicbir los datos del usuario
     /**
@@ -305,6 +319,15 @@ public class UserRepository {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    public void createUserconfigBD(User user){
+        new ConnectMysql().createUserConfig(user);
+    }
+    public UserConfig getUserConfigBD(User user) {
+        return new ConnectMysql().getUserConfigBD(user);
+    }
+    public void createUserBD(User user){
+        new ConnectMysql().createUser(user);
     }
     //Para actualizar al usuario y la configuracion usamos este metodo que a su vez emplea el otro
     //Creamos el metodo para sobreescribir los datos del usuario del archivo data.json
@@ -623,4 +646,6 @@ public class UserRepository {
         }
         return false;
     }
+
+
 }

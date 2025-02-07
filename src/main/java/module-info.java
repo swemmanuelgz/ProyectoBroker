@@ -16,8 +16,8 @@ module com.example.proyectobroker {
     requires io.grpc;
     requires javafxsvg;
     requires org.girod.javafx.svgimage;
-    requires java.logging;
     requires java.desktop;
+    requires java.sql.rowset;
 
     opens com.example.proyectobroker to javafx.fxml;
     exports com.example.proyectobroker;

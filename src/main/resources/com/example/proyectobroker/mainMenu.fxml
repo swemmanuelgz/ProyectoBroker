@@ -26,7 +26,7 @@
                         <Font name="Arial Black" size="21.0" />
                      </font>
                   </Label>
-                  <ListView id="listInversionesActivos" fx:id="listInversionesActivos" layoutX="14.0" layoutY="64.0" prefHeight="475.0" prefWidth="200.0" />
+                  <ListView id="listInversionesActivos" fx:id="listInversionesActivos" layoutX="14.0" layoutY="64.0" prefHeight="523.0" prefWidth="201.0" />
                   <StackedAreaChart id="stonkActivos" fx:id="stonkActivos" layoutX="215.0" layoutY="86.0" prefHeight="403.0" prefWidth="562.0">
                     <xAxis>
                       <CategoryAxis fx:id="timeAxis" side="BOTTOM" tickLabelFill="#f28006" />

@@ -88,14 +88,16 @@ public class LoginController {
     @FXML
     public void login() {
         AlertView alertView;
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = new User(txtUsername.getText(), txtPassword.getText());
         user.setUsername(txtUsername.getText());
         user.setPassword(txtPassword.getText());
         System.out.println("Username: " + user.getUsername());
         System.out.println("Password: " + user.getPassword());
+
         //Hacemos el intento de login
-        user= userController.login(user);
+        //este es el login anterior , ahora usaremos el de la base de datos
+       // user= userController.login(user);
+        user = userController.loginBD(user);
         if (user == null) {
             alertView = new AlertView("Error", "Error al logearse", "Error al logearse");
             alertView.mostrarAlerta();

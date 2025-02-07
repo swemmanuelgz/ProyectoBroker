@@ -13,4 +13,19 @@
 }, {
   "username" : "jordi",
   "password" : "$2a$10$Uso92NIJ80bio0BMceCFMehNFjqXdIBr0.NIKhgkZLb/EBmaVmxBy"
+}, {
+  "username" : "joselin",
+  "password" : "$2a$10$gazw/wFr0MZp6IFb7WIEm.UVFTt.o7.HoPpXbuuWFr8hYiku5Ng/y"
+}, {
+  "username" : "capitan",
+  "password" : "$2a$10$UiTMP8/XG7PFYjT.wdhrV.xQmFQOryYDjaPdZ2VBQaEwWqiVdfS/q"
+}, {
+  "username" : "ariadna",
+  "password" : "$2a$10$b3GZzB6y3EkiLt/wGp1atuuPQrspZa6fu/vcX3M.0EILaGPznASd."
+}, {
+  "username" : "anselmo",
+  "password" : "$2a$10$M3Y7qEcH0o7YWpM4RX5DGeCcv5a5qLQg12AmzxRlUmFp7/0yTf5.q"
+}, {
+  "username" : "aleron",
+  "password" : "$2a$10$VG1xaSSWzB02dKecLYFkJO5nMuKrOZpoXsLOb5PihjElnTsqSE6.O"
 } ]

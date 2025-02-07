@@ -347,7 +347,7 @@ public class MainMenuController {
     private void initConfig(){
         //Cargamos la configuración del usuario
         System.out.println("Usuario que recibimos "+userLogged.getUsername());
-        userLogged.setUserConfig(userController.getUserConfig(userLogged));
+        userLogged.setUserConfig(userController.getUserConfigBD(userLogged));
         System.out.println("Usuario logeado "+userLogged.getUsername());
         System.out.println("Configuración del usuario "+userLogged.getUserConfig().toString());
         cmbDivisa.getItems().addAll("USD","EUR");

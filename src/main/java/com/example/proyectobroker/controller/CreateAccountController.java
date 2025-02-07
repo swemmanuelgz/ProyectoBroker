@@ -1,5 +1,6 @@
 package com.example.proyectobroker.controller;
 
+import com.example.proyectobroker.Main;
 import com.example.proyectobroker.exceptions.Exceptions;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.utils.Constantes;
@@ -48,13 +49,23 @@ public class CreateAccountController {
             //Chequeamos que las contraseñas coincidan
             exceptions.checkPasswordMatch(txtPassword.getText(), txtPasswordCheck.getText());
 
-            if (userController.checkUserExists(usuario)) {
-                System.out.println("El usuario ya existe");
+            //ahora lo creamos con la base de datos
+            if (userController.checkUserExistsBd(usuario)) {
+                System.out.println("El usuario ya existe en la BD");
+                AlertView alertView = new AlertView("Error", "El usuario ya existe", "El usuario ya existe");
+                alertView.mostrarAlerta();
                 return;
             } else {
-                userController.createUser(usuario);
+                userController.createUserBD(usuario);
                 System.out.println("Usuario creado");
+                //creamos la configuracion del usuario , cogemos el usuario de la bd para tener su id
+                User userBd = userController.getUserBD(usuario);
+                System.out.println(Main.ANSI_GREEN +"Usuario de la bd: "+userBd.getUsername()+Main.ANSI_RESET);
+                //creamos la configuracion del usuario por defecto
+                userController.createUserConfigBd(userBd);
+
                 AlertView alertView = new AlertView("Usuario creado", "Usuario creado con éxito", "El usuario ha sido creado con éxito");
+                alertView.mostrarAlerta();
             }
 
         });
@@ -108,10 +119,26 @@ public class CreateAccountController {
         btnCreateAccount.setOnAction(e -> {
 
              usuario = new User(txtUsername.getText(),txtPassword.getText());
-
+//            //ahora lo creamos con la base de datos
+//            if (userController.checkUserExistsBd(usuario)) {
+//                System.out.println("El usuario ya existe en la BD");
+//                AlertView alertView = new AlertView("Error", "El usuario ya existe", "El usuario ya existe");
+//                alertView.mostrarAlerta();
+//                return;
+//            } else {
+//                userController.createUserBD(usuario);
+//                System.out.println("Usuario creado");
+//                AlertView alertView = new AlertView("Usuario creado", "Usuario creado con éxito", "El usuario ha sido creado con éxito");
+//                alertView.mostrarAlerta();
+//                //creamos la configuracion del usuario , cogemos el usuario de la bd para tener su id
+//                User userBd = userController.getUserBD(usuario);
+//                System.out.println(Main.ANSI_GREEN +"Usuario de la bd: "+userBd.getUsername()+Main.ANSI_RESET);
+//                //creamos la configuracion del usuario por defecto
+//                userController.createUserConfigBd(userBd);
+//            }
 
             if (userController.checkUserExists(usuario)) {
-                System.out.println("El usuario ya existe");
+                System.out.println("El usuario ya existe en el JSON");
                 AlertView alertView = new AlertView("Error", "El usuario ya existe", "El usuario ya existe");
                 return;
             } else {
@@ -120,6 +147,7 @@ public class CreateAccountController {
                 AlertView alertView = new AlertView("Usuario creado", "Usuario creado con éxito", "El usuario ha sido creado con éxito");
                 alertView.mostrarAlerta();
             }
+
 
         });
 

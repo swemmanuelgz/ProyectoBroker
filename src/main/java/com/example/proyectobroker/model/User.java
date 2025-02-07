@@ -2,6 +2,7 @@ package com.example.proyectobroker.model;
 
 
 public class User {
+    private int id;
     private String username;
     private String password;
     private UserConfig userConfig;
@@ -19,6 +20,21 @@ public class User {
     }
 
     public User() {
+    }
+
+    public User(int id, String username, String password, UserConfig userConfig) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.userConfig = userConfig;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -48,7 +64,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", userConfig=" + userConfig +
                 '}';
