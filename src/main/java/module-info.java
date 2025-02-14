@@ -18,6 +18,8 @@ module com.example.proyectobroker {
     requires org.girod.javafx.svgimage;
     requires java.desktop;
     requires java.sql.rowset;
+    requires kernel;
+    requires layout;
 
     opens com.example.proyectobroker to javafx.fxml;
     exports com.example.proyectobroker;
