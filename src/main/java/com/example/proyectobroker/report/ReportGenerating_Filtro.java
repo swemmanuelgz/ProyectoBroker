@@ -10,6 +10,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import database.ConnectMysql;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +25,11 @@ import java.sql.Statement;
 public class ReportGenerating_Filtro {
     public void generateReport(Connection conn, String nombre) {
         try {
+            //nos aseguramos de que exista el fichero o si no lo creamos
+            File reportsFile = new File("REPORTS");
+            if (!reportsFile.exists()) {
+                reportsFile.mkdir();
+            }
             PdfWriter writer = new PdfWriter(new FileOutputStream("REPORTS/reporte_" + nombre + ".pdf"));
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document document = new Document(pdfDoc);

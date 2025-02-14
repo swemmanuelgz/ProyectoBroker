@@ -5,12 +5,15 @@ import com.example.proyectobroker.model.Crypto;
 import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.model.UserConfig;
+import com.example.proyectobroker.report.ReportGenerating;
+import com.example.proyectobroker.report.ReportGenerating_Filtro;
 import com.example.proyectobroker.repository.UserRepository;
 import com.example.proyectobroker.utils.Constantes;
 import com.example.proyectobroker.utils.GradientAnimation;
 import com.example.proyectobroker.utils.PantallaUtils;
 import com.example.proyectobroker.utils.TabTransition;
 import com.example.proyectobroker.view.AlertView;
+import database.ConnectMysql;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -93,6 +97,8 @@ public class MainMenuController {
     private Button btnSaveChanges;
     @FXML
     private Button btnChangeImage;
+    @FXML
+    private Button btnReport;
     @FXML
     private ImageView imgProfile;
     @FXML
@@ -202,6 +208,16 @@ public class MainMenuController {
         int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres vender esta criptomoneda?","Venta de criptomoneda",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
         if (respuesta == JOptionPane.YES_OPTION){
             venderCrypto(inversion);
+        }
+    });
+    btnReport.setOnAction( event ->{
+        int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres generar el reporte?","Generar reporte",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION){
+            String nombre = userLogged.getUsername();
+            Connection connectMysql = new ConnectMysql().conectar();
+            ReportGenerating_Filtro reportGenerating = new ReportGenerating_Filtro();
+            reportGenerating.generateReport(connectMysql,nombre);
         }
     });
     listHistorial.setOnMouseClicked(event -> {
