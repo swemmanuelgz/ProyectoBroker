@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -169,7 +170,11 @@ public class MainMenuController {
         logout();
     });
     btnSaveChanges.setOnAction(event -> {
-        saveChanges();
+        //CONFIRMACION DE GUARDADO
+        int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres guardar los cambios?","Guardar cambios",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        if (respuesta == JOptionPane.YES_OPTION){
+            saveChanges();
+        }
     });
     btnChangeImage.setOnAction(event -> {
         changeImage();
@@ -179,12 +184,25 @@ public class MainMenuController {
             alertView = new AlertView("Error","Introduce un importe","Introduce un importe");
             alertView.mostrarAlerta();
         }
-        compraCrypto();
+        //CONFIRMACION DE COMPRA
+        int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres comprar esta criptomoneda?","Compra de criptomoneda",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        if (respuesta == JOptionPane.YES_OPTION){
+            compraCrypto();
+        }
     });
     //Listener para las ventas
     btnVender.setOnAction(event -> {
         Inversion inversion = (Inversion) listInversionesActivos.getSelectionModel().getSelectedItem();
-        venderCrypto(inversion);
+        if (inversion == null){
+            alertView = new AlertView("Error","Selecciona una criptomoneda para vender","Selecciona una criptomoneda para vender");
+            alertView.mostrarAlerta();
+            return;
+        }
+        //CONFIRMACION DE VENTA
+        int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres vender esta criptomoneda?","Venta de criptomoneda",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        if (respuesta == JOptionPane.YES_OPTION){
+            venderCrypto(inversion);
+        }
     });
     listHistorial.setOnMouseClicked(event -> {
         Inversion inversion = (Inversion) listHistorial.getSelectionModel().getSelectedItem();
@@ -515,8 +533,14 @@ public class MainMenuController {
                 logger.log(Level.INFO,"Usuario diferente en nombres: "+userLogged.getUsername()+" "+txtUser.getText());
                 user.getUserConfig().setLastname(userLogged.getUsername());
 
-            //guardamos la configuracion del usuario
-            userController.updateUserConfig(user);
+            try {
+                //guardamos la configuracion del usuario
+                userController.updateUserConfig(user);
+                //ahora en la base de datos
+                userController.updateUserBd(user);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             logger.log(Level.INFO,"Usuario actualizado");
             alertView = new AlertView("Información","Cambios guardados","Cambios guardados");
             alertView.mostrarAlerta();
@@ -587,6 +611,7 @@ public class MainMenuController {
 
         System.out.println("Saldo restante : "+saldoRestante);
         //Subimos la inversion a la base de datos
+        inversionController.saveInversionesBd(inversion);
         inversionController.saveInversion(inversion);
         //Actualizamos el saldo del usuario
         userController.updateUserConfig(userLogged);

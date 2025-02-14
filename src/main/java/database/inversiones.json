@@ -159,4 +159,24 @@
   "tipo" : "venta",
   "divisa" : "EUR",
   "vendida" : "true"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Thu Feb 13 16:11:00 CET 2025",
+  "transaccion" : "W7C1T6S3G0I2B3W6I7D5",
+  "crypto" : "Cardano",
+  "precioCompraCrypto" : 0.756204809630412,
+  "importe" : 400.0,
+  "tipo" : "compra",
+  "divisa" : "EUR",
+  "vendida" : "false"
+}, {
+  "username" : "emmanuel",
+  "fecha" : "Thu Feb 13 17:00:12 CET 2025",
+  "transaccion" : "W6C8I1G2K0H9F5G2T9H5",
+  "crypto" : "Cardano",
+  "precioCompraCrypto" : 0.7669034422100313,
+  "importe" : 400.0,
+  "tipo" : "compra",
+  "divisa" : "EUR",
+  "vendida" : "false"
 } ]

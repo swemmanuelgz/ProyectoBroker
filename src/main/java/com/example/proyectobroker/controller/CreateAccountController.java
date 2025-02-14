@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class CreateAccountController {
@@ -136,6 +137,12 @@ public class CreateAccountController {
 //                //creamos la configuracion del usuario por defecto
 //                userController.createUserConfigBd(userBd);
 //            }
+            //Confirmacion de la creacion de la cuenta
+            int rerspuesta = new JOptionPane().showConfirmDialog(null, "¿Desea crear la cuenta?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            //Early return
+            if (rerspuesta == JOptionPane.NO_OPTION) {
+                return;
+            }
 
             if (userController.checkUserExists(usuario)) {
                 System.out.println("El usuario ya existe en el JSON");
@@ -143,6 +150,7 @@ public class CreateAccountController {
                 return;
             } else {
                 userController.createUser(usuario);
+                userController.createUserBD(usuario);
                 System.out.println("Usuario creado");
                 AlertView alertView = new AlertView("Usuario creado", "Usuario creado con éxito", "El usuario ha sido creado con éxito");
                 alertView.mostrarAlerta();

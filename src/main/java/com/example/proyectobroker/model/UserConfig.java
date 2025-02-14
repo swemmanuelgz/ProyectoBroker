@@ -2,6 +2,12 @@ package com.example.proyectobroker.model;
 
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+
 public class UserConfig {
     private User user;
     private String divisa;
@@ -49,6 +55,23 @@ public class UserConfig {
 
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
+    }
+    //metodo para pasar un Bloob a una imagen
+    /**
+     * Metodo para pasar un Bloob a una imagen
+     * @param image
+     * @return
+     */
+    public Image convertToImage(Blob image) throws SQLException {
+        // leer los bytes del Blob
+        byte[] imagebytes = image.getBytes(1, (int) image.length());
+
+        // convertir byte-Array into InputStream
+        ByteArrayInputStream bis = new ByteArrayInputStream(imagebytes);
+
+        // convertir InputStream into Image
+        return new Image(bis);
+
     }
 
     public String getLastname() {

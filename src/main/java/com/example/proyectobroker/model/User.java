@@ -60,6 +60,10 @@ public class User {
     public void setUserConfig(UserConfig userConfig) {
         this.userConfig = userConfig;
     }
+    public void loadProfileImage(){
+        String pathProfileImage = "/com/example/proyectobroker/img/profile/";
+        String userProfileImage = pathProfileImage + this.username + ".png";
+    }
 
     @Override
     public String toString() {

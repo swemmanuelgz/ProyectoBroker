@@ -79,5 +79,8 @@ public class UserController {
     public void updateUserConfig(User user) {
         userRepository.updateUser(user.getUserConfig());
     }
+    public void updateUserBd(User user) {
+        userRepository.updateUserBD(user);
+    }
 
 }

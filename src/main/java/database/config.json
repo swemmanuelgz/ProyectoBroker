@@ -1,9 +1,9 @@
 [ {
   "username" : "emmanuel",
-  "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
+  "password" : "$2a51058KvgsFIQ6bUVY5G8U15AuJKwPTzhCwwyJJdeU9taNHXWbCQnRMA2",
   "img" : "png",
   "divisa" : "EUR",
-  "saldo" : 178322.31622802437
+  "saldo" : 177756.5745977476
 }, {
   "username" : "admin",
   "password" : "$2a$10$8iKygsFtQsbLVY5G8UtS4uuKwPTzhCwwyJJdeU9taNHXNbCQnRMA2",
@@ -18,13 +18,25 @@
   "saldo" : 1900.0
 }, {
   "username" : "jorge",
-  "password" : "$2a$10$ScIqzganTIEig0.ajL6lpOblXR7vZYbN8HlFw5T1pqmdGmWL3/eUe",
+  "password" : "$2a5105cfdgganTIEig0.gk6jbObXR7xZrMNBffwSTIqpmdGmWl3jlcLe",
   "img" : "png",
   "divisa" : "EUR",
   "saldo" : 1700.0
 }, {
   "username" : "jordi",
   "password" : "$2a$10$Uso92NIJ80bio0BMceCFMehNFjqXdIBr0.NIKhgkZLb/EBmaVmxBy",
+  "img" : false,
+  "divisa" : "USD",
+  "saldo" : 700.0
+}, {
+  "username" : "jorgecastro",
+  "password" : "$2a5105cfdgganTIEig0.gk6jbObXR7xZrMNBffwSTIqpmdGmWl3jlcLe",
+  "img" : "png",
+  "divisa" : "EUR",
+  "saldo" : 1700.0
+}, {
+  "username" : "jordiperez",
+  "password" : "$2a5105Uso92NJ80b0b0eKeCFMeHNFjx/dIBr0.NKhgkZLh/EBmaVmxBy",
   "img" : false,
   "divisa" : "USD",
   "saldo" : 700.0

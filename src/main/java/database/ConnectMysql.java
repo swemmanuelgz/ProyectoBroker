@@ -5,7 +5,9 @@ import com.example.proyectobroker.controller.CryptoController;
 import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.model.UserConfig;
+import com.example.proyectobroker.repository.UserRepository;
 import com.example.proyectobroker.view.AlertView;
+import javafx.scene.image.Image;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.File;
@@ -117,6 +119,7 @@ public class ConnectMysql {
     public UserConfig getUserConfigBD(User user) {
         int id = user.getId();
         String query = "SELECT * FROM config WHERE iduser = ?";
+        UserRepository userRepository = new UserRepository();
 
         try (Connection con = conectar();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -130,9 +133,12 @@ public class ConnectMysql {
                     UserConfig userConfig = new UserConfig();
                     userConfig.setUser(user);
                     // Si en algún momento deseas recuperar la imagen, descomenta la siguiente línea:
-                    // userConfig.setProfileImage(rs.getBlob("img"));
+                    //Image image = userConfig.convertToImage(rs.getBlob("img"));
+                   //  userConfig.setProfileImage(image);
                     userConfig.setDivisa(rs.getString("divisa"));
                     userConfig.setSaldo(rs.getDouble("saldo"));
+                    //imagen de perfil
+                    userConfig.setProfileImage(userRepository.getUserConfig(user).getProfileImage());
                     System.out.println(Main.ANSI_GREEN + "Configuración encontrada" + Main.ANSI_RESET);
                     return userConfig;
                 } else {
@@ -229,12 +235,51 @@ public class ConnectMysql {
             ps.setBoolean(8, inversion.getVendida());
             ps.setString(9, inversion.getCrypto().getName());
             ps.executeUpdate();
-            System.out.println(Main.ANSI_GREEN+"Inversión guardada: "+inversion.getCrypto().getName()+Main.ANSI_RESET);
+            System.out.println(Main.ANSI_GREEN+"Inversión guardada en BD: "+inversion.getCrypto().getName()+Main.ANSI_RESET);
             ps.close();
         } catch (SQLException e) {
             AlertView alertView = new AlertView("Error", "Error al guardar la inversión", "Error al guardar la inversión\n"+e.getMessage());
             alertView.mostrarAlerta();
             System.out.println(Main.ANSI_RED+"Error al guardar la inversión"+Main.ANSI_RESET);
+        }
+    }
+
+    public void updateUser(User user) {
+        String query = "UPDATE users SET username = ?, password = ? WHERE idusername = ?";
+        PreparedStatement ps;
+        try {
+            ps = conectar().prepareStatement(query);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getId());
+            ps.executeUpdate();
+            //AHORA LA CONFIGURACION
+            updateUserConfig(user.getUserConfig());
+            System.out.println(Main.ANSI_GREEN+"Usuario actualizado: "+user.getUsername()+Main.ANSI_RESET);
+            ps.close();
+        } catch (SQLException e) {
+            AlertView alertView = new AlertView("Error", "Error al actualizar el usuario", "Error al actualizar el usuario\n"+e.getMessage());
+            alertView.mostrarAlerta();
+            System.out.println(Main.ANSI_RED+"Error al actualizar el usuario"+Main.ANSI_RESET);
+        }
+
+    }
+    //metodo para actualizar la configuracion de un usuario
+    public void updateUserConfig(UserConfig userConfig) {
+        String query = "UPDATE config SET divisa = ?, saldo = ? WHERE iduser = ?";
+        PreparedStatement ps;
+        try {
+            ps = conectar().prepareStatement(query);
+            ps.setString(1, userConfig.getDivisa());
+            ps.setDouble(2, userConfig.getSaldo());
+            ps.setInt(3, userConfig.getUser().getId());
+            ps.executeUpdate();
+            System.out.println(Main.ANSI_GREEN+"Configuración actualizada"+Main.ANSI_RESET);
+            ps.close();
+        } catch (SQLException e) {
+            AlertView alertView = new AlertView("Error", "Error al actualizar la configuración", "Error al actualizar la configuración\n"+e.getMessage());
+            alertView.mostrarAlerta();
+            System.out.println(Main.ANSI_RED+"Error al actualizar la configuración"+Main.ANSI_RESET);
         }
     }
 }

@@ -373,6 +373,10 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+    //metodo para actualizar usuario de la base de datos
+    public void updateUserBD(User user){
+        new ConnectMysql().updateUser(user);
+    }
     //coger las inversiones del usuario
     /**
      * Método para conseguir las inversiones del usuario
@@ -664,4 +668,6 @@ public class UserRepository {
     public ArrayList<Inversion> getUserInversionesBd(User user) {
         return new ConnectMysql().getInversionesBD(user);
     }
+
+
 }

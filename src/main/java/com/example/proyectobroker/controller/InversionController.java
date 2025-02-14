@@ -4,6 +4,7 @@ import com.example.proyectobroker.Main;
 import com.example.proyectobroker.model.Inversion;
 import com.example.proyectobroker.model.User;
 import com.example.proyectobroker.repository.UserRepository;
+import database.ConnectMysql;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class InversionController {
     public void saveInversion(Inversion inversion) {
         userRepository.saveInversion(inversion);
     }
+
     //metodo para actualizar la inversion y ponerla como vendida en la base de datos
     /**
      * Metodo para actualizar la inversion y ponerla como vendida en la base de datos
