@@ -136,7 +136,7 @@
                   <TextField id="txtUser" fx:id="txtUser" layoutX="468.0" layoutY="72.0" />
                   <TextField id="txtMoney" fx:id="txtMoney" editable="false" layoutX="467.0" layoutY="179.0" />
                   <TextField id="txtPasswordConfirm" fx:id="txtPasswordConfirm" layoutX="682.0" layoutY="129.0" />
-                  <Button id="btnSaveChanges" fx:id="btnSaveChanges" layoutX="469.0" layoutY="398.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="146.0" text="Guardar Cambios" />
+                  <Button id="btnSaveChanges" fx:id="btnSaveChanges" layoutX="469.0" layoutY="398.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="146.0" text="Guardar" />
                   <PasswordField id="txtPassword" fx:id="txtPassword" layoutX="467.0" layoutY="128.0" />
                </children></AnchorPane>
       </content>
