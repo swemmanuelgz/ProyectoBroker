@@ -100,6 +100,8 @@ public class MainMenuController {
     @FXML
     private Button btnReport;
     @FXML
+    private Button btnFullReport;
+    @FXML
     private ImageView imgProfile;
     @FXML
     private ComboBox cmbDivisa;
@@ -218,6 +220,15 @@ public class MainMenuController {
             Connection connectMysql = new ConnectMysql().conectar();
             ReportGenerating_Filtro reportGenerating = new ReportGenerating_Filtro();
             reportGenerating.generateReport(connectMysql,nombre);
+
+        }
+    });
+    btnFullReport.setOnAction(event -> {
+        int respuesta = JOptionPane.showConfirmDialog(null,"¿Estás seguro de que quieres generar el reporte completo?","Generar reporte completo",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        if (respuesta == JOptionPane.YES_OPTION){
+            Connection connectMysql = new ConnectMysql().conectar();
+            ReportGenerating reportGenerating = new ReportGenerating();
+            reportGenerating.generateReport(connectMysql);
         }
     });
     listHistorial.setOnMouseClicked(event -> {
